@@ -355,9 +355,26 @@ dt, dd, blockquote, address, table {
 
 nav {
   padding: 20px;
-  background-color: #333;
+  background-color: #e8054c;
   color: #fff;
+  display: flex;
+  align-items: center;
 }
 article {
   padding: 20px;
+}
+article p {
+  margin: 20px 0;
+}
+nav > svg {
+  display: inline-block;
+  height: 60px;
+}
+nav > h1 {
+  display: none;
+}
+nav > h2 {
+  display: inline-block;
+  margin: 4px 0 0 30px;
+  font-weight: 300;
 }
