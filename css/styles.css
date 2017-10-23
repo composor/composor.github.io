@@ -636,6 +636,7 @@ footer a:hover {
   /* flex: 1; */
   padding: 0;
   width: 100%;
+  min-height: 78vh;
   display: flex;
   flex-direction: column;
   align-items: center;
