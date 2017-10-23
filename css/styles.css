@@ -456,12 +456,16 @@ article > section {
 }
 .nav--menu__item {
   display: inline-block;
+  position: relative;
 }
 .nav--menu__item.selected::after {
   content: "";
   display: block;
   border-bottom: solid 4px #fff;
   width: 70%;
+  position: absolute;
+  left: 0;
+  bottom: -8px;
 }
 .nav--menu__item.selected:last-of-type::after {
   width: 80%;
