@@ -24,7 +24,7 @@
         <span class='logo__link--text'>Composi</span></a>
       </li>
       <li class='nav--menu__item'>
-        <a class='nav--menu__item__link' href="./docs/index.html">Docs</a>
+        <a class='nav--menu__item__link' href="./docs/installation.html">Docs</a>
       </li>
       <li class='nav--menu__item'>
         <a class='nav--menu__item__link' href="./tuts/index.html">Tutorials</a>
@@ -34,7 +34,7 @@
   <header class='main__header'>
     <section>
       <h1>Composi</h1>
-      <h2>A Library for Making Component-Based Interfaces</h2>
+      <h2>Make Component-Based Interfaces</h2>
     </section> 
   </header>
   <article>
@@ -79,6 +79,9 @@ class HelloMessage extends Component {
 }
 // Instantiate the component:
 const helloMsg = new HelloMessage()
+
+// Define container in which to render the component:
+helloMsg.container = '#hello-world'
 
 // Pass the instance some data to render it:
 helloMsg.update('Joe')
@@ -256,9 +259,8 @@ const app = new TodoApp()
         return h('div', {}, `Hello, ${name}!`)
       }
     }
-    const helloMsg = new HelloMessage({
-      container: '#hello-world'
-    })
+    const helloMsg = new HelloMessage()
+    helloMsg.container = '#hello-world'
     helloMsg.update('Joe')
 
     // Timer:

@@ -488,6 +488,8 @@ article > section {
   margin: 0 4rem 0 0;
 }
 .main__example--column code,
+.tutorial-page code,
+.documentation-page code,
 .tutorial-page code {
   background-color: #eee;
   color: rgb(21, 159, 255);

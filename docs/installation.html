@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Composi - Docs</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/prism-tomorrow.css">
+</head>
+<body class='documentation-page'>
+  <nav>
+    <ul class='nav--menu'>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../index.html">
+          <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Composi Logo</title>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Composi-Logo-Solid" fill="#fff">
+                <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+              </g>
+            </g>
+          </svg>
+        <span class='logo__link--text'>Composi</span></a>
+      </li>
+      <li class='nav--menu__item selected'>
+        <a class='nav--menu__item__link' href="./installation.html">Docs</a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../tuts/index.html">Tutorials</a>
+      </li>
+    </ul>
+  </nav>
+  <article class='docs__article'>
+    <section>
+      <div class='docs'>
+          <h1>Installation</h1>
+          <h2>Composi is Small</h2>
+          <p>Composi is only 3KB gzipped. That means a Hello World app will only be 3KB. Composi's small size means it load quickly, even on old phones with poor connections. Despite its small size, Composi offers a lot of functionality to create complex and powerful applications.</p>
+
+          <h2>Install from NPM</h2>
+          <p class="docs__intro">To install Composi, you'll need to have [Nodejs](https://nodejs.org/en/) installed. Open your terminal and run:</p>
+          <pre>
+            <code class='language-bash'>
+npm i -g composi
+            </code>
+          </pre>
+          <p>If you are on a Mac or Linux, you may need to run the above command with <code>sudo</code>.</p>
+          <p>Once the installation is complete, you are ready to create your first project.</p>
+
+          <h2>Create a New Project</h2>
+          <p>After installing Composi, you can use it to create a new project. The simplest way to do this is to provide a project name following the <code>-n</code> flag:</p>
+          <pre>
+            <code class="language-bash">
+composi -n myproject
+            </code>
+          </pre>
+          <p>If you want to create a project with a name with spaces, you will need to quote it. Similarly, you can use uppercase letters as well. For names with spaces, Composi with convert those to hyphens to comply with NPM naming conventions. In your project's html file the name will appear as you entered. Similarly, if you provide a name with uppercase letters, Composi will convert those to lowercase for NPM compatibility. But in your project's html file the name will appear as you entered it.</p>
+          <pre>
+            <code class="language-bash">
+composi -n "My Project"
+            </code>
+          </pre>
+          <p> </p>
+          <h2>Provide a Path</h2>
+          <p>When you create a new project providing a name with the <code>-n</code> flag, Composi creates this on your Desktop. If you would like the new project to be output somewhere else, you can provide the <code>-p</code> flag followed by a valid path to where you want your project. You will need to provide a path for the operating system on which you are working, whether Mac, Windows or Linux.</p>
+
+          <pre>
+              <code class="language-bash">
+  # Output new project to path:
+  composi -n myproject -p ~/projects
+
+  # or:
+  composi -n myproject -p ~/dev
+              </code>
+            </pre>
+            <p>After creating a project, open the folder and take a look inside. You should see a structure like this:</p>
+            <pre>
+              <code class="language-bash">
+|- myproject
+|  |- css
+|  |--- styles.css
+|  |- dev
+|  |--- app.js
+|  |  |- components
+|  |  |--- title.js
+|  |- js
+|  |--- app.js
+|--- .babelrc
+|--- .editorconfig
+|--- gulpfile.js
+|--- index.html
+|--- package.json
+|--- README.md
+              </code>
+            </pre>
+            <p>After creating a Composi project, you will spend most of your time working in your project's <code>dev</code> folder. When you build your project, Composi will take the files in the <code>dev</code> folder, bundle them, transpile the bundle and output it to your project's <code>js</code> folder as <code>app.js</code>. The <code>index.html</code> file is already set up to import that bundle.</p>
+            <p>The core of your app is the <code>app.js</code> file in the <code>dev</code> folder. This is where you assemble all the pieces together.</p>
+
+            <h2>Building</h2>
+            <p>After creating a project, you can build it. This will bundle all the dependencies, transpile them and put the resulting bundle in the project's <code>js</code> folder. To build, make sure you terminal is in your project using <code>cd</code>. Then run:</p>
+
+            <pre>
+              <code class="language-bash">
+npm run build
+              </code>
+            </pre>
+
+            <p>This will also start a Node server instance and launch the project in your default browser. If you'd like to use a different browser, you can do so by opening your project's <code>gulpfile.js</code>. look for the <code>gulp</code> task called "serve". In the Browsersync configuration you can add a property for <code>browser</code> with the browser you want the project build to use. The naming convention for browsers in the configuration vary by operating system. To learn more about configuring Browsersync, read the <a target='__blank' href='https://www.browsersync.io/docs/options#option-browser'>docs</a>.</p>
+            
+            <h2>CDN</h2>
+            <p>If you want, you can skip the NPM install and load Composi directly from Github. Doing so means you will not be able to use ES6, JSX, etc. on older browsers. However, you can write components using the <code>h</code> function in hyperscript fashion.</p>
+            <p>To use it from a CDN, just import Composi with a scritp tag:</p>
+            <pre>
+              <code class='language-html'>
+&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
+              </code>
+            </pre>
+            <p>You can then use Composi using its <code>h</code> function to define markup. Here's a simple Hello World:</p>
+            <pre>
+                <code class='language-html'>
+&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
+&lt;script>
+  // get h and Component:
+  var h = composi.h
+  var Component = composi.Component
+
+  // Create component:
+  hello = new Component({
+    container: 'body',
+    render: function(name) {
+      return h('h1', {}, `Hello, ${name}!`)
+    }
+  })
+  hello.update('Joe')
+&lt;/script>
+                </code>
+              </pre>
+              <p>For more information about how to use <code>h</code>, read its <a href="./h.html">documentation</a>.</p>
+      </div>
+      
+      <aside>
+        <menu>
+          <ul class="docs__menu">
+            <li class="docs__menu__item selected">
+              <a href='./installation.html'>Installation</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./render.html'>Render</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./functional-components.html'>Functional Components</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./component-instance.html'>Component Instance</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./extending-component.html'>Extending Component</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./state.html'>State</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./h.html'>H for Hyperscript</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./template-literals.html'>Template Literals</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./styles.html'>Styles</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./lifecycle-methods.html'>Lifecycle Methods</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./events.html'>Events</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./redux-mobx.html'>Redux and Mobx</a>
+            </li>
+          </ul>
+        </menu>
+      </aside>
+    </section> 
+  </article>
+  <footer>
+      <section>
+        <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>Composi Logo</title>
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Composi-Logo-Solid" fill="rgba(255,255,255,0.5)">
+              <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+            </g>
+          </g>
+        </svg>
+        <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a> and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
+      </section>
+    </footer>
+  <script src="../js/prism.min.js"></script>
+  <script src="../js/prism-bash.js"></script>
+  <script src="../js/prism-jsx.js"></script>
+</body>
+</html>
