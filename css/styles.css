@@ -8,12 +8,11 @@
 
 html {
   font-family: sans-serif;
-  line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
   -webkit-tap-highlight-color: transparent;
-  font-size: 
+  font-size: 62.5%;
 }
 
 @-ms-viewport {
@@ -27,12 +26,15 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 1rem;
-  font-weight: normal;
+  font-size: 1.6rem;
+  font-weight: mornal;
+  font-style: normal;
   line-height: 1.5;
   color: #212529;
   text-align: left;
   background-color: #fff;
+  -webkit-font-smoothing: subpixel-antialiased;
+  height: 100vh;
 }
 
 [tabindex="-1"]:focus {
@@ -352,29 +354,355 @@ dt, dd, blockquote, address, table {
 /*==============*/
 /* Local Styles */
 /*==============*/
-
+h2 {
+  font-size: 2.5em;
+}
+#composi-logo {
+  height: 2rem;
+}
+/* Size the nav logo - Composi */
+body {
+  padding-top: 8rem;
+  background-color: #fff;
+}
 nav {
-  padding: 20px;
+  padding: 2rem;
   background-color: #DF0000;
   color: #fff;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 8rem;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 article {
-  padding: 20px;
+  padding: 2rem;
 }
 article p {
-  margin: 20px 0;
+  margin: 0 0 2rem;
 }
 nav > svg {
   display: inline-block;
-  height: 60px;
+  height: 4rem;
 }
-nav > h1 {
-  display: none;
+.main__header {
+  background-color: #333;
+  color: #fff;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-nav > h2 {
-  display: inline-block;
-  margin: 4px 0 0 30px;
+.main__header section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 10rem;
+  width: 100%;
+  max-width: 150rem;
+  background-image: url(../images/Composi-Logo-Red@2x.png);
+  background-repeat: no-repeat;
+  background-size: 12rem 12rem;
+  background-position: 90% center;
+}
+.main__header h1 {
+  font-size: 3.5rem !important;
+  font-weight: 700;
+}
+.main__header h2 {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  color: #ccc;
+  font-weight: 100;
+}
+h2 {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  color: #DF0000;
   font-weight: 300;
 }
+h3 {
+  font-weight: 500;
+  font-size: 2.3rem;
+  color: #666;
+}
+article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+article > section {
+  display: flex;
+  flex-direction: row;
+  padding: 4rem 10rem;
+  width: 100%;
+  max-width: 150rem;
+}
+.main__column {
+  width: 33%;
+  margin: 0 4rem 0 0;
+}
+.nav--menu {
+  list-style: none;
+  padding: 0 10rem;
+  width: 100%;
+  max-width: 150rem
+}
+.nav--menu__item {
+  display: inline-block;
+}
+.nav--menu__item.selected::after {
+  content: "";
+  display: block;
+  border-bottom: solid 4px #fff;
+  width: 70%;
+}
+.nav--menu__item.selected:last-of-type::after {
+  width: 80%;
+}
+.nav--menu__item__link {
+  color: #fff;
+  margin-right: 2rem;
+  font-size: 1.8rem;
+  transition: all .25s ease-out;
+}
+.logo__link--text {
+  display: inline-block;
+  margin-left: 5px;
+}
+.nav--menu__item.selected:hover::after,
+.nav--menu__item__link:hover {
+  color: rgb(21, 159, 255);
+  border-color: rgb(21, 159, 255);
+  text-decoration: none;
+}
+
+.main__example--column {
+  width: 25%;
+  margin: 0 4rem 0 0;
+}
+.main__example--column code,
+.tutorial-page code {
+  background-color: #eee;
+  color: rgb(21, 159, 255);
+  padding: 0 3px;
+}
+.main__editor--example {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 44%;
+  height: 40rem;
+  overflow-y: scroll;
+  margin: 0;
+}
+.main__editor--result {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  height: 40rem;
+  overflow-y: scroll;
+} 
+.main__example__result--title {
+  background-color: #666;
+  color: #fff;
+  padding: 5px 1rem;
+  margin: 0;
+}
+#add-item {
+  transition: all .25s ease-out;
+}
+#add-item:hover {
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+}
+.main__example__output {
+  flex: 1;
+  padding: 1rem;
+  border-right: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
+}
+.main__example--section {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  padding: padding: 4rem 10rem;;
+}
+.main__editor--example pre {
+  flex: 1;
+}
+.main__editor--example pre * {
+  font-size: 13px;
+}
+.main__section__separator {
+  padding: 0 10rem;
+}
+.main__separator {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  width: 100%;
+}
+
+/* Main page examples: */
+#todo-list input {
+  width: 100%;
+}
+#todo-list button {
+  margin: 1rem 0 0 0;
+}
+#todo-list ul {
+  margin-left: 2rem;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 6rem 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+footer section {
+  padding: 0 10rem;
+  width: 100%;
+  max-width: 150rem
+}
+footer h3, footer a {
+  color: #ccc;
+  font-weight: 200;
+  display: inline-block;
+}
+footer a {
+  color: #DF0000;
+  text-decoration: underline;
+  transition: all .25s ease-out;
+}
+footer a:hover {
+  color: #fff;
+}
+#composi-logo-footer {
+  display: inline-block;
+  height: 4rem;
+  margin-right: 1rem;
+}
+#composi-logo-footer #Composi-Logo-Solid {
+  fill: #DF0000;
+}
+.main__modular {
+  background-image: url(../images/Modular-Symbol@2x.png);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 3rem;
+  padding-left: 4rem;
+}
+.main__declarative {
+  background-image: url(../images/Declarative-Symbol@2x.png);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 3rem;
+  padding-left: 4rem;
+}
+.main__reusable {
+  background-image: url(../images/Recycle-Symbol@2x.png);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 3rem;
+  padding-left: 4rem;
+}
+
+/* Tutorials */
+.docs__article,
+.tutorial__article {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  /* flex: 1; */
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.docs__article section,
+.tutorial__article section {
+  padding: 0;
+  width: 100%;
+  max-width: 150rem;
+}
+.docs,
+.tutorial {
+  width: 80%;
+  min-width: 40rem;
+  padding: 2rem;
+}
+.docs__article aside,
+.tutorial__article aside {
+  width: 30rem;
+  padding: 2rem;
+  background-color: rgba(223,0,0,0.075); 
+  background-color: rgba(223,200,200,.25); 
+  border-left: solid 1px rgba(223,200,200,.5);
+}
+.docs__article menu,
+.tutorial__article menu {
+  padding: 0;
+  margin: 0;
+}
+.documentation-page h1,
+.tutorial-page h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #666;
+  margin: 3rem 0;
+}
+.documentation-page p,
+.tutorial-page p {
+  font-size: 1.75rem;
+  margin: 2rem 0;
+}
+.documentation-page .tutorial__intro,
+.tutorial-page .tutorial__intro {
+  font-size: 2.5rem;
+  margin: 0 3em 2em 0;
+}
+.docs__menu,
+.tutorials__menu {
+  list-style: none;
+}
+.docs__menu__item,
+.tutorials__menu__item {
+  margin: 10px 0;
+}
+.docs__menu__item a,
+.tutorials__menu__item a {
+  color: rgb(21, 159, 255);
+  padding: 5px 10px;
+  display: inline-block;
+  width: 100%;
+}
+.docs__menu__item a:hover,
+.tutorials__menu__item a:hover {
+  color: rgb(21, 159, 255);
+  text-decoration: none;
+}
+.docs__menu__item:hover,
+.tutorials__menu__item:hover, {
+  background-color: #ddd;
+}
+.docs__menu__item.selected,
+.tutorials__menu__item.selected {
+  background-color: #ddd;
+}
+
+/* End Tutorials */

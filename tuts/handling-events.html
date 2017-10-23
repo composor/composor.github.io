@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Composi - Tutorials</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/prism-tomorrow.css">
+</head>
+<body class='tutorial-page'>
+  <nav>
+      <ul class='nav--menu'>
+        <li class='nav--menu__item'>
+          <a class='nav--menu__item__link' href="../index.html">
+            <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>Composi Logo</title>
+              <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Composi-Logo-Solid" fill="#fff">
+                  <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+                </g>
+              </g>
+            </svg>
+          <span class='logo__link--text'>Composi</span></a>
+        </li>
+        <li class='nav--menu__item'>
+          <a class='nav--menu__item__link' href="../docs/index.html">Docs</a>
+        </li>
+        <li class='nav--menu__item selected'>
+          <a class='nav--menu__item__link' href="./index.html">Tutorials</a>
+        </li>
+      </ul>
+    </nav>
+    <article class='tutorial__article'>
+      <section>
+        <div class='tutorial'>
+          <h1>Handling Events</h1>
+          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <pre>
+            <code class='language-jsx'>
+  render(
+    &lt;h1>Hello, world!&lt;/h1>, '#root'
+  )
+            </code>
+          </pre>
+          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+
+          <h2>JavaScript</h2>
+          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+        </div>
+        <aside>
+          <menu>
+            <ul class="tutorials__menu">
+              <li class="tutorials__menu__item">
+                <a href='./index.html'>Hello World</a>
+              </li>
+              <li class="tutorials__menu__item">
+                  <a href='./introducing-jsx.html'>Introducing JSX</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./rendering-elements.html'>Rendering Elements</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./components-n-props.html'>Components and Props</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./conditional-rendering.html'>Conditional Rendering</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./state-n-lifecycle.html'>State and Lifecycle</a>
+              </li>
+              <li class="tutorials__menu__item selected">
+                <a href='./handling-events.html'>Handling Events</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./lists-n-keys.html'>Lists and Keys</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./forms.html'>Forms</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./lifting-state-up.html'>Lifting State Up</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./thinking-in-composi.html'>Thinking in Composi</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./jsx-in-depth.html'>JSX In Depth</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./advanced-state-management.html'>Advanced State Management</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./integrating-other-libs.html'>Integrating with Other Libraries</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./composi-without-jsx.html'>Composi Without JSX</a>
+              </li>
+            </ul>
+          </menu>
+        </aside>
+      </section> 
+    </article>
+    <footer>
+      <section>
+        <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>Composi Logo</title>
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Composi-Logo-Solid" fill="rgba(255,255,255,0.5)">
+              <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+            </g>
+          </g>
+        </svg>
+        <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a> and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
+        </section>
+      </footer>
+    <script src="../js/prism.min.js"></script>
+    <script src="../js/prism-jsx.js"></script>
+</body>
+</html>
