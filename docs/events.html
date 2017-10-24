@@ -40,18 +40,724 @@
     <section>
       <div class='docs'>
           <h1>Events</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="docs__intro">You might have the best looking components on the planet, but if there wasn't a way for users to interact with them, they would be essentially useless. There are two ways to implement events:</p>
+
+          <ol>
+            <li>inline events</li>
+            <li>handleEvent interface</li>
+          </ol>
+
+          <p>Inline events are the primary way developers implement events in React, Angular, Vue and other libraries and frameworks. The second way is to create a <code>handleEvent</code> object or method that gets passed to an <code>addEventListener</code> event on the component. Instead of passing the event listener a callback, you pass it an object with a method called <code>handleEvent</code>. This will get called when the event fires. You will usually use the <code>componentWasCreated</code> lifecycle method to set up the event listener.</p>
+
+          <h2>Which to Use</h2>
+          <p>Although inline events are in vogue with libraries and frameworks, they can lead to substantial memory usage when you use them on the items of a list of 1000s of items. This can lead to sluggish performance. With the <code>handleEvent</code> interface, you can implement event delegation, reducing memory usage, and there is no callback scope, avoiding the problem of memory leaks. This approach is also safer, reducing the number of attack points for script injection. Event removal is also dead simple.</p>
+
+          <p>If you just want to get things done fast, use inline events. Otherwise use the <code>handleEvent</code> interface. We strongly recommend you give <code>handleEvent</code> a try. If components will be created and destroyed, use the <code>handleEvent</code> interface. It's safer.</p>
+
+          <h2>Inline Events</h2>
+          <p>Inline events (DOM Level 0) have been around since 1996. They are the original event system for JavaScript. In versions of Internet Export upto 8, inline events were a source of serious memory leaks that could crash the browser. Composi's support for Internet Explorer starts at version 9, so this is not a concern. You can use inline events with a Component instance or when extending Component. How you do so in each case differs quite a bite. This is due to the way Component instantiation happens. When you create an instance of the Component class, you pass it an object literal of properties. That object literal will not have access to the Component instance, so no <code>this</code>. You'll need to define your callbacks and other custom properties separate from the component initialization.</p>
+
           <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+const increase = () => {
+  counter.setState({disabled: false, number: counter.state.number + 1})
+}
+
+const decrease = () => {
+  if (counter.state.number < 2) {
+    counter.setState({disabled: true, number: counter.state.number - 1})
+  } else {
+    counter.setState({disabled: false, number: counter.state.number - 1})
+  }
+} 
+export const counter = new Component({
+  container: '#counter',
+  state: {disabled: false, number: 1},
+  render: (data) => {
+    const {disabled, number} = data
+    return (
+      &lt;div class='counter' id={uuid()}>
+        &lt;button key='beezle' disabled={disabled} onclick={decrease} id="decrease">-&lt;/button>
+        &lt;span>{number}&lt;/span>
+        &lt;button onclick={increase} id="increase">+&lt;/button>
+      &lt;/div>
+    )
+  }
+})</code>
+          </pre>
+          <p>Notice how in the above example, <code>increase</code> and <code>decrease</code> are separate functions. This may not be a big deal for you, or it may drive you up the wall.</p>
+
+          <h2>Inline Events on Extended Component</h2>
+          <p>When we extend the Component class, we can avoid all the above issues of inline event callbacks. This gives us direct access to the component instance through the <code>this</code> keyword and results in code that is more readable and maintainable. To preserve the scope of the component, you do need to bind the inline event. Notice how we do this below:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+// Define Counter class by extending Component:
+export class Counter extends Component {
+  constructor (opts) {
+    super(opts)
+  }
+
+  render(data) {
+    const {disabled, number} = data
+    // Use bind on the inline events:
+    return (
+      &lt;div class='counter' id={uuid()}>
+        &lt;button key='beezle' disabled={disabled} onclick={this.decrease.bind(this)} id="decrease">-&lt;/button>
+        &lt;span>{number}&lt;/span>
+        &lt;button onclick={this.increase.bind(this)} id="increase">+&lt;/button>
+      &lt;/div>
+    )
+  }
+
+  // Because these methods are part of the class,
+  // we can accesss the component directly to set state:
+  increase() {
+    this.setState({disabled: false, number: this.state.number + 1})
+  }
+
+  decrease() {
+    if (this.state.number < 2) {
+      this.setState({disabled: true, number: this.state.number - 1})
+    } else {
+      this.setState({disabled: false, number: this.state.number - 1})
+    }
+  }
+}</code>
+          </pre>
+          <p>One way to avoid the necessity of binding the inline event is to move that to the constructor:</p>
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+// Define Counter class by extending Component:
+export class Counter extends Component {
+  constructor (opts) {
+    super(opts)
+    // Bind events to "this":
+    this.increase = this.increase.bind(this)
+    this.decrease = this.decrease.bind(this)
+  }
+
+  render(data) {
+    const {disabled, number} = data
+    // Use bind on the inline events:
+    return (
+      &lt;div class='counter' id={uuid()}>
+        &lt;button key='beezle' disabled={disabled} onclick={this.decrease} id="decrease">-&lt;/button>
+        &lt;span>{number}&lt;/span>
+        &lt;button onclick={this.increase} id="increase">+&lt;/button>
+      &lt;/div>
+    )
+  }
+
+  // Because these methods are part of the class,
+  // we can accesss the component directly to set state:
+  increase() {
+    this.setState({disabled: false, number: this.state.number + 1})
+  }
+
+  decrease() {
+    if (this.state.number < 2) {
+      this.setState({disabled: true, number: this.state.number - 1})
+    } else {
+      this.setState({disabled: false, number: this.state.number - 1})
+    }
+  }
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Arrow Functions for Inline Events</h2>
+          <p>Another way to get around having to use <code>bind(this)</code> on your inline events by using arrows functions. To do this, the value of the inline event needs to be an arrow function that returns the component method. Refactoring the <code>render</code> method from above, we get this:</p>
+
+          <pre>
+            <code class="language-javascript">
+render(data) {
+  const {disabled, number} = data
+  // Use bind on the inline events:
+  return (
+    &lt;div class='counter' id={uuid()}>
+      &lt;button key='beezle' disabled={disabled} onclick={() => this.decrease()} id="decrease">-&lt;/button>
+      &lt;span>{number}&lt;/span>
+      &lt;button onclick={() => this.increase()} id="increase">+&lt;/button>
+    &lt;/div>
+  )
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Using handleEvent</h2>
+          <p>Perhaps the least used and understood method of handling events has been around since 2000. We're talking about <code>handldeEvent</code>. It's supported in browsers all the way back to IE6. There are two ways you can use the <code>handleEvent</code> interface: as an object or as a class method. The interface might appear a little peculiar at first. This is offset by the benefits it provides over other types of event registration. The biggest benefit of <code>handleEvent</code> is that it reduces memory usage and helps avoid memory leaks.</p>
+
+          <p>The <code>handleEvent</code> interface cannot be used with inline events. It can only be used with <code>addEventListener</code>. It will be the second argument instead of a callback. The <code>handleEvent</code> will be a function defined on that object. There are two ways to do this: as the method of an object literal or as a class method.</p>
+
+          <h2>handleEvent Object</h2>
+          <p>To use the <code>handleEvent</code> interface as an object, you just create an object literal that at minumum has <code>handleEvent</code> as a function:</p>
+
+          <pre>
+            <code class="language-javascript">
+const handler = {
+  handleEvent: (e) => {
+    // Do stuff here
+  }
+}</code>
+          </pre>
+          <p>Let's take a look at how to use a <code>handleEvent</code> object with a Component instance.</p>
+          <h2>Component Instance</h2>
+          <p>interface. In this case we define a separate object with properties, including the <code>handleEvent</code> method. Notice that the handler object has its own private state that we can access easily from the <code>handleEvent</code> method. To set up the event listener for <code>handleEvent</code> we use the <code>componentWasCreated</code> lifecycle method:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+const title = new Component({
+  container: 'body',
+  state: 'World',
+  render: (message) => (
+    &lt;h1>Hello, {message}!&lt;/h1>
+  ),
+  // Bind event with handleEvent object after component is injected in DOM:
+  componentWasCreated: () => {
+    document.querySelector('h1').addEventListener('click', handler)
+  }
+})
+
+// Define handleEvent object:
+const handler = {
+  state: 0,
+  handleEvent: function(e) {
+    alert(e.target.textContent)
+    // Increase this object's state:
+    this.state++
+    // Log the new state:
+    console.log(this.state)
+  }
+}
+
+// Render the title:
+const title.update()</code>
+          </pre>
+          <p>Notice that the <code>handleEvent</code> function in the <code>handler</code> object above has access to other object properties through the <code>this</code> keyword.</p>
+
+          <h2>Component Class Extension</h2>
+          <p>Using a <code>handleEvent</code> object when extending the Component class is the same. Like the previous example, we use the <code>componentWasCreated</code> lifecycle method to add an event listener and pass it a <code>handleEvent</code> object:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+class Title extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'header'
+    this.state = 'World'
+  }
+  render(message) {
+    return (
+      <h1>Hello, {message}!</h1>
+    )
+  }
+
+  // Bind event with handleEvent object after component is injected in DOM:
+  componentWasCreated() {
+    this.element.addEventListener('click', handler)
+  }
+}
+
+// Define handleEvent object:
+const handler = {
+  state: 0,
+  handleEvent: function(e) {
+    alert(e.target.textContent)
+    // Increase this object's state:
+    this.state++
+    // Log the new state:
+    console.log(this.state)
+  }
+}
+// Create new title component:
+const title = new Title()
+
+// Render the title:
+title.update()</code>
+          </pre>
+          <p>With the above code, when you click on the title, the console will output the value of the state of <code>handler</code>. Each click will increase its value.</p>
+
+          <h2>handleEvent Method in Components</h2>
+          <p>The other way to use the <code>handleEvent</code> interface is as a method of a class. When we extend the Component class, we can make <code>handleEvent</code> one of its methods. Because the <code>handleEvent</code> method is defined directly on the class, we pass the class itself directly to the event listener by means of the <code>this</code> keyword. This means that the <code>handleEvent</code> method will have access to all the properties and methods of the class through normal use of <code>this</code>. Notice how we can directly access the component's state property from within the <code>handleEvent</code> method. Because we are putting this directly on the component class, we this method <code>handleEvent</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Title extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'header'
+    this.state = 'World',
+  }
+  render(message) {
+    return (
+      &lt;h1>Hello, {message}!&lt;/h1>
+    )
+  }
+  handleEvent(e) {
+    // Log the event target:
+    console.log(e.target.nodeName)
+    // Alert the state.
+    // We can access it from the 'this' keyword:
+    alert(this.state)
+  }
+
+  // Bind event with handleEvent object after component is injected in DOM:
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+}
+// Create new title component:
+const title = new Title()</code>
+          </pre>
+          <p>In the above code there is no <code>handler</code> object. Instead we've given the component a <code>handleEvent</code> method. When we pass the component to the <code>addEventListener</code> as <code>this</code>, the browser see that this is an object and looks for a method called <code>handleEvent</code>. From there on everything works as expected.</p>
+
+          <h2>Event Delegation with handleEvent</h2>
+          <p>In the previous examples, we only registered one event on an element. Inline events allow us to register events that are captured on multiple items. This is useful when you have a list of interactive items. We can implement event delegation with the <code>handleEvent</code> interface as well. It just requires a little extra code on our part.</p>
+          <p>Remember that the only argument <code>handleEvent</code> receives is the event. From this we can check the event target to see what the user interacted with. Below is an example doing this:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+const fruits = [
+  {
+    key: 101,
+    name: 'Apples'
+  },
+  {
+    key: 102,
+    name: 'Oranges'
+  },
+  {
+    key: 103,
+    name: 'Bananas'
+  }
+]
+
+class List extends Component {
+  constructor(opts) {
+    super(opts)
+    this.state = fruits
+    // key to use for adding new items:
+    this.key = 1000
+  }
+  render() {
+    let state = this.state
+    return (
+      &lt;div>
+        &lt;p>
+          &lt;input id='nameInput' type='text' />
+          &lt;button id='addItem'>Add&lt;/button>
+        &lt;/p>
+        &lt;ul id='fruitList' class='list'>
+          {
+            this.state.map(fruit => &lt;li key={fruit.key}>{fruit.name}&lt;/li>)
+          }
+        &lt;/ul>
+      &lt;/div>
+    )
+  }
+  handleEvent(e) {
+    // Handle button click:
+    if (e.target.id === 'buttonAdd') {
+      const nameInput = this.element.querySelector('#nameInput')
+      const name = nameInput.value
+      if (!name) {
+        alert('Please provide a name!')
+        return
+      }
+      this.setState({name, key: this.key++}, this.state.length)
+      nameInput.value = ''
+      nameInput.focus()
+    // Handle list item click:
+    } else if (e.target.nodeName === 'LI') {
+      alert(e.target.textContent.trim())
+    }
+  }
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+}
+const list = new List({
+  container: 'section'
+})
+list.update()</code>
+          </pre>
+          <p>We could refactor the  <code>handleEvent</code> method to make it a bit cleaner. We'll check the <code>e.target</code> value and use the <code>&&</code> operator to execute a function:</p>
+
+          <pre>
+            <code class="language-javascript">
+handleEvent(e) {
+  // Define function for addItem:
+  function addItem(e) {
+    const nameInput = this.element.querySelector('#nameInput')
+    const name = nameInput.value
+    if (!name) {
+      alert('Please provide a name!')
+      return
+    }
+    this.setState({name, key: this.key++}, this.state.length)
+    nameInput.value = ''
+    nameInput.focus()
+  }
+  // Handle button click:
+  e.target.id === 'buttonAdd' && addItem(e)
+
+  // Handle list item click:
+  e.target.nodeName === 'LI' && alert(e.target.textContent.trim())
+}</code>
+          </pre>
+          <p>As you can see in the above example, <code>handleEvent</code> allows us to implement events in a very efficient manner without any drawbacks. No callback hell with scope issues. If you have a lot of events of the same type on different elements, you can use a switch statement to simplify things. To make your guards simpler, you might resort to using classes on all interactive elements. We've redone the above example to show this approach:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+const fruits = [
+  {
+    key: 101,
+    name: 'Apples'
+  },
+  {
+    key: 102,
+    name: 'Oranges'
+  },
+  {
+    key: 103,
+    name: 'Bananas'
+  }
+]
+
+class List extends Component {
+  constructor(opts) {
+    super(opts)
+    this.state = fruits
+    this.key = 1000
+  }
+  render() {
+    let state = this.state
+    return (
+      &lt;div>
+        &lt;p>
+          &lt;input id='nameInput' type='text' />
+          &lt;button class='addItem'>Add&lt;/button>
+        &lt;/p>
+        &lt;ul id='fruitList' class='list'>
+          {
+            this.state.map(fruit => &lt;li class='listItem' key={fruit.key}>{fruit.name}&lt;/li>)
+          }
+        &lt;/ul>
+      &lt;/div>
+    )
+  }
+  handleEvent(e) {
+    switch(e.target.className) {
+      // Handle button click:
+      case 'addItem':
+        const nameInput = this.element.querySelector('#nameInput')
+        const name = nameInput.value
+        if (!name) {
+          alert('Please provide a name!')
+          return
+        }
+        this.setState({name, key: this.key++}, this.state.length)
+        nameInput.value = ''
+        nameInput.focus()
+        break
+      // Handle list item clic:
+      case 'listItem':
+        alert(e.target.textContent.trim())
+        break
+      // Other checks here:
+    }
+  }
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+}
+const list = new List({
+  container: 'section'
+})
+list.update()</code>
+          </pre>
+          <p> </p>
+          <h2>Removing Event with handleEvent</h2>
+          <p>Event removal with <code>handleEvent</code> interface couldn't be simpler. Just use the event and <code>this</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Example of simple event target:
+class List extends Component {
+  render(data) {
+    return (
+      &lt;div>
+        &lt;p>
+          &lt;button id='remove-event'>Remove Event&lt;/button>
+        &lt;/p>
+        &lt;ul>
+          {
+            data.map(item => &lt;li>{item}&lt;/li>)
+          }
+        &lt;/ul>
+      &lt;/div>
+    )
+  }
+  // Handle click on list item and button.
+  // Remove event by passing "this" with event.
+  handleEvent(e) {
+    if (e.target.nodeName === 'LI') {
+      alert(e.target.textContent)
+    } else if (e.target.id === 'remove-event') {
+      this.element.removeEventListener('click', this)
+    }
+  }
+
+  // Bind event with handleEvent object after component is injected in DOM:
+  componentWasCreated() {
+    // Add event listener to component base (div):
+    this.element.addEventListener('click', this)
+  }
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Dynamically Changing handleEvent</h2>
+          <p>One thing you can easily do with <code>handleEvents</code> that you cnnot do with inline events or ordinary events listeners is change the code for events on the fly. If you've ever tried to do something like this in the past, you probably wound up with callbacks litered with conditional guards. When you use <code>handleEvent</code> to control how an event listener works, this becomes quite simple. It's just a matter of assigning a new value.</p>
+
+          <p>For example, let's say you have a <code>handleEvent</code> method on a class and under certain circumstances you want to change how it functions. Instead of hanving the handler full of conditional checks, you can jsut toggle it for a completely different <code>handleEvent</code>. Let's take a look at how to do this. Below we have a simple list. To switch out the behavior of the <code>handleEvent</code> method, we'll give the class a new method: <code>newHandleEvent</code>. And when we want to switch from the current, default version, we'll just assign it to <code>oldHandleEvent</code>. It's that simple:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+export class List extends Component {
+  constructor(opts) {
+    super(opts)
+    const beezle = this
+    // Keep track of toggle handleEvent behavior:
+    this.toggle = false
+    this.render = (fruits) => (
+      &lt;div>
+        &lt;p>
+          &lt;br/>
+          &lt;br/>
+          &lt;button id='change-behavior'>Change List Behavior&lt;/button>
+        &lt;/p>
+        &lt;ul class='list'>
+          {
+            fruits.map((fruit, idx) => 
+            &lt;li data-foo={fruit.name} key={fruit.key}>
+              &lt;h3>{idx +1}: {fruit.name}&lt;/h3>
+            &lt;/li>)
+          }
+        &lt;/ul>
+      &lt;/div>
+    )
+  }
+  handleEvent(e) {
+    const li = e.target.nodeName === 'LI' ? e.target : e.target.closest('li')
+    if (li && li.nodeName && li.nodeName === 'LI') {
+      alert(li.dataset.foo)
+    }
+    if (e.target.id === 'change-behavior' && !this.toggle) {
+      // Save original handleEvent so we can get it back on next toggle:
+      this.oldHandleEvent = this.handleEvent
+      // Use new handleEvent:
+      this.handleEvent = this.newHandleEvent
+      // Update toggle value for next check:
+      this.toggle = !this.toggle
+    }
+    
+  }
+  // We'll use this one to switch with default one defined above.
+  newHandleEvent(e) {
+    const li = e.target.nodeName === 'LI' ? e.target : e.target.closest('li')
+    if (li && li.nodeName && li.nodeName === 'LI') {
+      console.log('This is the new behavior.')
+      console.log(li.dataset.foo)
+    }
+    if (e.target.id === 'change-behavior' && this.toggle) {
+      // Get back orginal handleEvent:
+      this.handleEvent = this.oldHandleEvent
+      // Update toggle value for next check:
+      this.toggle = !this.toggle
+    }
+  }
+  // Attach event to capture handleEvent:
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+}</code>
+          </pre>
+          <p>Because this approach does not involve callbacks, there are no scope issues, DOM memory leaks, etc.</p>
+
+          <h2>Event Target Gotchas</h2>
+          <p>Regardless whether you are using inline events or the <code>handleEvent</code> interface, you need to be aware about what the event target could be. In the case of simple markup, there is little to worry about. Suppose you have a simple list of items:</p>
+
+          <pre>
+            <code class="language-html">
+&lt;ul>
+   &lt;li>Apples&lt;/li>
+   &lt;li>Oranges&lt;/li>
+   &lt;li>Events&lt;/li>
+&lt;/ul></code>
+          </pre>
+          <p>Assuming that an event listener is registered on the list, when the user clicks on a list item, the event target will be the list item. Clicking on the first item:</p>
+
+          <pre>
+            <code class="language-javacript">
+event.target // &lt;li>Apples&lt;/li>
             </code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>However, if the item being interacted with has child elements, then the target may not be what you are expecting. Let's look at a more complex list:</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <pre>
+            <code class="language-html">
+&lt;ul>
+   &lt;li>
+    &lt;h3>Name: Apples&lt;/h3>
+    &lt;h4>Quantity: 4&lt;/h4>
+   &lt;/li>
+   &lt;li>
+    &lt;h3>Oranges&lt;/h3>
+    &lt;h4>Quantity: 6&lt;/h4>
+   &lt;/li>
+   &lt;li>
+    &lt;h3>Bananas&lt;/h3>
+    &lt;h4>Quantity: 2&lt;/h4>
+   &lt;/li>
+&lt;/ul></code>
+          </pre>
+          <p>With an event listener registered on the list, when the user clicks, the event target might be the list item, or the <code>H3</code> or the <code>H4</code>. In cases like this, you'll need to check what the event target is before using it.</p>
+
+          <p>Here is an example of an event target that will always be predictable, in this case, the list item itself:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Example of simple event target:
+class List extends Component {
+  // Use arrow function in inline event:
+  render(data) {
+    return (
+      &lt;ul>
+        {
+          data.map(item => &lt;li onclick={(e) => this.announceItem(e)}>{item}&lt;/li>})
+        }
+      &lt;/ul>
+    )
+  }
+  announceItem(e) {
+    // If user clicked directly on list item:
+    e.target.nodeName === 'LI' && alert(e.target.textContent)
+  }
+}</code>
+          </pre>
+          <p>Here is a list target that will not be predictable:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Example of simple event target:
+class List extends Component {
+  render(data) {
+    // Use arrow function in inline event:
+    return (
+      &lt;ul>
+        {
+          data.map(item => (
+          &lt;li onclick={(e) => this.announceItem(e)}>
+            &lt;h3>{item.name}&lt;/h3>
+            &lt;h4>{item.value}&lt;/h4>
+          &lt;/li>))
+        }
+      &lt;/ul>
+    )
+  }
+  announceItem(e) {
+    // Here e.target might be the list item,
+    // or the h3, or the h4:
+    alert(e.target.textContent)
+  }
+}</code>
+          </pre>
+          <p>To get around the uncertainty of what the event target might be, you'll need to use guards in the callback. In the example below we're using a ternary operator(condition ? result : alternativeResult) to do so:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Example of simple event target:
+class List extends Component {
+  render(data) => {
+    return (
+      &lt;ul>
+        {
+          data.map(item =>
+          &lt;li onclick={(e) => this.announceItem(e)}>
+            &lt;h3>{item.name}&lt;/h3>
+            &lt;h4>{item.value}&lt;/h4>
+          &lt;/li>)
+        }
+      &lt;/ul>
+    )
+  }
+  announceItem(e) {
+    // Here e.target might be the list item,
+    // or the h3, or the h4.
+    // Therefore we need to test whether the target.nodeName
+    // is "LI". If not, we get its parent node:
+    const target = e.target.nodeName === 'LI' ? e.target : e.target.parentNode
+    // Alert the complete list item content:
+    alert(target.textContent)
+  }
+}
+            </code>
+          </pre>
+          <p> </p>
+          <h2>Element.closest</h2>
+          <p>In the above example the solution works and it's not hard to implement. However, you may have an interactive element with even more deeply nested children that could be event targets. In such a case, adding more parentNode tree climbing becomes unmanagable. To solve this you can use the <code>Element.closest</code> method. This is available in modern browsers. Composi includes a polyfill for older browsers, so you can use it now to handle these types of situations where you need event delegation. Here's the previous example redone with <code>closest</code>. No matter how complex the list item's children become, we'll always be able to capture the event on the list item itself:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Example of simple event target:
+class List extends Component {
+  render(data) {
+    return (
+      &lt;ul>
+        {
+          data.map(item => (
+            &lt;li onclick={(e) => this.announceItem(e)}>
+              &lt;h3>
+                &lt;em>{item.name}&lt;/em>
+              &lt;/h3>
+              &lt;h4>
+                &lt;span>{item.value}&lt;/span>
+              &lt;/h4>
+            &lt;s/li>)
+          )
+        }
+      &lt;/ul>
+    )
+  }
+  announceItem(e) {
+    // Use "closest" to test for list item:
+    const target = e.target.nodeName === 'LI' ? e.target : e.target.closest('li')
+    // Alert the complete list item content:
+    alert(target.textContent)
+  }
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Do Not Mix!</h2>
+          <p>It's not a good idea to mix inline events and <code>handleEvent</code> in the same component. If the inline event has the same target as the target used by <code>handleEvent</code> this can lead to weird situations where neither or both may execute. This can lead to situations that are very hard to troubleshoot. So, in a component choose the way you want to handle events and stick to it.</p>
+
+
+          <p>&nbsp;</p>
           
       </div>
 
