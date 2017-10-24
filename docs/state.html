@@ -40,19 +40,209 @@
     <section>
       <div class='docs'>
           <h1>State</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="docs__intro">Components can be stateless or stateful. There are advantages to both. Chose the right one depending on use case. For example, if a component will only display the result of some other action, make it stateless and pass it the data it needs. If the data of a component can change at unpredictable times, make it stateful. That way, when its data changes, it will update automatically. If you have a fixed dataset and the component will never need to be rendered again during the session, make it stateless and pass it the data.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <p>When you give a component state, Composi assigns the state getters and setters. Setting state causes the component to render a new virtual dom, diff it with the old virtual dom, and if there are differences, update the actual DOM. As such, the assignment of data to a component's state will trigger an update. Setting state directly is ideal for primitive data types, such as string, numbers:</p>
+
+          <pre>
+            <code class="language-javascript">
+const helloWorld = new Component({
+  container: '#hello',
+  render: (message) => (
+    &lt;h1>Hello, {message}!&lt;/h1>
+  )
+})
+// Inject component in DOM:
+helloWorld.state = 'World'</code>
+          </pre>
+
+          <p>Or we can do add state when extending the Component class:</p>
+
+          <pre>
+            <code class="language-javascript">
+class HelloWorld extends Component {
+  constructor(props) {
+    super(props)
+    this.container = '#hello'
+    this.state = 'World'
+  }
+  render: (message) => (
+    &lt;h1>Hello, {message}!&lt;/h1>
+  )
+}
+// Instantiate the component, rendering it to DOM:
+const helloWorld = new HelloWorld()</code>
+          </pre>
+          <p>&nbsp;</p>
+
+          <h2>How State Gets Passed</h2>
+          <p>When you give a component state, at render time the value of state gets passed to the <code>render</code> function as its data. No need to directly reference state inside the <code>render</code> function. So, in the above example, the value of the <code>render</code> parameter <code>message</code> will be the value of the component's state property.</p>
+
+          <h2>Strings and Numbers as State</h2>
+          <p>In our previous example we used as string as the component's state. You could also use a number. In that case you could perform Math operations with the value of the state and then reassign it back to the state to update the component.</p>
           
+          <h2>Booleans</h2>
+          <p>By default boolean values are not output. This is so they can be used for conditional checks. However, if you want to output a boolean value, just convert it to a string. There are two ways to do this. For <code>true</code> or <code>false</code> you can add <code>toString()</code> to convert them to strings. The values <code>null</code> and <code>undefined</code> do not have a <code>toString()</code> function, but you can use string concatenation to convert them, or use <code>String(value)</code>. Below are examples of these approaches. Note, we are just showing the render function, not the complete component code:</p>
+
+          <pre>
+            <code class="language-javascript">
+// For true or false:
+render: (value) => &lt;p>The boolean value is: {value.toString()}&lt;/p>
+
+// The above approach would throw an error if the boolean was undefined or null.
+// For them, do the following:
+render: (value) => &lt;p>The boolean value is: {value + ''}&lt;/p>
+
+// Make boolean uppercase:
+render: (value) => &lt;p>The boolean value is: {(String(value).toUpperCase()}&lt;/p></code>
+          </pre>
+
+              <p> </p>
+              <h2>setState</h2>
+              <p>Most components will have state of complex data types: objects or arrays. To update the state of complex types you have two choices: use the <code>setState</code> method or get the state, perform your operations and set the state with the final result. We'll look at <code>setState</code> first.</p>
+
+              <h2>Setting State for Primitive Types</h2>
+              <p>When the type is primitive, a string, number or boolean, you can set the state directly, or use the <code>setState</code> method:</p>
+              <pre>
+                <code class="language-javascript">
+helloWorld.state = 'everybody'
+
+// or:
+helloWorld.setState('everybody')</code>
+              </pre>
+
+              <p> </p>
+              <h2>Setting State for Complex Types - setState</h2>
+              <p>The purpose of <code>setState</code> is to enable making a patch to state that is an object or array. Because state is controlled by its getters and setters, you cannot directly manipulate the data it contains. With component state you can either get it, or set it. Period.</p>
+              <p>First lets look at a component that prints out a person object:</p>
+              <pre>
+                <code class="language-javascript">
+const personComponent = new Component({
+  root: '#personDiv',
+  state: {
+    firstName: 'Joe',
+    lastName: 'Bodoni',
+    job: 'Mechanic',
+    age: 23
+  },
+  render: (person) => (
+    &lt;div>
+      &lt;p>Name: {}&lt;/p>
+      &lt;p>Job{}&lt;/p>
+    &lt;/div>
+  )
+})</code>
+              </pre>
+              <p>Now imagine you want to update the the person's job. You might think you could access the job directingly on the state object, but you can't. That would be an assignment, and because state has a setter, you can only assign to the state itself:</p>
+              <pre>
+                <code class="language-javascript">
+// This assignment will not work:
+personComponent.state.job = 'Web Developer'</code>
+              </pre>
+              <p>Instead of trying to assign a property of the state object, we need to use the <code>setState</code> method. To update a state object property, we pass in an object with that property and the new value. Behind the scenes, <code>setState</code> will mixin the new object with the state object. Then it will create a new virtual dom and patch the actual DOM to reflect those changes:</p>
+              <pre>
+                <code class="language-javascript">
+// Update the job property of the component's state:
+personComponent.setState({job: 'Web Developer'})</code>
+              </pre>
+
+              <p> </p>
+              <h2>Updating Array State</h2>
+              <p>When a component has an array as state, you need to provide a second argument for <code>setState</code>: the index of the array where you want to make the index. For instance, suppose we have a component <code>fruitList</code> that prints out a list of fruits. We notice that the third item in the list is mispelled and want to update it. We can do that as follows:</p>
+              <pre>
+                <code class="language-javascript">
+fruitList.state = ['Apples', 'Oranges', 'Pinpalpes', 'Bananas']
+
+// Use second argument for index in the array you want to update:
+fruitList.setState('Pinapples', 2)</code>
+</pre>
+                <p> </p>
+                <h2>Updating state for Array of Objects</h2>
+                <p>Suppose a component's state is an array of objects:</p>
+                <pre>
+                  <code class="language-javascript">
+const people = [
+  {
+    firstName: 'Joe',
+    lastName: 'Bodoni',
+    job: 'Mechanic'
+  },
+  {
+    firstName: 'Ellen',
+    lastName: 'Vanderbilt',
+    job: 'Lab Technician'
+  },
+  {
+    firstName: 'Sam',
+    lastName: 'Anderson',
+    job: 'Web Developer'
+  }
+]</code>
+</pre>
+            <p>This array is used as the state for a component of users. We want to update Joe's job to Rock Star. You might try to do this:</p>
+            <pre>
+              <code class="language-javascript">
+// Update job for Joe Bodoni:
+userList.setState({job: 'Rock Star'}, 0)</code>
+            </pre>
+            <p>Doing the above will actually replace whatever is currently at index 0 with the new object with just the job property. That's because when you use <code>setState</code> on an array with an index value, Composi uses that information to splice the array. As such it is not possible to update an array of objects with <code>setState</code>. To do so you will need to get the state, perform whatever transform you need and then re-assign the state with the new array:</p>
+            <pre>
+              <code class="language-javascript">
+// Proper way to update an object in an array.
+// Get the Joe Bodoni user from state:
+const state = userList.state[0]
+
+// Set job to new value:
+state.job = 'Rock Star'
+
+// Update component's state:
+userList.state = state</code>
+</pre>
+              <p> </p>
+              <h2>Complex State Operations</h2>
+              <p>As we saw in our last example of arrays, sometimes you will need to get the state, operate on it separately and then set the component's state to that. For example, if you need to use map, filter, sort or reverse on an array, you'll want to get the complete state and perform these operations. Aftwards you can just set the state:</p>
+              <pre>
+                <code class="language-javascript">
+// Get the component's state:
+const state = fruitsList.state
+
+// Reverse the array:
+state.reverse()
+
+// Set the component's state with the new state:
+fruitsList.state = state</code>
+              </pre>
+              <p> </p>
+              <h2>setState with a Callback</h2>
+              <p>One option for handling the need for complex operations when setting state is to pass a callback to the <code>setState</code> method. When you do so, the first argument of the callback will be the component's state. In the example below, notice how we get the state and manipulate it in the <code>handleClick</code> method. After doing what you need to with state, remember to return it. Otherwise the component's state will not get updated.</p>
+              <p>Notice how we use a callback in the <code>setState</code> method inside the <code>handleClick method to test what the current value of state is:</code></p>
+
+              <pre>
+                <code class="language-javascript">
+class Button extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { counter: 1 }
+  }
+  render() {
+    return <button onclick={() => this.handleClick()}>{this.state.counter}</button>
+  }
+  handleClick() {
+    // Use callback in setState to manilate state before retuning it:
+    this.setState(state => {
+      if (state.counter < 10) {
+        return {counter: state.counter + 1}
+      }
+    })
+  }
+}
+
+// Create instance of button:
+// Clicking on the new button will encrease its value upto 10.
+const button = new Button()</code>
+              </pre>
+              <p>Be aware that whatever the callback returns will be set as the component's new state. Therefore you will need to make whatever changes to the component's whole state before returning it.</p>
+          <p>&nbsp;</p>
       </div>
 
       <aside>

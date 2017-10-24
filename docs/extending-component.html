@@ -40,18 +40,138 @@
     <section>
       <div class='docs'>
           <h1>Extending Component</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="docs__intro">Although creating a simple instance of the Component class is a quick and convenient way to get a component functioning, it does have its limitations. In most cases you will want to extend the Component class. In fact, it's best to always start by extending. That way, if you need to add more functionality as your project grows, it will be easy. A component instance is fast, but it will often happen that later you realize you component needs more features. Then you have to go through the hassle of converting an instance into an extension. </p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <h2>Advantages of Extending</h2>
+          <p>For one, when you extend the Component class, your component has the proper access of all your components properties and methods through the <code>this</code> keyword. You can also add the methods for events directly to your component and access them everywhere through the <code>this</code> keyword. Extending Component gives you encapsulation of all the functionality your component might need.</p>
+
+          <p>If you want a custom component that you can reuse multiple times in the same app with different data, then you would need to extend. Below we are going to create a list component to create multiple lists with different datasets:</p>
+
+          <pre>
+            <code class="language-javascript">
+const fruits = [
+{
+  name: 'Apple',
+  quantity: 2
+},
+{
+  name: 'Orange',
+  quantity: 3
+},
+{
+  name: 'Banana',
+  quantity: 1
+}
+]
+
+const pets = [
+{
+  name: 'cat',
+  quantity: 1
+},
+{
+  name: 'dog',
+  quantity: 1
+},
+{
+  name: 'turtle',
+  quantity: 0
+}
+]
+
+const tools = [
+{
+  name: 'hammer',
+  quantity: 1
+},
+{
+  name: 'nails',
+  quantity: 100
+},
+{
+  name: 'screw driver',
+  quantity: 1
+}
+]
+
+// Extend Component:
+class List extends Component {
+  constructor(opts) {
+    super(opts)
+    // Render all instances in the body:
+    this.container = 'body'
+  }
+
+  render(data) {
+    return (
+      &lt;ul>
+        {
+          data.map(item => (
+          &lt;li>
+            &lt;div>Name: {item.name}&lt;/div>
+            &lt;div>Quanity: {item.quantity}&lt;/div>
+          &lt;/li>))
+        }
+      &lt;/ul>
+    )
+  }
+}
+
+// Create three instances of List.
+// Then assign them state to render them.
+const fruitsList = new List()
+fruitsList.state = fruits
+
+const petsList = new List()
+petsList.state = pets
+
+const toolsList = new List()
+toolsList.state = tools</code>
+          </pre>
+
+          <p>In the above example, notice that we defined the render function as a method of the class. We also designated the component's <code>container</code> directly in the class constructor. Because of this, all instances of it will use the same container. If you wanted to render each list in a different container, then you would not bother assign the container in the constructor. Instead you'd pass it in during initialization:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Extend Component:
+class List extends Component {
+  // No need for a constructor since we are not designating a container here.
+  render(data) {
+    return (
+      &lt;ul>
+        {
+          data.map(item => (
+          &lt;li>
+            &lt;div>Name: {item.name}&lt;/div>
+            &lt;div>Quanity: {item.quantity}&lt;/div>
+          &lt;/li>))
+        }
+      &lt;/ul>
+    )
+  }
+}
+
+// Create three instances of List while passing in a selector for their containers.
+// Then assign them state to render them.
+const fruitsList = new List({
+  container: '#fruits-list'
+})
+fruitsList.state = fruits
+
+const petsList = new List({
+  container: '#pets-list'
+})
+petsList.state = pets
+
+const toolsList = new List({
+  container: '#tools-list'
+})
+toolsList.state = tools</code>
+          </pre>
+
+
+          
+          
           
       </div>
 

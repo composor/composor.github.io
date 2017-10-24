@@ -354,6 +354,9 @@ dt, dd, blockquote, address, table {
 /*==============*/
 /* Local Styles */
 /*==============*/
+body {
+  background-color: #333;
+}
 h2 {
   font-size: 2.5em;
 }
@@ -382,6 +385,7 @@ nav {
 }
 article {
   padding: 2rem;
+  background-color: #fff;
 }
 article p {
   margin: 0 0 2rem;
