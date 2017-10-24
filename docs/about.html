@@ -40,15 +40,15 @@
     <section>
       <div class='docs'>
           <h1>About</h1>
-          <p class="docs__intro">Composi is the gradual evolution of front-end development since 2007. Its genesis was in the library <a target='__blank' href="http://chocolatechip-ui.github.io">ChocolateChip-UI</a>. As an experiment, we took the component API from ChocolateChip-UI and combined it with a small and fast virtual dom. The result was Composi. As a result, when you give a component state or simply render it stateless with some data, the component creates its own virtual dom.</p>
+          <p class="docs__intro">Composi is the gradual evolution of front-end development since 2007. Its genesis was in the library <a target='__blank' href="http://chocolatechip-ui.github.io">ChocolateChip-UI</a>. As an experiment, we took the component API from ChocolateChip-UI and combined it with a small and fast virtual dom. The result was Composi. Because of the virtual dom, when you change the state or data that a component uses, it updates automatically.</p>
           <h2>Composi is Small</h2>
-          <p>Although only 3KB, Composi includes everything you need to create complex components. The Composi virtual dom code is less that 1KB. It is intelligent to only update the parts of the DOM that do not match the current state of a component. If you try to render a component with the same data again, no update will occur.</p>
+          <p>Although only <code>3KB</code>, Composi includes everything you need to create complex components. The Composi virtual dom code is less that <code>1KB</code>. It will only update the parts of the DOM that do not match the current state of a component. If you try to render a component with the same data again, no update will occur.</p>
 
           <h2>Composi Works Well with Others</h2>
           <p>Composi was designed to be used with other libraries. You can use Lodash, Ramda, Boostrap, Material Design Lite, Redux, Mobx and other third party libraries with Composi. You can also use jQuery plugins in the same document. You cannot use jQuery on a Composi component. You can use any pubsub library to implement communication between jQuery plugins and Composi components.</p>
 
           <h2>Similar to React</h2>
-          <p>Composi shares some features and many development patterns with React, Preact and Inferno. All have a Component class and a virtual dom. However, Composi is not a React clone. Internally it works very differently. Most of the similarities arrise from the use of JSX. Composi's Component class shares some naming conventions with React.Component. Both have a <code>render</code> function, which works basically the same. It takes some data and returns some markup that gets converted into a virtual node. With React and friends, you pass a component class definition to the <code>render</code> function along with an elemement in which you want to insert it. This is completely unnecessary with Composi components. Instead you define a container property directly in the component definition.</p>
+          <p>Composi shares some features and many development patterns with React, Preact and Inferno. All have a Component class and a virtual dom. However, Composi is not a React clone. Internally it works quite differently. Most of the similarities arrise from the use of JSX. Composi's Component class shares some naming conventions with React.Component. Both have a <code>render</code> function, which works basically the same. It takes some data and returns some markup that gets converted into a virtual node. With React and friends, you pass a component class definition to the <code>render</code> function along with an elemement in which you want to insert it. This is completely unnecessary with Composi components. Instead you define a container property directly in the component definition.</p>
           <h2>Lifecycle Methods</h2>
           <p>All of these have lifecycle methods. The React family generally has the following ones:</p>
           <ul>
@@ -144,7 +144,11 @@ const helloWorld = new Component({
 })</code>
           </pre>
           <p>The main different here is that Composi requires the use of the <code>new</code> keyword.</p>
+
+          <h2>Similar But Different</h2>
+          <p>So, in short Composi and React are similar. But in the details they are different. If you've used React, Preact or Inferno, you should be comfortable using Composi in an hour. If you're coming from Angular or Vue, it might take two hours.</p>
           
+          <p>&nbsp;</p>
       </div>
 
       <aside>

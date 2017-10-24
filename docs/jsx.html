@@ -40,18 +40,372 @@
     <section>
       <div class='docs'>
           <h1>JSX</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="docs__intro">JSX provides a concise and convenient way to define markup to be created. Often people erroneously call JSX, HTML. It is not HTML. It is in fact a type of XML. When you build your project, Babel takes the JSX code and converts it into hyperscript functions. In the case of a Composi project, it is set up to tell Babel to use Composi's hyperscript function for that transformation in the project's <a href='https://babeljs.io/docs/usage/babelrc/' target='__blank'>.babelrc</a> file.</p>
+          <h2>XML</h2>
+          <p>Since JSX is a type of XML, tags need to follow XML rules. This means that all tags must be closed. In HTML 5 you can have self-closing tags, such as img, br, hr, input, etc.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <pre>
+            <code class="language-html">
+&lt;img src='kitten.png'>
+&lt;br>
+&lt;hr>
+&lt;input type='text' value='Cute Kitten'></code>
+</pre>
+        <p>To use the above tags in JSX, they would need to be closed with a forward slash:</p>
+        <pre>
+          <code class="language-html">
+&lt;img src='kitten.png' />
+&lt;br />
+&lt;hr />
+&lt;input type='text' value='Cute Kitten' /></code>
+</pre>
+        <p>Although some "purists" complain that JSX is mixing HTML into JavaScript, this is not completely true. JSX is just a DSL that describes the JavaScript functions that will be created to produce the elements. It is in fact very similar to a now abandoned effort to enable using XML in JavaScript called <a href='https://developer.mozilla.org/en-US/docs/Archive/Web/E4X' target='__blank'>E4X</a>.</p>
+
+        <p>If you read the E4X documentation, you will recognize the similarities to JSX. E4X was an attempt by Mozilla to enable the creation of DOM nodes without using string concatenation. Unfortunately E4X never took off. The introduction of template literals and tagged template literals solved some of the problems E4X was trying to address. However, the shortcoming of template literals is that the the markup is defined as strings. This means IDEs cannot understand the markup in a template literal. JSX does not have this limitation. As such text editors and IDEs provide great tooling to make using JSX productive.</p>
+
+        <h2>JSX Attributes</h2>
+        <p>Unlike using JSX with React, Composi does not require that you use <code>className</code> instead of <code>class</code>. The following JSX would be invalid for React, but is the stardard for Composi:</p>
+
+        <pre>
+          <code class="language-javascript">
+// Use class attribute as normal:
+function header(data) {
+  return (
+    &lt;header>
+      &lt;h1 class='title'>{data.title}</h1>
+      &lt;h2 class='subtitle'>{data.subtitle}</h2>
+    &lt;/header>
+  )
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Partial Attributes</h2>
+          <p>JSX does not support defining partial attribute values. The following code will not work:</p>
+          <pre>
+            <code class="language-javascript">
+function userList(users) {
+  // The partial class defined below will not work:
+  return (
+    &lt;ul>
+      {
+        users.map(user => (
+          &lt;li class='currently-{user.employed ? "employed" : "unemployed"}'>{user.name}&lt;/li>)
+        )
+      }
+    &lt;/ul>
+  )
+}</code>
+          </pre>
+          <p>The above JSX for the class value will generate an error. Instead you need to make the entire attribute value an evaluation. To do this, get replace the attribute value quotes with curly braces. Then use a template literal to output the results:</p>
+          <pre>
+            <code class="language-javascript">
+function userList(users) {
+  // Calculate the entire class value inside curly braces:
+  return (
+    &lt;ul>
+      {
+        users.map(user => (
+          &lt;li class={`currently-${user.employed ? "employed" : "unemployed"}`}>{user.name}&lt;/li>)
+        )
+      }
+    &lt;/ul>
+  )
+}</code>
+        </pre>
+        <p> </p>
+        <h2>Quotes Around Attribue Value</h2>
+        <p>When evaluating attribute values, never use quotes around the evaluation as this will prevent the evaluation from happening. Just use curly braces.</p>
+        <pre>
+          <code class="language-javascript">
+// This will not work because the calculation is enclosed in quotes:
+&lt;li class="{`currently-${user.employed ? "employed" : "unemployed"}`}>{user.name}"&lt;/li>
+
+// This will work. No quotes, just curly braces:
+&lt;li class={`currently-${user.employed ? "employed" : "unemployed"}`}>{user.name}&lt;/li></code>
+        </pre>
+        <p> </p>
+        <h2>Custom Tags</h2>
+        <p>Although JSX makes it easy to create standard HTML elements, it also allows you to create custom tags. These are not the same as [custom element](). There may be a few, higher level similarities between these two. But fundamentaly they are for different purposes.</p>
+        <p>A custom tag is really just a function that returns some JSX. When you want to use it in other JSX, you do so as a tag. Functions for custom tags must start with an uppercase letter, with no exception. When your JSX consists of many different parts, it makes sense to break it down into modular pieces.</p>
+        <p>Suppose we have a component with a render function like this:</p>
+        <pre>
+          <code class="language-javascript">
+const fruitsList = new Component({
+  container: '#fruit-list',
+  state: fruits,
+  render: (fruits) => (
+    &lt;ul class='list'>
+      {
+        fruits.map(fruit =>
+          &lt;li>
+            &lt;div>
+              &lt;h3>{fruit.title}&lt;/h3>
+              &lt;h4>{fruit.subtitle}&lt;/h4>
+            &lt;/div>
+            &lt;aside>
+              &lt;span class='disclosure'>&lt;/span>
+            &lt;/aside>
+          &lt;/li> 
+        )
+      }
+    &lt;/ul>
+  )
+})</code>
+        </pre>
+            
+        <p>Looking at the above markup, we could break it up a bit to make it easier to read and reuse. To do this we'll define two functions to return markup. As mentioned earlier functions for custom tags must start with an uppercase letter. Lets break this up into two subcomponents:</p>
+
+        <pre>
+          <code class="language-javascript">
+// Define custom tag for fruit:
+function FruitItem({fruit}) {
+  return (
+    &lt;div>
+      &lt;h3>{fruit.title}&lt;/h3>
+      &lt;h4>{fruit.subtitle}&lt;/h4>
+    &lt;/div>
+  )
+}
+
+// Define custom tag for disclosure tag:
+function Disclosure() {
+  return (
+    &lt;aside>
+      &lt;span class='disclosure'>&lt;/span>
+    &lt;/aside>
+  )
+}
+          </code>
+        </pre>
+        <p>With our custom tag functions define, we can now use them in our component:</p>
+
+        <pre>
+          <code class="language-javascript">
+// Define custom tag for fruit:
+function FruitItem({fruit}) {
+  return (
+    &lt;div>
+      &lt;h3>{fruit.title}&lt;/h3>
+      &lt;h4>{fruit.subtitle}&lt;/h4>
+    &lt;/div>
+  )
+}
+
+// Define custom tag for disclosure tag:
+function Disclosure() {
+  return (
+    &lt;aside>
+      &lt;span class='disclosure'>&lt;/span>
+    &lt;/aside>
+  )
+}
+
+// Use the new custom tags:
+const fruitsList = new Component({
+  container: '#fruit-list',
+  state: fruits,
+  render: (fruits) => (
+    &lt;ul class='list'>
+      {
+        fruits.map(fruit =>
+          &lt;li>
+            &lt;FruitItem />
+            &lt;Disclosure />
+          &lt;/li> 
+        )
+      }
+    &lt;/ul>
+  )
+})</code>
+        </pre>
+        <p>The above example now looks cleaner. However, in the case of <code>&lt;FruitItem /></code>, this won't render properly because we have provided a way to pass the data to the function it represens. To do that we need to use JSX props. This is done using curly braces.</p>
+
+        <h2>Curly Braces and Spread Operator</h2>
+
+        <p>In order to pass data to a custom tag, we need to use curly braces and the spread operator. In the case of our Fruits tag, we would do this:</p>
+        
+        <pre>
+          <code class="language-javascript">
+&lt;FruitItem {...{fruits}} /></code>
+        </pre>
+
+        <p>And here's the whole example. We've taken it a step further and created a custom tag for the list item as well. Notice how minimal the list is inside the component:</p>
+        <pre>
+          <code class="language-javascript">
+// Define custom tag for fruit:
+function FruitItem({fruit}) {
+  return (
+    &lt;div>
+      &lt;h3>{fruit.title}&lt;/h3>
+      &lt;h4>{fruit.subtitle}&lt;/h4>
+    &lt;/div>
+  )
+}
+
+// Define custom tag for disclosure tag:
+function Disclosure() {
+  return (
+    &lt;aside>
+      &lt;span class='disclosure'>&lt;/span>
+    &lt;/aside>
+  )
+}
+
+// Define custom tag for list item:
+function ListItem({fruit}) {
+  return (
+    &lt;li>
+      &lt;FruitItem {...{fruits}} />
+      &lt;Disclosure />
+    &lt;/li>
+  )
+}
+
+// Use the new custom tags:
+const fruitsList = new Component({
+  container: '#fruit-list',
+  state: fruits,
+  render: (fruits) => (
+    &lt;ul class='list'>
+      {
+        fruits.map(fruit =>
+          &lt;ListItem {...{fruit}} />
+        )
+      }
+    &lt;/ul>
+  )
+})</code>
+        </pre>
+        <p>As you can see from the above example, custom tags</p>
+
+        <h2>Custom Tags Need to be Closed</h2>
+        <p>Remember that custom tags need to be closed with a forward slash at the end: <code>&lt;ListItem {...{fruit}} /></code></p>
+
+        <p>Custom tags allow you to break complex components down into smaller parts. This results in cleaner code that is easier to read and maintain. You may wish to create custom tags to use else where in your project, or even in other projects.</p>
+
+        <h2>One Tag to Rule Them All</h2>
+        <p>Because of the way JSX works, there must always be one enclosing tag for all the other tags you wish to create. You cannot return a group of siblings. They need to be contained in another tag. For example, suppose you wanted to create some list items to insert in a list:</p>
+
+        <pre>
+          <code class="language-javascript">
+// This will not compile:
+const badJSX = new Component({
+  container: '#list',
+  render: () => (
+    &lt;li>One&lt;/li>
+    &lt;li>Two&lt;/li>
+    &lt;li>Three&lt;/li>
+  )
+})</code>
+        </pre>
+
+        <p>To fix the above code, you need to create the entire list like this and insert it in some higher element as the container</p>
+
+        <pre>
+          <code class="language-javascript">
+// Enclose list items in ul tag:
+const goodJSX = new Component({
+  root: '#listDiv',
+  render: () => (
+    &lt;ul>
+      &lt;li>One&lt;/li>
+      &lt;li>Two&lt;/li>
+      &lt;li>Three&lt;/li>
+    &lt;/ul>
+  )
+})</code>
+        </pre>
+
+        <p> </p>
+        <h2>Components with Same Container</h2>
+        <p>Components do not have to have unique container elements. Multiple components can be rendered in the same container element. Their order in the DOM will be dependent on their order in execution.</p>
+
+        <h2>Using SVG Sprite Icons</h2>
+        <p>Often developers use SVG sprite sheets for icons in their apps. Here are some articles about how this works:</p>
+        <ul>
+          <li><a href='https://css-tricks.com/svg-sprites-use-better-icon-fonts/' target='__blank'>Icon System with SVG Sprites</a></li>
+          <li><a href='https://24ways.org/2014/an-overview-of-svg-sprite-creation-techniques/' target='__blank'>An Overview of SVG Sprite Creation Techniques</a></li>
+          <li><a href='https://webdesign.tutsplus.com/tutorials/how-to-implement-cross-browser-svg-sprites--cms-22427' target='__blank'>How to Implement Cross-Browser SVG Sprites</a></li>
+        </ul>
+
+        <h2>SVG 1 and SVG 2</h2>
+        <p>SVG 1.0 uses the <code>xlink:ref</code> attribute to link to an icon id in an SVG sprite sheet image. Unfortunately, JSX does not support namespaced properties on SVG. To get arround this limitation, Composi lets you use a custom property: <code>xlink-href</code> in your SVG icons. At render time this gets converted to the correct form as <code>xlink:href</code>. Although <code>xlink:href</code> is currently listed as deprecated for Firefox, Chrome and Edge, it is widely supported on older browsers. In fact, it is currenlty the only way to implement SVG icons on macOS and iOS. If you are not targetting macOS and iOS and do not care about older versions of IE, Firefox and Chrome, you can use the new syntax for SVG 2.0. This is a simple </code>href</code> property.</p>
+
+        <p>Below is an SVG Twitter image that we will use as the basis for a series of SVG icons of different colors. Notice that we have a path with the id of <code>shape-twitter</code>. We'll use that id to pull that path into our icon.</p>
+
+        <pre>
+          <code class="language-javascript">
+&lt;svg class="hide" style="display:none;">
+  &lt;g id="shape-codepen">
+    &lt;path id="shape-twitter" d="M100.001,17.942c-3.681,1.688-7.633,2.826-11.783,3.339
+      c4.236-2.624,7.49-6.779,9.021-11.73c-3.965,2.432-8.354,4.193-13.026,5.146C80.47,10.575,75.138,8,69.234,8 c-11.33,0-20.518,9.494-20.518,21.205c0,1.662,0.183,3.281,0.533, 4.833c-17.052-0.884-32.168-9.326-42.288-22.155
+      c-1.767,3.133-2.778,6.773-2.778,10.659c0,7.357,3.622,13.849,9.127, 17.65c-3.363-0.109-6.525-1.064-9.293-2.651
+      c-0.002,0.089-0.002,0.178-0.002,0.268c0,10.272,7.072,18.845,16.458,20.793c-1.721,0.484-3.534,0.744-5.405,0.744
+      c-1.322,0-2.606-0.134-3.859-0.379c2.609,8.424,10.187,14.555,19.166,14.726c-7.021,5.688-15.867,9.077-25.48,9.077
+      c-1.656,0-3.289-0.102-4.895-0.297C9.08,88.491,19.865,92,31.449,92c37.737,0,58.374-32.312,58.374-60.336
+      c0-0.92-0.02-1.834-0.059-2.743C93.771,25.929,97.251,22.195,100.001,17.942L100.001,17.942z">&lt;/path>  
+    &lt;/g>
+&lt;/svg></code>
+        </pre>
+        <p>This image needs to be loaded into the document so that it is exposed globally. Since we put <code>style="display:none:"</code> on the SVG tag, we don't have to worry about it showing up anywhere. To use this, we can do the following:</p>
+
+        <pre>
+          <code class="language-javascript">
+const icons = new Component({
+  container: 'section',
+  render: (data) => {
+    return (
+      &lt;div>
+        &lt;svg viewBox="0 0 100 100" class="icon--shape-twitter-1">
+          &lt;use xlink-href="#shape-twitter">&lt;/use>
+        &lt;/svg>
+
+        &lt;svg viewBox="0 0 100 100" class="icon--shape-twitter-2">
+          &lt;use xlink-href="#shape-twitter">&lt;/use>
+        &lt;/svg>
+
+        &lt;svg viewBox="0 0 100 100" class="icon--shape-twitter-3">
+          &lt;use xlink-href="#shape-twitter">&lt;/use>
+        &lt;/svg>
+
+        &lt;svg viewBox="0 0 100 100" class="icon--shape-twitter-4">
+          &lt;use xlink-href="#shape-twitter">&lt;/use>
+        &lt;/svg>
+      &lt;/div>
+    )
+  }
+})
+// Force the component to render:
+icons.update()</code>
+        </pre>
+        <p>Notice that we gave each SVG tag a unique class. We can use these to give each icon a different color:</p>
+
+        <pre>
+          <code class="language-css">
+svg * {
+  transition: all .5s ease-out;
+}
+.shape-twitter-1 {
+  fill: #000
+}
+.shape-twitter-2 {
+  fill: #55ACEE
+}
+.shape-twitter-3 {
+  fill: #ff0000;
+}
+.shape-twitter-4 {
+  fill: #00aa00;
+}
+.shape-twitter-1:hover, 
+.shape-twitter-2:hover, 
+.shape-twitter-3:hover, 
+.shape-twitter-4:hover {
+  fill: #0000ff;
+}</code>
+        </pre>
+
+        <p>&nbsp;</p>
           
       </div>
 
