@@ -40,18 +40,136 @@
     <section>
       <div class='docs'>
           <h1>Lifecycle Methods</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="docs__intro">Composi has the following four lifecycle methods:</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <ol>
+            <li>beforeCreateComponent</li>
+            <li>componentWasCreated</li>
+            <li>componentWillUpdate</li>
+            <li>componentDidUpdate</li>
+            <li>componentWillUnmount</li>
+          </ol>
+
+          <p>Lifecycle methods let you implement maintenance and clean up code based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
+
+          <p><code>beforeCreateComponent</code> is executed before the component is created and inserted into the DOM.</p>
+          <p><code>componentWasCreated</code> is executed after the component is inserted into the DOM.</p>
+          <p><code>componentWillUpdate</code> is executed right before the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
+          <p><code>componentDidUpdate</code> is executed immediately after the component was updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
+          <p><code>componentWillUnmount</code> is executed before a component is unmounted with its <code>unmount</code> method.</p>
+
+          <h2>Lifecycle Methods are Asynchronous</h2>
+          <p>When using lifecycle methods, be aware that they are asynchronous. For example, with `beforeCreateComponent` your component will probably be created and inserted into the DOM before your method can finish. Similarly, when using `componentWillUnmount`, the component will probably be unmounted and destroyed before your code in this method completes. If you want to handle these two in a synchronous manner for tighter control, you have two choices. Use a method that returns a promise, or use the <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/async_function' target='__blank'>ES7 async functions</a>. If your browser target includes IE9, you will need to polyfill promises for either of these to work.</p>
+
+          <h2>Order of Execution</h2>
+          <p>The first time a component is rendered, <code>beforeCreateComponent</code> and <code>componentWasCreated</code> will be executed. <code>componentWillUpdate</code> and <code>componentWillUpdate</code> will not be executed at this time. After the component was created, each render will fire <code>componentWillUpdate</code> and <code>componentWillUpdate</code>. So, if you wanted to do something when the component is initially created and after it updates, you would need to do this:</p>
+
+          <pre>
+            <code class="language-javascript">
+class List extends Component {
+  //... setup here.
+  componentWasCreated() {
+    // Do stuff after component was created.
+  }
+  componentDidUpdate() {
+    // Do stuff every time component is updated.
+  }
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Lifecycle Methods with Component Instance</h2>
+          <p>In the following example we use <code>componentWasCreated</code> to start a timer and <code>componentWillUnmount</code> to terminate the timer.</p>
+          <p>In our first example of lifecycle methods, we'll use a Component instance. This poses several problems for the lifecycle methods. They do not have access to the component itself. This forces us to use global variables to pass things around.</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+function tick() {
+  clock.setState({
+    time: new Date()
+  });
+}
+let timerID
+const clock = new Component({
+  root: '#clock',
+  state: {time: new Date()},
+  render: (date) => {
+    return (
+    &lt;div>
+      &lt;h2>The Current Time&lt;/h2>
+      &lt;p>It is {date.time.toLocaleTimeString()}.&lt;/p>
+    &lt;/div>
+  )},
+
+  componentWasCreated() {
+    timerID = setInterval(
+      () => {
+        tick()
+      },
+      1000
+    );
+  },
+
+  componentWillUnmount() {
+    clearInterval(timerID);
+  }
+})
+
+clock.update()</code>
+          </pre>
+          <p> </p>
+          <h2>Lifecycle Methods with Extended Component</h2>
+          <p>When we create a new component by extending the Component class, we can access component properties directly through the `this` keyword. This is so because we define the lifecycle methods as class methods. Notice how we do this in the example below.</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+class Clock extends Component {
+  constructor(props) {
+    super(props)
+    this.root = '#clock'
+    this.state = {date: new Date()};
+  }
+
+  render() {
+    return (
+      &lt;div>
+        &lt;h2>Current Time&lt;/h2>
+        &lt;h2>It is {this.getLocalTime()}.&lt;/h2>
+      &lt;/div>
+    )
+  }
+
+  getLocalTime() {
+    return this.state.date.toLocaleTimeString()
+  }
+
+  componentWasCreated() {
+    // Store timer referrence so we can clear it later:
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  // If component is unmounted, end interval loop:
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({
+      time: new Date()
+    });
+  }
+}
+
+// Instantiated clock will create and start it:
+const clock = new Clock()</code>
+          </pre>
+          <p>&nbsp;</p>
           
       </div>
 
