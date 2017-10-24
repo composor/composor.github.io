@@ -40,19 +40,409 @@
     <section>
       <div class='docs'>
           <h1>Styles</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="docs__intro">You can define styles for a component. There are three ways to do this:</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <ol>
+            <li>You can style your component using <a href='http://getbem.com/introduction/' target='__blank'>BEM conventions</a> and adding the component's styles to your project's stylesheet.</li>
+            <li>You can provide your component with a style tag with styles for it inside the component's markup.</li>
+            <li>You can use the NPM module <a href='https://www.npmjs.com/package/stylor' target='__blank'>stylor</a> to create a virtual stylesheet scoped to your component.</li>
+          </ol>
           
+          <h2>BEM</h2>
+          <p>BEM stands for Base-Element-Modifier. It's a system for naming the elements of a component in such a manner that the classes uniquely identify every part that needs to be styles. This results in CSS that is easier to reason about and maintain.</p>
+
+          <pre>
+            <code class="language-javascript">
+class List extends extends Component {
+  render(fruits) {
+    return (
+      &lt;ul class='list--fruits'>
+        {
+          fruits.map(fruit => 
+          &lt;li class='list--fruits__item'>
+            &lt;p class='list--fruits__item__name'>{fruit.name}&lt;/p>
+            &lt;p class='list--fruits__item__price'>${fruit.price}&lt;/p>
+          &lt;/li>)
+        }
+      &lt;ul>
+    )
+  }
+}</code>
+          </pre>
+          <p>Notice how the class names clear define what each item is and what its relationship is to its parent. With these class we could create a stylesheet like this:</p>
+          <pre>
+            <code class="language-css">
+.list--fruits {
+  list-style: none;
+  margin: 1rem;
+  border: solid 1px #ccc;
+}
+.list--fruits__item {
+  margin: 0;
+  padding: 5px 10px;
+  border-bottom: solid 1px #ccc;
+  transition: all .25s ease-out;
+}
+.list--fruits__item:last-of-type {
+  border: none;
+}
+.list--fruits__item:hover {
+  cursor: pointer;
+  background-color: #333;
+  color: #fff;
+}
+.list--fruits__item__name {
+  color: blue;
+}
+.list--fruits__item__price {
+  color: green;
+}</code>
+          </pre>
+          <p>Using BEM to create class results in CSS that is easy to understand. Which list is this? Oh, the one for fruits, etc. Generally you shouldn't need to create nested selectors since the class names should clearly identify each element that gets that style. This eliminates the problem of cascading styles of one element affecting another element elsewhere on the page.</p>
+
+          <h2>Style Tag in a Component</h2>
+          <p>If you are creating an instance of the Component class, you want to define your styles in the render function and then pass them to the style tag inside your component's markup. In the example below, notice how we use the <code>nav</code> tag's id to scope the styles to it:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component} from 'composi'
+
+export const title = new Component({
+  container: 'header',
+  render: (message) => {
+    // Define styles for style tag:
+    const styles = `
+      #nav {
+        padding: 10px;
+        background-color: #333;
+      }
+      #nav h1 {
+        color: #fff;
+        font-size: 2rem;
+      }`
+
+    // Define style tag in component:
+    return (
+      &lt;nav id='nav'>
+        &lt;style>
+          {styles}
+        &lt;/style>
+        &lt;h1>Hello, {message}!&lt;/h1>
+      &lt;/nav>
+    )
+  }
+})</code>
+          </pre> 
+          <p>If you are extending the Component class, the process is the same. Define your styles as a variable inside the `render` function before returning the markup:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, Component, uuid} from 'composi'
+
+class List extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+  }
+  render(data) {
+    const styles = `
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 10px;
+      border: solid 1px #ccc;
+      width: 300px;
+    }
+    .list > li {
+      margin: 0;
+      padding: 10px;
+      border-bottom: solid 1px #ccc;
+    }
+    .list > li:hover {
+      cursor: pointer;
+    }
+    .list > li:last-of-type {
+      border: none;
+    }
+  `
+    return (
+      &lt;div id='list-container'>
+        &lt;style>
+          {styles}
+        &lt;/style>
+        &lt;ul class='list'>
+          {
+            data.map(item => 
+            &lt;li key={item.id} data-id={item.id}>
+              <&lt;input type="checkbox" checked={item.checked}/>
+               {item.name}
+            &lt;/li>)
+          }
+        &lt;/ul>
+      &lt;/div>
+    )
+  }
+}</code>
+</pre>
+          <p>When you are using this technique, it is up to you to make sure the styles in the tag are scoped to the component. In the above examples we used an id on the base element of the component. However, if you want to have multiple instances of a component, then you might want to think about using BEM and add the styles directly to your project's stylesheet.</p>
+
+          <h2>When Not to Use</h2>
+          <p>Using this technique is a quick and simple way to add styles to a component. However, if the component's styles are complex, the presence of a large style declaration in the component can make it hard to read. In those situations you can either put the style declaration in a separate file and import it into the file where the component is being used, or simply put the styles in your project's stylesheet. You don't want a component's styles to be bigger than the component's code.</p>
+
+          <h2>Using Stylor</h2>
+          <p>You can use the NPM module <a href='https://www.npmjs.com/package/stylor' target='__blank'>stylor</a> to create a virtual stylesheet scoped to your components. You will do this inside the component's <code>componentWasCreated</code> lifecyle method. This requires the styles to be defined as a JavaScript object. Properties must be camel cased and values must be quoted. If you want, you can use hypenated properties by enclosing them in quotes. Simple selectors are fine, but complex properties will need to be enclosed in quotes. You can use hierachical nesting to define parent child relationships, similar to how LESS and SASS do. If the value for a property will be a pixel value, you do not need to provide the <code>px</code>. values of plain numbers will get converted to pixel values.</p>
+
+          <h2>Installing Stylor</h2>
+          <p>Use NPM:</p>
+          <pre>
+            <code class="language-bash">
+# cd to the project folder and run this:
+npm i -D stylor</code>
+          </pre>
+          <p> </p>
+          <h2>Importing Stylor into Your Project</h2>
+          <p>After installing <code>stylor</code> as a dependency of your project, you need to import it in your project. In whichever file you want to use it, import it like this:</p>
+          <pre>
+            <code class="language-javascript">
+ import {createStylesheet} from 'stylor'</code>
+          </pre>
+          <p>After importing <code>createStylesheet</code> from <code>stylor</code> you can use it to create a stylesheet for a component. The <code>createStylesheet</code> function takes an object with two properties: <code>base</code> and <code>styles</code>. <code>base</code> is a selector for the element from which styles will be scoped. This should be a unique selector, preferrably with an id. <code>styles</code> is an object defining the styles to be created.</p>
+          <p>Here is an example of styles set up for a Component instance:</p>
+
+          <pre>
+            <code class="language-javascript">
+ const personComponent = new Component({
+  container: '#person',
+  state: personData,
+  render: (person) => (
+    &lt;div>
+      &lt;p>Name: {person.name.last}, {person.name.first}&lt;/p>
+      &lt;p>Job: {person.job}&lt;/p>
+      &lt;p>Employer: {person.employer}&lt;/p>
+      &lt;p>Age: {person.age}&lt;/p>
+    &lt;/div>
+  ),
+  componentWasCreated: () => {
+    // Define conponent-scoped styles:
+    createStylesheet({
+      base: '#person',
+      styles: {
+        border: 'solid 1px #ccc',
+        margin: '1em',
+        p: {
+          margin: 0,
+          padding: '5px 10px',
+          // Hover effect for p tags:
+          ':hover': {
+            backgroundColor: '#ddd',
+            color: '#fff',
+            cursor: 'pointer'
+          }
+        }
+      }
+    })
+  }
+})</code>
+          </pre>
+          <p>An here is an example of styles set up for when extending Component:</p>
+          <pre>
+            <code class="language-javascript">
+class Person extends Component {
+  constructor(opts) {
+    super(opts)
+    this.container = '#person'
+    this.state = personData
+  }
+  render = (person) => (
+    &lt;div>
+      &lt;p>Name: {person.name.last}, {person.name.first}&lt;/p>
+      &lt;p>Job: {person.job}&lt;/p>
+      &lt;p>Employer: {person.employer}&lt;/p>
+      &lt;p>Age: {person.age}&lt;/p>
+    &lt;/div>
+  )
+  componentWasCreated() {
+    // Define conponent-scoped styles:
+    createStylesheet({
+      base: '#person',
+      styles: {
+        border: 'solid 1px #ccc',
+        margin: '1em',
+        p: {
+          margin: 0,
+          padding: '5px 10px',
+          // Hover effect for p tags:
+          ':hover': {
+            backgroundColor: '#ddd',
+            color: '#fff',
+            cursor: 'pointer'
+          }
+        }
+      }
+    })
+  }
+}</code>
+          </pre>
+          <p>And here's a sample of some general <code>styles</code> objects from an actual component. You can see that we can target element inside a component. Because the styles get scoped to the component, these styles will not leak out and affect other elements in the page.</p>
+
+          <pre>
+            <code class="language-javascript">
+styles: {
+  label: {
+    display: 'inline-block',
+    width: 100,
+    textAlign: 'right'
+  },
+  button: {
+    color: '#fff',
+    backgroundColor: 'green'
+  },
+  'button.delete': {
+    transition: 'all .25s ease-out',
+    border: 'solid 1px red',
+    backgroundColor: 'red',
+    color: '#fff',
+    padding: '10px 20px',
+    ':hover': {
+      backgroundColor: '#fff',
+      color: 'red',
+    }
+  },
+  'li:last-of-type': {
+    borderBottom: 'none'
+  },
+  input: {
+    width: 150
+  }
+}</code>
+          </pre>
+          <p>Here's another sample <code>styles</code> object:</p>
+          <pre>
+            <code class="language-javascript">
+styles: {
+  div: {
+    margin: 20,
+    span: {
+      position: 'relative',
+      top: '-1px',
+      display: 'inline-block',
+      border: 'solid 1px #007aff',
+      padding:' 5px 10px 5px',
+      minWidth: '20px',
+      textAlign: 'center'
+    },
+    button: {
+      fontSize: '13pt',
+      border: 'solid 1px #007aff',
+      color: '#fff',
+      backgroundColor: '#007aff',
+      padding: '3px 10px 3px',
+      cursor: 'pointer',
+      margin: 0,
+      ':first-of-type': {
+        borderRight: 'none'
+      },
+      ':nth-child(3)': {
+        borderLeft: 'none'
+      },
+      ':last-of-type': {
+        backgroundColor: 'red',
+        borderColor: 'red',
+        color: '#fff',
+        marginLeft: 10,
+        ':hover': {
+          backgroundColor: '#fff',
+          color: 'red'
+        }
+      },
+      ':hover': {
+        backgroundColor: '#fff',
+        color: '#007aff',
+        borderColor: '#007aff'
+      },
+      '[disabled]': {
+        backgroundColor: '#ccc',
+        borderColor: '#ccc',
+        cursor: 'default',
+        opacity: '.75',
+        ':hover': {
+          backgroundColor: '#ccc',
+          color: '#007aff',
+          borderColor: '#ccc'
+        }
+      }
+    }
+  }
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Scoped Stylesheets and Memory</h2>
+          <p>When you define styles on a class constructor, each instance of the class will have its own virtual stylesheet created. This is fine if the number of instances are not large. You should, however, bare in mind that each scoped stylesheet takes up memory. If you intend to create many instances of the same component, it might make sense to not create a scope style but to instead put the styles that all instances will share in your project's stylesheet. </p>
+
+          <h2>SASS, LESS, POST-CSS</h2><a href="" target="__blank"></a>
+          <p>If you want, you can use SASS, LESS or PostCSS as CSS preprocessors in your project. To do so you will have to use the `gulp` versions. For SASS, use <a href="https://www.npmjs.com/package/gulp-sass" target="__blank">gulp-sass</a>, or LESS use <a href="https://www.npmjs.com/package/gulp-less" target="__blank">gulp-less</a> and for PostCSS use <a href="https://www.npmjs.com/package/gulp-postcss" target="__blank">postcss</a>. Just install these like this:</p>
+          <pre>
+            <code class="language-bash">
+npm i -D gulp-sass
+// or
+npm i -D gulp-less
+// or
+npm i -D gulp-postcss</code>
+          </pre>
+          <p>Then add these to your project's gulpfile:</p>
+
+          <pre>
+            <code class="language-javascript">
+/////////////
+// For SASS:
+/////////////
+const sass = require('gulp.sass');
+
+// Define a task for SASS:
+gulp.task('sass', function () {
+  gulp.src('./scss/.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('./css'))
+});
+
+// Then add new SASS task to build:
+gulp.task('default', ['sass', 'serve', 'watch'])
+
+////////////
+// For LESS:
+////////////
+const less = require('gulp-less')
+
+// Define a task for LESS:
+gulp.task('less', function () {
+  return gulp.src('./less/**/*.less')
+    .pipe(less({
+      paths: [ path.join(__dirname, 'less', 'includes') ]
+    }))
+    .pipe(gulp.dest('./css'))
+})
+
+// Then add new LESS task to build:
+gulp.task('default', ['less', 'serve', 'watch'])
+
+//////////////
+// For PostCSS
+//////////////
+const postcss = require('gulp-postcss');
+ 
+// Define a task for PostCSS:
+gulp.task('postcss', function () {
+  return gulp.src('./src/*.css')
+    .pipe(postcss())
+    .pipe(gulp.dest('./css'))
+})
+
+// Then add new PostCSS task to build:
+gulp.task('default', ['postcss', 'serve', 'watch'])</code>
+          </pre>
+          <p></p>
+
+          <p>&nbsp;</p>
       </div>
 
       <aside>
