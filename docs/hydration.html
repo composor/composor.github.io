@@ -40,18 +40,43 @@
     <section>
       <div class='docs'>
           <h1>Hydration</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="docs__intro">You can use whatever server-side solution to pre-render the html for your document. Then after page loads, you can let Composi take over parts of the document as components. To do this you need to follow a simple rule:</p>
+          <blockquote>Give your component's main element a unique id that matches the id of an element in the rendered document. This needs to be in the same element as the component's container.</blockquote>
+          <p>Let's take a look at how we might do this. Suppose on the server we output some markup as follows:</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <pre>
+            <code class="language-html">
+&lt;body>
+  &lt;article>
+    &lt;ul id="specialList">
+      &lt;li>Apples&lt;/li>
+      &lt;li>Oranges&lt;/li>
+      &lt;li>Bananas&lt;/li>
+    &lt;/ul>
+  &lt;/article>
+&lt;/body></code>
+          </pre>
+          <p>When the page first loads this will be the default content. In fact, if the JavaScript did not load or failed with an exception, the user would see this content. If we want to replace the static content with a dynamic list, we can define the list component like this:</p>
+
+          <pre>
+            <code class="language-javascript">
+const list = new Component({
+  // Give the component the same container as the list "specialList" above:
+  container: 'article',
+  // Define list with same id as list in server-side markup:
+  render: (fruits) => (
+    &lt;ul id="specialList">
+      {
+        fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+})
+// Set state, render the component and replace state nodes:
+list.state = ['Stawberries', 'Peaches', 'Blueberries']</code>
+          </pre>
+          <p>With the above code, even though the server sent a static list to the browser, at laod time Composi will replace it with the dynamic component of the same id in the same container element.</p>
+          <p><strong>Note:</strong> When implementing serve-side rendering and component hydration, it's best to use ids for the parts you want to hydrate. That way it's easier for Composi to identify unique parts of the static HTML to take over.</p>
           
       </div>
 
