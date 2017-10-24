@@ -40,20 +40,241 @@
     <section>
       <div class='docs'>
           <h1>Functional Components</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="docs__intro">The component architecture is based on classes. If you favor functional programing over OOP, you might prefer to use functional components. Functional Components are always stateless, so you will want to use them with some kind of state management, such as Redux, Mobx, etc.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <h2>Virtual Dom</h2>
+
+          <p>When you create components with the Component class, you have a reference for the component's properties, methods, etc. This also provides a point of reference for the virtual dom. In contrast, functional components do not have this reference for their virtual dom. Instead, with functional components, the scope in which the function is invoked becomes the scope for the virtual dom. This means as your project grows and code gets out over many files, the scope of a functional component can be spread across several files. For components this is not a problem. For functional components this means the first time it gets invoked in a new scope, the previous virtual dom will be replaced by a new one. Unless you are creating a list with 10,000 or more items, you won't notice any inefficencies. However, it does result in more layout thrashing than when creating class-based components.</p>
+
+          <h2>Creating Functional Components</h2>
+          <p>Functional components use <a href='./jsx.md'>JSX</a> to create markup, but technically you could also use [Hyperx](./hyperx.md) with ES6 template literals. Here we're going to look at using JSX.</p>
+
+          <p>To create a functional component, you start with a function, surprise! The function could accept some data, or not. It depends on what the function needs to return. If it is returning static content, no need for a parameter of data. If you want the function component to consume some data, then pass it in as a parameter. And of course you'll need to return some markup. In the example below we have a simple, function component that creates a header:</p>
+
+          <pre><code class="language-javascript">
+// title.js:
+// We need to import the "h" function:
+import {h} from 'composi'
+
+// Define function that takes props for data:
+export function Title(props) {
+  // Return the header with name from props:
+  return (
+    &lt;nav>
+      &lt;h1>Hello, {props.name}!&lt;/h1>
+    &lt;/nav>
+  )
+}</code>
+      </pre>
+
+      <p>If we were to do this with the Composi <code>h</code> function, it would look like this:</p>
+
+      <pre><code class="language-javascript">
+import {h} from 'composi'
+import {html} from 'hyperscript'
+
+// Define function that takes props for data:
+export function Title(name) {
+  return h(
+    'nav', {}, h(
+      'h1', {}, name
+    )
+  )
+}</code>
+        </pre>
+
+        <p>Both examples above create virtual nodes, so we will need a way to get them into the DOM. Composi provides the <code>render</code> function for that purpose. It works similar to React's <code>ReactDOM.render</code> function. It takes two arguments: a tag/vnode and a selector/element in which to insert the markup.</p>
+
+        <p>In our <code>app.js</code> file we import <code>h</code> and <code>render</code> and then the <code>Title</code> functional component and render it to the DOM:</p>
+
+        <pre>
+          <code class="language-javascript">
+// app.js:
+import {h, render} from 'composi'
+import {Title} from './components/title'
+
+// Define data for component:
+const name = 'World'
+
+// Render the component into header tag.
+// We pass the name variable in as a property in curly braces:
+render(&lt;Title {...{name}}/>, 'header')</code>
+        </pre>
+
+        <p>This will convert the functional component into a virtual node (vnode) and then convert that into actual nodes inside the header tag. Because a virtual node was created, we can re-render this later with new data and Composi will patch the DOM efficiently for us. In this case that would involve patching the text node of the <code>h1</code> tag.</p>
+
+        <h2>List with Map</h2>
+        <p>Now lets create a functional component that takes an array and outputs a list of items. Notice that we are using <a href='https://css-tricks.com/bem-101/' target='__blank'>BEM</a> notation for class names to make styling easier.</p>
+        
+        <pre><code class="language-javascript">
+// list.js:
+import {h} from 'composi'
+
+export function List(props) {
+  return (
+    &lt;div class='container--list'>
+      &lt;ul class='list--fruits'>
+        {props.items.map(item => &lt;li class='list--fruits__item'>{props.item}&lt;/li>)}
+      &lt;/ul> 
+    &lt;/div>
+  )
+}</code></pre>
+
+        <p>This list is consuming an <code>items</code> array:</p>
+
+        <pre>
+          <code class="language-javascript">
+// items.js:
+export const items = ['Apples', 'Oranges', 'Bananas']</code>
+          </pre>
+          <p>In our `app.js` file we put this all together:</p>
+
+          <pre>
+            <code class="language-javascript">
+// app.js:
+import {h, render} from 'composi'
+import {Title} from './components/title'
+import {List} from './components/list'
+import {items} from './items'
+
+// Define data for Title component:
+const name = 'World'
+
+// Render component into header:
+render(&lt;Title {...{name}}/>, 'header')
+
+// Render list component into section with items data:
+render(&lt;List {...{items}}/>, 'section')</code>
+          </pre>
+          
+          <p> </p>
+          <h2>Custom Tags</h2>
+          <p>We can break this list down a bit using a custom tag for the list item. We will need to pass the data down to the child component through its props:</p>
+
+          <pre>
+            <code class="language-javascript">
+// list.js:
+import {h} from 'composi'
+
+function ListItem(props) {
+  return (
+    <li class='list--fruits__item'>{props.item}</li>
+  )
+}
+
+export function List(props) {
+  return (
+    &lt;div class='container--list'>
+      &lt;ul class='list--fruits'>
+        {props.items.map(item => &lt;ListItem {...{item}}/>)}
+      &lt;/ul> 
+    &lt;/div>
+  )
+}</code>
+          </pre>
+
+          <p> </p>
+          <h2>Data Flows Down</h2>
+          <p>When using custom tags inside a functional component, the data flows down, from the parent to the children. There is no two-way data binding. This makes it easy to reason about. If you need a child component to communicate some kind of data change to its parent, you can use events or any pubsub solution from NPM. We have a tiny and efficient pubsub module on NPM called <a target='__blank' href='https://www.npmjs.com/package/pubber'>pubber</a> that is perfect for these situations.</p>
+
+          <h2>Events</h2>
+
+          <p>What if we wanted to make this list dynamic by allowing the user to add items? For that we need events. We'll add a text input and button so the user can enter an item. Since this doesn't involve any data consuming any data, their function just needs to return the markup for the nodes to be created. We'll call this function component <code>ListForm</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+// list.js:
+import {h} from 'composi'
+
+function ListForm() {
+  return (
+    &lt;p>
+      &lt;input class='list--fruits__input--add' placeholder='Enter Item...' type="text"/>
+      &lt;button class='list--fruits__button--add'>Add Item&lt;/button>
+    &lt;/p>
+  )
+}
+function ListItem(props) {
+  return (
+    &lt;li>{props.item}&lt;/li>
+  )
+}
+
+export function List(props) {
+  return (
+    &lt;div class='container--list'>
+      &lt;ListForm />
+      &lt;ul>
+        {props.items.map(item => &lt;ListItem {...{item}}/>)}
+      &lt;/ul> 
+    &lt;/div>
+  )
+}</code>
+          </pre>
+
+          <p> </p>
+          <h2>handleEvent Interface</h2>
+
+          <p>We are going to use the handleEvent</code> interface to wire up events for the component. We'll do this in a separate file and import it into our <code>app.js</code> file. To use <code>handleEvent</code> with a functional component we'll need to create an object with the <code>handleEvent</code> function on it. Then we'll use a standar event listener and pass the that object instead of a callback.</p>
+          <p>Since we want to be able to add a new fruit to the list, we need to have access to the data and also the function component that renders the list. Therefore we import them into the <code>events.js</code> file.</p>
+
+          <pre>
+            <code class="language-javascript">
+// events.js:
+import {h, render} from 'composi'
+import {items} from './items'
+import {List} from './components/list'
+
+export const events = {
+  addItem(e) {
+    const input = document.querySelector('.list__input--add')
+    const value = input.value
+    if (value) {
+      items.push(value)
+      render(&lt;List {...{items}}/>, 'section')
+      input.value = ''
+    }
+  },
+  handleEvent(e) {
+    e.target.className === 'list__button--add' && this.addItem(e)
+  }
+}</code>
+          </pre>
+
+          <p>As you can see above, we need to get the value of the input. If the value is truthy, we push it to the items array. Then we re-render the functional component list. Because this is a different scope than <code>app.js</code> where we initially rendered the list, the first time we add an item, the list will be created a new, replacing what was there. That's because this is a different scope than <code>app.js</code>. However, with every new addition, the render function will use the new virtual dom in this scope to patch the DOM efficiently.</p>
+
+          <h2>Using the handleEvent Object</h2>
+          <p>Now that we have our <code>handleEvent</code> object defined, we need to wire it up to our component. We'll do that in our <code>app.js</code> file:</p>
+
+          <pre>
+            <code class="language-javascript">
+// app.js:
+import {h, render} from 'composi'
+import {Title} from './components/title'
+import {List} from './components/list'
+import {events} from './events'
+import {items} from './items'
+
+// Define data for component:
+const name = 'World'
+// Render component into header:
+render(&lt;Title {...{name}}/>, 'header')
+
+// Render list component into section:
+render(&lt;List {...{items}}/>, 'section')
+
+// Add event listener to the component's container and pass in the handleEvent object instead of a callback:
+document.querySelector('.container--list').addEventListener('click', events)</code>
+          </pre>
+
+          <p>And that's it. With that we now have an interactive functional component that updates in real time with a virtual dom.</p>
+
+          <h2>Component Class Advantages</h2>
+
+          <p>Although you can build a complex app using nothing but functional components, there are certain conveniences when using the Component class. First and foremost is the fact that classes allow you to encapsulate functionality using properties and methods defined directly on the component. The second is the component itself enables more efficient use of the virtual dom because it keeps track of that internally.</p>
           
       </div>
+      
 
       <aside>
         <menu>
@@ -77,6 +298,9 @@ render(
               <a href='./state.html'>State</a>
             </li>
             <li class="docs__menu__item">
+              <a href='./jsx.html'>JSX</a>
+            </li>
+            <li class="docs__menu__item">
               <a href='./h.html'>H for Hyperscript</a>
             </li>
             <li class="docs__menu__item">
@@ -93,6 +317,12 @@ render(
             </li>
             <li class="docs__menu__item">
               <a href='./redux-mobx.html'>Redux and Mobx</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./hydration.html'>Hydration</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./about.html'>About</a>
             </li>
           </ul>
         </menu>

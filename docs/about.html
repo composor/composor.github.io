@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual dom to make efficient updates to the DOM based on a component's data or state.">
+  <meta name="keywords" content="javascript, framework, performance, small, fast, UI, programming, code, component, composi, chocolatechipui, chocolatechip-ui, reactive, virtual dom">
+  <title>Composi - Docs</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/prism-tomorrow.css">
+</head>
+<body class='documentation-page'>
+  <nav>
+    <ul class='nav--menu'>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../index.html">
+          <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Composi Logo</title>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Composi-Logo-Solid" fill="#fff">
+                <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+              </g>
+            </g>
+          </svg>
+        <span class='logo__link--text'>Composi</span></a>
+      </li>
+      <li class='nav--menu__item selected'>
+        <a class='nav--menu__item__link' href="./installation.html">Docs</a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../tuts/index.html">Tutorials</a>
+      </li>
+    </ul>
+  </nav>
+  <article class='docs__article'>
+    <section>
+      <div class='docs'>
+          <h1>About</h1>
+          <p class="docs__intro">Composi is the gradual evolution of front-end development since 2007. Its genesis was in the library <a target='__blank' href="http://chocolatechip-ui.github.io">ChocolateChip-UI</a>. As an experiment, we took the component API from ChocolateChip-UI and combined it with a small and fast virtual dom. The result was Composi. As a result, when you give a component state or simply render it stateless with some data, the component creates its own virtual dom.</p>
+          <h2>Composi is Small</h2>
+          <p>Although only 3KB, Composi includes everything you need to create complex components. The Composi virtual dom code is less that 1KB. It is intelligent to only update the parts of the DOM that do not match the current state of a component. If you try to render a component with the same data again, no update will occur.</p>
+
+          <h2>Composi Works Well with Others</h2>
+          <p>Composi was designed to be used with other libraries. You can use Lodash, Ramda, Boostrap, Material Design Lite, Redux, Mobx and other third party libraries with Composi. You can also use jQuery plugins in the same document. You cannot use jQuery on a Composi component. You can use any pubsub library to implement communication between jQuery plugins and Composi components.</p>
+
+          <h2>Similar to React</h2>
+          <p>Composi shares some features and many development patterns with React, Preact and Inferno. All have a Component class and a virtual dom. However, Composi is not a React clone. Internally it works very differently. Most of the similarities arrise from the use of JSX. Composi's Component class shares some naming conventions with React.Component. Both have a <code>render</code> function, which works basically the same. It takes some data and returns some markup that gets converted into a virtual node. With React and friends, you pass a component class definition to the <code>render</code> function along with an elemement in which you want to insert it. This is completely unnecessary with Composi components. Instead you define a container property directly in the component definition.</p>
+          <h2>Lifecycle Methods</h2>
+          <p>All of these have lifecycle methods. The React family generally has the following ones:</p>
+          <ul>
+            <li>componentWillMount()</li>
+            <li>componentDidMount()</li>
+            <li>componentWillReceiveProps()</li>
+            <li>shouldComponentUpdate()</li>
+            <li>componentWillUpdate()</li>
+            <li>componentDidUpdate()</li>
+            <li>componentWillUnmount()</li>
+          </ul>
+          <p>In contrast, Composi has only the following:</p>
+          <ul>
+            <li>beforeCreateComponent()</li>
+            <li>componentWasCreated()</li>
+            <li>componentWillUpdate()</li>
+            <li>componentDidUpdate()</li>
+            <li>componentWillUnmount()</li>
+          </ul>
+
+          <p>Composi's <code>beforeCreateComponent</code> is like React's <code>componentWillMount</code>. Composi's <code>componentWasCreated</code> is like React's <code>componentDidMount</code>. Composi's <code>componentWillUpdate</code> is the same as React's <code>componentWillUpdate</code>. Composi's <code>componentDidUpdate</code> is the same as React's <code>componentDidUpdate</code>. Composi's <code>componentWillUnmount</code> is the same as React's <code>componentWillUnmount</code>.</p>
+          
+          <p>React has <code>ReactDOM.render</code>. Preact has <code>render</code>. Inferno has <code>Inferno.render</code>. And Composi has <code>render</code>. Although all of these use the same name, Composi's implementation is different. All of them can take JSX tags, functional components, and use them to patch the DOM. However, the React family expects you to pass class components into this as well in order to render them. This is not necessary with Composi components since they encapsulate the container they should render in and state assign automatically triggers rending of a component in the DOM.</p>
+
+          <h2>Extending Component</h2>
+          <p>Here's an example of extending the React component class. To render the component we pass it as a tag to the <code>ReactDOM.render</code> function, along with a query for the selector <code>#root</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Hello extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      name: 'Joe'
+    }
+  }
+  render() {
+    return (
+      &lt;h1>Hello, {this.state.name}!&lt;/h1>
+    );
+  }
+}
+ReactDOM.render(<Hello />, document.querySelector('#root'))</code>
+</pre>
+<p>And here's the same example using a Composi class component. Notice that we provide the selector <code>#root</code> directly on the component's constructor as its container. And no need to render. We just create a new instance. That will trigger the render.</p>
+
+          <pre>
+            <code class="language-javascript">
+class Hello extends Component {
+  constructor(props) {
+    super(props)
+    // Define the container to render the component in:
+    this.container = '#root'
+    this.state = {
+      name: 'Joe'
+    }
+  }
+  render() {
+    return (
+      &lt;h1>Hello, {this.state.name}!&lt;/h1>
+    );
+  }
+}
+// Render the component by creating an instance:
+const hello = new Hello()</code>
+          </pre>
+
+          <p> </p>
+          <h2>Component Instance</h2>
+          <p>React has a class <code>React.createClass</code>. This is basically the same as creating a new instance of the Composi Component class. Below we use <code>React.createClass</code>. Notice how we have to pass in an object literal as the options of <code>React.createClass</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+const HelloWorld = React.createClass({
+  render: function() {
+    return (
+      &lt;div>Hello World&lt;/div>
+    )
+  }
+})</code>
+          </pre>
+
+          <p>And here's a new instance of the Composi Component class:</p>
+
+          <pre>
+            <code class="language-javascript">
+const helloWorld = new Component({
+  render: function() {
+    return (
+      &lt;div>Hello World&lt;/div>
+    )
+  }
+})</code>
+          </pre>
+          <p>The main different here is that Composi requires the use of the <code>new</code> keyword.</p>
+          
+      </div>
+
+      <aside>
+        <menu>
+          <ul class="docs__menu">
+            <li class="docs__menu__item">
+              <a href='./installation.html'>Installation</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./render.html'>Render</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./functional-components.html'>Functional Components</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./component-instance.html'>Component Instance</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./extending-component.html'>Extending Component</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./state.html'>State</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./jsx.html'>JSX</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./h.html'>H for Hyperscript</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./template-literals.html'>Template Literals</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./styles.html'>Styles</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./lifecycle-methods.html'>Lifecycle Methods</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./events.html'>Events</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./redux-mobx.html'>Redux and Mobx</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./hydration.html'>Hydration</a>
+            </li>
+            <li class="docs__menu__item selected">
+              <a href='./about.html'>About</a>
+            </li>
+          </ul>
+        </menu>
+      </aside>
+    </section> 
+  </article>
+  <footer>
+      <section>
+        <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>Composi Logo</title>
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Composi-Logo-Solid" fill="rgba(255,255,255,0.5)">
+              <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+            </g>
+          </g>
+        </svg>
+        <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a> and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
+      </section>
+    </footer>
+  <script src="../js/prism.min.js"></script>
+  <script src="../js/prism-jsx.js"></script>
+</body>
+</html>

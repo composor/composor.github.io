@@ -684,6 +684,10 @@ footer a:hover {
   font-size: 2.5rem;
   margin: 0 3em 2em 0;
 }
+.documentation-page ul,
+.documentation-page ol {
+  margin: 10px 20px 10px;
+}
 .docs__menu,
 .tutorials__menu {
   list-style: none;

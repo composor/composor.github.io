@@ -40,18 +40,75 @@
     <section>
       <div class='docs'>
           <h1>Render</h1>
-          <p class="docs__intro">This is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="docs__intro">Components provide a powerful and convenient way for you to create modular chunks of UI. However, sometimes they are overkill. If you just need to output some static markup, a component is not necessary. Instead you can define a function that returns the markup. This is sometimes called a <code>functional component</code>. Once you've created a function to do that, you can render it into the document with the <code>render</code> function. To use it, you will need to import it into your code:</p>
           <pre>
             <code class='language-jsx'>
-render(
-  &lt;h1>Hello, world!&lt;/h1>, '#root'
-)
-            </code>
+import {h, render} from 'composi'</code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p><code>render</code> takes two parameters:</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>
+          <ol>
+            <li>tag - the element to create and insert into the DOM</li>
+            <li>container - the element in the DOM in which to insert the new element</li>
+          </ol>
+
+          <h2>Define a Function That Retuns JSX</h2>
+          <pre>
+            <code class="language-javascript">
+import {h, render} from 'composi'
+
+const fruits = ['Apples', 'Oranges', 'Bananas']
+
+// Define function that returns JSX:
+function CreateList(fruits) {
+  return (
+    &lt;ul>
+      {
+        fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+}
+
+// Create virtual node of list:
+const list = CreateList(fruits)
+
+// Insert the list in the document body:
+render(list, 'body')</code>
+          </pre>
+          <p>We could use the <code>createList</code> function above to make several lists. To do that, we're going to use what's called a custom tag. This is a feature of JSX where when you define a functional component that begins with an uppercase letter, you can use it as a tag. Notice how we pass the <code>CreateList</code> function to <code>render</code> as a JSX tag, <code>&lt;CreateList data={fruits} /></code>. At build time, Babel will convert that into a function that returns the virtual node for the render function to insert in the DOM.</p>
+          <p>Since we are using a custom JSX tag, the data that would normally be passed as a parameter to the functional component instead gets passed as a prop. That's the reason we inclosed the parameter <code>data</code> in curly braces when we defined <code>CreateList</code>. We used the term <code>data</code> because the data is generic. Use whatever term makes sense for what you are using.</p>
+          <pre>
+            <code class="language-javascript">
+function CreateList({data}) {
+  return (
+    &lt;ul id={data.id}>
+      {data.items.map(item => &lt;li>{item}&lt;/li>)}
+    &lt;/ul>
+  )
+}
+
+// Data for lists:
+const fruits = {id: '101', items:['Apples', 'Oranges', 'Bananas']}
+const names = {id: '102', items:['Joe', 'Ellen', 'Sam']}
+
+// Create lists and instert in their containers:
+render(&lt;CreateList data={fruits} />, '#list1')
+render(&lt;CreateList data={names} />, '#list2')</code>
+          </pre>
+          <p>In the above example, each subsequent call of the <code>render</code> function in the same container will patch and update whatever was previously rendered there. Be aware that the inital invocation of <code>render</code> will not replace any static content already in the container. Please read <a href='#gotchas'>Gotchas</a> and <a href='#scope'>Scope</a> below to better understand how <code>render</code> patches the DOM.</p>
+
+          <a name="gotchas"></a>
+          <h2>Gotchas</h2>
+          <p>The first time <code>render</code> is executed, it does not check to see what is in the container. It just appends to it. If you want to have server-side rendered content and replace it with new content using <code>render</code>, you'll need to remove the nodes yourself before invoking <code>render</code>. After the inital execution, <code>render</code> will patch whatever a previous invocation appended to the container. This means that if you render a completely different function component with the <code>render</code> function to the same container, whatever the was previously rendered will be patched with the new functional component. In contrast, when you use the Component class, you can hydrate content rendered on the server. Read the documentation for <a href="./hydration.html">Hydration</a> to learn how to do it.</p>
+          <p>If you want to be able to create multiple instances of the same component, then you will want to use the Component class to do so. Please read the docs about <a href='./extending-component.html'>how to extend</a> the Component class</a>.</p>
+
+          <a name="scope"></a>
+          <h2>Scope</h2>
+          <p>When <code>render</code> patches the DOM, it keeps track of changes scoped to the current call scope. So, if you used <code>render</code> to output some JSX in your <code>app.js</code> and then invoked the same function again in another file, because the scope is different, it would result in two versions of the same content being rendered in the container. When using <code>render</code>, understanding scope is very important to avoid duplication bugs.</p>
+
+          <h2>Summary</h2>
+          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>. It has its use in very limited circumstances. Otherwise, components offer more functionality and versitility.</p>
           
       </div>
 
@@ -77,6 +134,9 @@ render(
               <a href='./state.html'>State</a>
             </li>
             <li class="docs__menu__item">
+              <a href='./jsx.html'>JSX</a>
+            </li>
+            <li class="docs__menu__item">
               <a href='./h.html'>H for Hyperscript</a>
             </li>
             <li class="docs__menu__item">
@@ -93,6 +153,12 @@ render(
             </li>
             <li class="docs__menu__item">
               <a href='./redux-mobx.html'>Redux and Mobx</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./hydration.html'>Hydration</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./about.html'>About</a>
             </li>
           </ul>
         </menu>
