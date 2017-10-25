@@ -40,18 +40,54 @@
       <section>
         <div class='tutorial'>
           <h1>Rendering Elements</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="tutorial__intro">Elements are the smallest building blocks for your app.</p>
+          <p>As was explained in the introduction to JSX, a JSX tag describes a piece of markup to be converted into DOM nodes.</p>
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+            <code class="language-javascript">
+import {h, render} from 'composi'
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+const element = <h1>A Title</h1></code>
+          </pre>
+          <p>Elements are merely a piece of markup. Notice there is no function and no functionality. Components on the other hand consist of functions or classes and can container many possible features. Elements are not components, but components are made up of elements.</p>
+
+          <h2>Rendering an Element into the DOM</h2>
+          <p>Composi provides the <code>render</code> function to enable injecting a JSX element into the DOM. The <code>render</code> function takes two arguments: an element to create, and a container in the DOM in which to inject the element:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, render} from 'composi'
+
+const element = <h1>Hello, World!</h1>
+render(element, 'body')</code>
+          </pre>
+          <p>The render function takes an element and inserts it into the container you indicated.</p>
+
+          <h2>Virtual Dom</h2>
+          <p>When you inject an element into the DOM with the <code>render</code> function, it also creates a virtual dom of the element. That means that if your element had dynamic content that could change, the render function would diff and patch the element if its data changed.</p>
+
+          <pre>
+            <code class="language-javascript">
+function tick() {
+  const element = (
+    <div id='dingo'>
+      &lt;h1>Hello, world!&lt;/h1>
+      &lt;h2>It is {new Date().toLocaleTimeString()}.&lt;/h2>
+    &lt;/div>
+  );
+  render(
+    element,
+    'body'
+  );
+}
+
+setInterval(tick, 1000)</code>
+          </pre>
+          <p>[Codepen]</p>
+          <h2>Composi Only Updates What is Necessary</h2>
+          <p>Because of its virtual dom, Composi will only update the parts of the DOM that needs to. In many cases this will only be text nodes, so there is minimal layout thrashing. In the above example, only the text node for the time will be updated, even though we are passing in the complete element at each tick.</p>
+
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>

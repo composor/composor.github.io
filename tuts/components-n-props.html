@@ -40,18 +40,223 @@
       <section>
         <div class='tutorial'>
           <h1>Components and Props</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="tutorial__intro">Components let you to break the UI down into small pieces. This helps you think about each bit of functionality in isolation.</p>
+          <p>At a high level, components are like functions. They take arbitrary arguments and return elements to inject in the document.</p>
+          
+          <h2>Functional and Class Components</h2>
+          <p>The simplest way to create a component is to write a function. We use props to pass down the data to the component. To do this, we wrap the function component's argument in curly braces. And when we pass the JSX tag to the render function, we pass the data to use inside curly braces again using the spread operator:</p>
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
-            </code>
+            <code class="language-javascript">
+function Hello({name}) {
+  return &lt;h1>Hello, {name}!&lt;/h1>
+}
+render(&lt;Hello {...{name: 'Joe Bodoni'}} />, 'body')</code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>The above example is what is called a functional component. It's a function that returns markup to create. Another type of component is create using the Component class:</p>
+          <pre>
+            <code class="language-javascript">
+class Hello extends Component {
+  render(name) {
+    return (
+      &lt;h1>Hello, {name}!&lt;/h1>
+    )
+  }
+}
+const hello = new Hello()
+hello.update('Joe Bodoni')</code>
+          </pre>
+          <p>For a class-based component, the <code>render</code> is defined directly on the component. We cause the class-based component to be rendered by passing data to its <code>update</code> function.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <p>In the above two examples, the result of the function component and class-based component are identical. Class-based component offer more functionality to create complex components.</p>
+
+          <h2>Composing Components</h2>
+          <p>A component can contain other components. A functional component can have other functional components as children. A class-based component can have functional components as childre. However, a class-based component cannot have other class-based components as its children. </p>
+
+          <p>Here's an example of a functional component with other functional components as its children:</p>
+
+          <pre>
+            <code class="language-javascript">
+function Welcome(props) {
+  return &lt;h1>Hello, {props.name}&lt;/h1>;
+}
+
+function App() {
+  return (
+    &lt;div>
+      &lt;Welcome name="Joe" />
+      &lt;Welcome name="Ellen" />
+      &lt;Welcome name="Paul" />
+    &lt;/div>
+  );
+}
+render(&lt;App />,'body')</code>
+          </pre>
+          <p>Notice that we enclose all our <code>Welcome</code> tags in a <code>div</code> tag. That's because there must always be one enclosing tag for any markup we want to produce.</p>
+
+          <h2>Breaking Components Down</h2>
+          <p>You should always try to break your components down into smaller pieces that get assembled into the final component. Take the following component as an example:</p>
+
+          <pre>
+            <code class="language-javascript">
+function Comment(props) {
+  return (
+    &lt;div className="Comment">
+      &lt;div className="UserInfo">
+        &lt;img className="Avatar"
+             src={props.author.avatarUrl}
+             alt={props.author.name} />
+        &lt;div className="UserInfo-name">
+          {props.author.name}
+        &lt;/div>
+      &lt;/div>
+      &lt;div className="Comment-text">
+        {props.text}
+      &lt;/div>
+      &lt;div className="Comment-date">
+        {formatDate(props.date)}
+      &lt;/div>
+    &lt;/div>
+  );
+}
+
+const comment = {
+  date: new Date(),
+  text: 'Learning Composi is easy!',
+  author: {
+    name: 'Hello Kitty',
+    avatarUrl: 'http://placekitten.com/g/144/144'
+  }
+};
+render(&lt;Comment
+    date={comment.date}
+    text={comment.text}
+    author={comment.author} />, 'body')</code>
+          </pre>
+          <p>This component is too complicate, so we are going to see how to break it down into smaller pieces. This is tricky because we need to pass data down to the child elements.</p>
+
+          <p>The first thing we'll do is extract the avatar part:</p>
+          <pre>
+            <code class="language-javascript">
+function Avatar(props) {
+  return (
+    &lt;img className="Avatar"
+      src={props.user.avatarUrl}
+      alt={props.user.name}
+    />
+
+  );
+}</code>
+          </pre>
+          <p>When breaking a component down, consider renaming the props to what makes sense at the component level. Since the above component knows nothing of the author, we changed its prop to user. With the above sub-component, we can simplify our main component a bit:</p>
+
+          <pre>
+            <code class="language-javascript">
+function Avatar(props) {
+  return (
+    &lt;img className="Avatar"
+      src={props.user.avatarUrl}
+      alt={props.user.name}
+    />
+
+  );
+}
+
+function Comment(props) {
+  return (
+    <div className="Comment">
+      <div className="UserInfo">
+        <Avatar user={props.author} />
+        <div className="UserInfo-name">
+          {props.author.name}
+        </div>
+      </div>
+      <div className="Comment-text">
+        {props.text}
+      </div>
+      <div className="Comment-date">
+        {formatDate(props.date)}
+      </div>
+    </div>
+  );
+}</code>
+          </pre>
+          <p>Next we extract the user info, which includes the avatar component:</p>
+
+          <pre>
+            <code class="language-javascript">
+function UserInfo(props) {
+  return (
+    &lt;div className="UserInfo">
+      &lt;Avatar user={props.user} />
+      &lt;div className="UserInfo-name">
+        {props.user.name}
+      &lt;/div>
+    &lt;/div>
+  );
+}</code>
+          </pre>
+          <p>With this change, we can simplify the component setup ever more:</p>
+
+          <pre>
+            <code class="language-javascript">
+function Avatar(props) {
+  return (
+    &lt;img className="Avatar"
+      src={props.user.avatarUrl}
+      alt={props.user.name}
+    />
+
+  );
+}
+
+function UserInfo(props) {
+  return (
+    &lt;div className="UserInfo">
+      &lt;Avatar user={props.user} />
+      &lt;div className="UserInfo-name">
+        {props.user.name}
+      &lt;/div>
+    &lt;/div>
+  );
+}
+
+function Comment(props) {
+  return (
+    &lt;div className="Comment">
+      &lt;UserInfo user={props.author} />
+      &lt;div className="Comment-text">
+        {props.text}
+      &lt;/div>
+      &lt;div className="Comment-date">
+        {formatDate(props.date)}
+      &lt;/div>
+    &lt;/div>
+  );
+}</code>
+          </pre>
+          <p>If you wanted to, you to put the sub-components--Avatar and UserInfo--in separated files and import them into the Comment file. This would allow you to reuse them elsewhere in your project, or even reuse them in other projects.</p>
+
+          <h2>Props Should Be Read-Only</h2>
+          <p>Whether you create a functional or class-based component, it should never modify its own props. When functions don't modify their props, they are called pure. Take the following function as an example:</p>
+
+          <pre>
+            <code class="language-javascript">
+function sum(a, b) {
+  return a + b;
+}</code>
+          </pre>
+          <p>Given the same data, this function will always return the same result. This is a pure function because it does not change what its inputs are. In contrast, the following function is impure because it changes its inputs:</p>
+
+          <pre>
+            <code class="language-javascript">
+function withdraw(account, amount) {
+  account.total -= amount;
+}</code>
+          </pre>
+          <p>You should strive to make components act like pure functions with respect to their props. Of course, UI applications are dynamic and have user interactions. To handle these you can create stateful components. State allows components to change their output over time or due to user interaction without violating the pinciple of purity.</p>
+
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
