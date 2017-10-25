@@ -163,20 +163,20 @@ function Avatar(props) {
 
 function Comment(props) {
   return (
-    <div className="Comment">
-      <div className="UserInfo">
-        <Avatar user={props.author} />
-        <div className="UserInfo-name">
+    &lt;div className="Comment">
+      &lt;div className="UserInfo">
+        &lt;Avatar user={props.author} />
+        &lt;div className="UserInfo-name">
           {props.author.name}
-        </div>
-      </div>
-      <div className="Comment-text">
+        &lt;/div>
+      &lt;/div>
+      &lt;div className="Comment-text">
         {props.text}
-      </div>
-      <div className="Comment-date">
+      &lt;/div>
+      &lt;div className="Comment-date">
         {formatDate(props.date)}
-      </div>
-    </div>
+      &lt;/div>
+    &lt;/div>
   );
 }</code>
           </pre>
