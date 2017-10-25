@@ -40,18 +40,289 @@
       <section>
         <div class='tutorial'>
           <h1>Conditional Rendering</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="tutorial__intro">Composi allows you to conditionally render the elements that a component produces.</p>
+          <p>You can use JavaScript operators like <code>if</code> and <code>else</code>, or the <code>ternary</code> operator when making decisions about what markup a component should create.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <p>As an example of conditional rendering, lets use a situation where depending on whether the user is logged in or not, we render two different sub-components. Here's the two possible components:</p>
+
+          <pre>
+            <code class="language-javascript">
+function UserGreeting(props) {
+  return &lt;h1>Welcome back!&lt;/h1>;
+}
+
+function GuestGreeting(props) {
+  return &lt;h1>Please sign in.&lt;/h1>;
+}</code>
+          </pre>
+          <p>Now lets create a component that returns these two sub-components and based on the loggedon condition, returns one or the other:</p>
+
+          <pre>
+            <code class="language-javascript">
+function UserGreeting(props) {
+  return &lt;h1>Welcome back!&lt;/h1>
+}
+
+function GuestGreeting(props) {
+  return &lt;h1>Please sign in.&lt;/h1>;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return &lt;UserGreeting />
+  }
+  return &lt;GuestGreeting />
+}
+
+render(
+  // Try changing to isLoggedIn={true}:
+  &lt;Greeting isLoggedIn={true} />,
+  'body'
+);</code>
+          </pre>
+          <p> </p>
+
+          <h2>Conditional Element Variables</h2>
+          <p>You can use a variable to conditional store an element and the return that in the <code>render</code> function. In the next example we are going to combined the Greeting element from above with conditional rendering of buttons for a login. When the user clicks the button, the logged in status will change visibly on the page. Notice how we store the button in a variable and out put it with <code>{button}</code> in the component's <code>render</code> function, keeping it very clean:</code></p>
+
+          <pre>
+            <code class="language-javascript">
+function UserGreeting(props) {
+  return &lt;h1>Welcome back!&lt;/h1>;
+}
+
+function GuestGreeting(props) {
+  return &lt;h1>Please sign up.&lt;/h1>;
+}
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return &lt;UserGreeting />;
+  }
+  return &lt;GuestGreeting />;
+}
+
+function LoginButton(props) {
+  return (
+    &lt;button class='login'>
+      Login
+    &lt;/button>
+  );
+}
+
+function LogoutButton(props) {
+  return (
+    &lt;button class='logout'>
+      Logout
+    &lt;/button>
+  );
+}
+
+class LoginControl extends Component {
+  constructor(props) {
+    super(props);
+    this.container = 'section'
+    this.state = {isLoggedIn: false};
+  }
+
+  // Use handleEvent to manage button clicks:
+  handleEvent(e) {
+    if (e.target.className === 'login') {
+      this.handleLoginClick(e)
+    } else if (e.target.className === 'logout') {
+      this.handleLogoutClick(e)
+    }
+  }
+
+  handleLoginClick() {
+    this.setState({isLoggedIn: true});
+  }
+
+  handleLogoutClick() {
+    this.setState({isLoggedIn: false});
+  }
+
+  // Use lifecycle event to add event listener.
+  // Pass in component thru "this" so we can access "handleEvent":
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+
+    let button = null;
+    if (isLoggedIn) {
+      button = &lt;LogoutButton />;
+    } else {
+      button = &lt;LoginButton />;
+    }
+
+    return (
+      &lt;div>
+        &lt;Greeting isLoggedIn={isLoggedIn} />
+        {button}
+      &lt;/div>
+    );
+  }
+}
+
+const login = new LoginControl()</code>
+          </pre>
+          <p> </p>
+          <h2>Using the Logical &amp;&amp; Operator</h2>
+          <p>You can also use the JavaScript logical && operator for conditional situations. In the above example we can simplify the <code>handleEvent</code> method by using the &amp;&amp; operator as a condition check:</p>
+
+          <pre>
+            <code class="language-javascript">
+  // Original with if statement:
+  handleEvent(e) {    
+    if (e.target.className === 'login') {
+      this.handleLoginClick(e)
+    } else if (e.target.className === 'logout') {
+      this.handleLogoutClick(e)
+    }
+  }
+  
+  // New version using &amp;&amp;
+    handleEvent(e) {    
+    e.target.className === 'login' &amp;&amp; this.handleLoginClick(e)
+    e.target.className === 'logout'&amp;&amp; this.handleLogoutClick(e)
+  }</code>
+          </pre>
+          <p>When you see an expression like this, read it like this: When e.target.className equals "login", execute this.handleLoginClick(e)". Basically, the first part is a check, if it is true then the &amp;&amp; will execute whatever follows.</p>
+
+          <p>We can also use the &amp;&amp; operator to conditionally render an element. If the first statement is true, then return the element to render. In the next example, the element will render only if the number of messages is greater than 0:</p>
+
+          <pre>
+            <code class="language-javascript">
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+  // Conditionally render the H2 message based on 
+  // the number of messages using the &amp;&amp: operator:
+  return (
+    &lt;div>
+      &lt;h1>Hello!&lt;/h1>
+      {unreadMessages.length > 0 &&
+        &lt;h2>
+          You have {unreadMessages.length} unread messages.
+        &lt;/h2>
+      }
+    &lt;/div>
+  );
+}
+
+const messages = ['Composi', 'Re: Composi', 'Re:Re: Composi'];
+render(&lt;Mailbox unreadMessages={messages} />, 'section')</code>
+          </pre>
+          <p> </p>
+          <h2>Inline Ternary Operator</h2>
+
+          <p>Another way to render things conditionally is to use the JavaScript ternary operator: <code>condition ? true : false</code>. The ternary operator is great for reducing conditional <code>if/else</code> statements to a single line. However, creating nested ternary statements results in difficult to read code, so avoid doing that.</p>
+
+          <p>You can use the ternary operator for simple decisions about what to print out based on a condition:</p>
+          <pre>
+            <code class="language-javascript">
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+    &lt;div>
+      The user is &lt;b>{isLoggedIn ? 'currently' : 'not'}&lt;/b> logged in.
+    &lt;/div>
+  );
+}</code>
+          </pre>
+          <p>As you can see, using the ternary operator makes the test clean and easy to reason about.</p>
+
+          <p>In our previous example we had a <code>render</code> function like this:</p>
+          <pre>
+            <code class="language-javascript">
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+
+  if (isLoggedIn) {
+    button = &lt;LogoutButton />;
+  } else {
+    button = &lt;LoginButton />;
+  }
+
+  return (
+    &lt;div>
+      &lt;Greeting isLoggedIn={isLoggedIn} />
+      {button}
+    &lt;/div>
+  );
+}</code>
+          </pre>
+          <p>Using the ternary operator, we can simplify the logic to this:</p>
+
+          <pre>
+            <code class="language-javascript">
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+
+  return (
+    &lt;div>
+      { isLoggedIn ? &lt;LogoutButton /> : &lt;LoginButton /> }
+    &lt;/div>
+  );
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Prevent an Component from Rendering</h2>
+          <p>Sometimes you want to not render a component from rendering. The best way to do that is to test for a condition and have the <code>render</code> function return <code>null</code>. Notice how we do that with the <code>WarningBanner</code> component below:</p>
+
+          <pre>
+            <code class="language-javascript">
+function WarningBanner(props) {
+  if (!props.warn) {
+    return null;
+  }
+
+  return (
+    &lt;div className="warning">
+      Warning!
+    &lt;/div>
+  );
+}
+
+class Page extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {showWarning: true}
+  }
+
+  handleToggleClick(e) {
+    this.setState(prevState => ({
+      showWarning: !prevState.showWarning
+    }));
+  }
+  
+  handleEvent(e) {
+    e.target.id === 'toggle' && this.handleToggleClick(e)
+  }
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+  
+  render() {
+    return (
+      &lt;div>
+        &lt;WarningBanner warn={this.state.showWarning} />
+        &lt;button id='toggle'>
+          {this.state.showWarning ? 'Hide' : 'Show'}
+        &lt;/button>
+      &lt;/div>
+    );
+  }
+}
+
+const page = new Page()</code>
+          </pre>
+          <p>Because <code>WarningBanner</code> is a child component to <code>Page</code>, when <code>WarningBanner</code> returns null, that only affects its output. It will not affect the output of the button nor the lifecycle methods and events.</p>
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
