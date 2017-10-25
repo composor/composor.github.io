@@ -40,18 +40,197 @@
       <section>
         <div class='tutorial'>
           <h1>Introducing JSX</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="tutorial__intro">The following code has a line of JSX:</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <pre>
+            <code class="language-javascript">
+function Title() {
+  return &lt;h1>This is a Title!&lt;/h1>
+}</code>
+          </pre>
+          
+          <p>JSX is a special syntax for defining markup inside JavaScript. It resembles HTML, but it is not. It is in fact an XML dialect. When libraries that use compile, they pass JSX code to a function that converts it into virtual nodes. These are then used to compare with earlier renders to see if the DOM needs to be updated. Based on the differences, only the parts that changed will be updated. This results in very efficient code. Although their are various hyperscript functions that can be used to define markup in JavaScript, JSX is much more concise. As an advantage, JSX more closely resembles the markup that will be created.</p>
+
+          <p> </p>
+          <h2>Embedding Expressions in JSX</h2>
+          <p>Because JSX is ultimately just JavaScript, you can embed JavaScript expressions in it. In the following example, <code>2 + 2</code>, <code>user.firstName</code>, and <code>formatName(user)</code> are all valid expressions:</p>
+
+            <pre>
+              <code class="language-javascript">
+import {h, Component, render} from 'composi'
+
+function formatName(user) {
+  return user.firstName + ' ' + user.lastName;
+}
+
+const user = {
+  firstName: 'Joe',
+  lastName: 'Bodoni'
+}
+
+const element = (
+  &lt;h1>
+    Hello, {formatName(user)}!
+  &lt;/h1>
+)
+
+render(
+  element,
+  document.getElementById('root')
+)</code>
+            </pre>
+            <p>[Insert Codepen Here]</p>
+            <p>We split the JSX over multiple lines for readability. We also recommend wrapping JSX in parentheses to avoid the pitfalls of automatic semicolon insertion caused by new lines.</p>
+
+            <h2>JSX is an Expression Too</h2>
+            <p>After compilation, JSX expressions become regular JavaScript objects, or virtual dom objects that describe markup.</p>
+
+            <p>That means that you can include JSX inside of if statements and for loops, assign it to variables, accept it as an argument, and return it from functions:</p>
+
+            <pre>
+              <code class="language-javascript">
+import {h, Component, render} from 'composi'
+
+function formatName(user) {
+  return user.firstName + ' ' + user.lastName;
+}
+
+const user = {
+  firstName: 'Joe',
+  lastName: 'Bodoni'
+}
+function greet(user) {
+  if (user) {
+    return &lt;h1>Hello, {formatName(user)}!&lt;/h1>
+  } else {
+    return &lt;h1>Hello, Stranger.&lt;/h1>
+  }
+}
+
+const element = greet(user)
+
+render(
+  element,
+  document.getElementById('root')
+)</code>
+            </pre>
+            <p> </p>
+            <h2>Specifying Attributes with JSX</h2>
+            <p>To specify string literals as attributes, use quotes:</p>
+
+            <pre>
+              <code class="language-javascript">
+const element = &lt;div title="This is a DIV!" tabIndex="0">&lt;/div>;</code>
+            </pre>
+            <p>You can also embed a JavaScript expression between curly braces to create a value for an attribute. When you do so, remember not to use quotes around the JavaScript expression. Otherwise, the expression will get converted to a string and used as the attribute's value:</p>
+
+            <pre>
+              <code class="language-javascript">
+// Use a JavaScript expression for the image src value:
+const element = &lt;img src={user.avatarUrl} />;</code>
+            </pre>
+            <p>Unlike React, Preact and Inferno, which require attribute names to use camel case, with Composi you can use their normal HTML versions. In the following example, notice that all the attributes in the JSX resemble normal HTML attributes:</p>
+
+            <pre>
+              <code class="language-javascript">
+function announce(e) {
+  alert(e.target.textContent)
+}
+function Title() {
+  return (
+    &lt;h1 class='heading' title='This is a title' onclick={announce}>This is a Title&lt;/h1>
+  )
+}
+render(&lt;Title />, document.body)</code>
+            </pre>
+            <p> </p>
+            <h2>JSX Tags Can Have Children</h2>
+            <p>A JSX tag can be single. In such a case it needs to be close with a forward slash:</p>
+
+            <pre>
+              <code class="language-javascript">
+const element = (
+  &lt;img title='My Avatar' src='avatar.png' />
+)</code>
+            </pre>
+            <p>You can also provide a JSX tag with children. When you do so, you insert the children between the parent tag's opening and closing, just like HTML:</p>
+            <pre>
+              <code class="language-javascript">
+const element = (
+  &lt;div>
+    &lt;h1>Hello!&lt;/h1>
+    &lt;h2>Good to see you here.&lt;/h2>
+  &lt;/div>
+)</code>
+            </pre>
+            <p> </p>
+            <h2>JSX Prevents Injection Attacks</h2>
+            <p>JSX automatically encodes any potential script injection code. This helps prevent script injection attacks. It does this by converting all data to strings before rendering it to the DOM.</p>
+
+            <pre>
+              <code class="language-javascript">
+const title = function() {
+  alert('This is a script!')
+}
+class Test extends Component {
+  constructor(props) {
+    super(props)
+    this.root = 'header'
+    this.render = (data) => <h1>{data}</h1>
+  } 
+}
+const test = new Test()
+// When we pass the function title as data to the component,
+// nothing gets output. The component will not render:
+test.update(title)</code>
+            </pre>
+            <p>In the case that the data contained markup, this two will be escaped:</p>
+
+            <pre>
+              <code class="language-javascript">
+const title = '<strong>This is a Title</strong>'
+class Test extends Component {
+  constructor(props) {
+    super(props)
+    this.root = 'header'
+    this.render = (data) => <h1>{data}</h1>
+  } 
+}
+const test = new Test()
+// When we pass the function title as data to the component,
+test.update(title)
+// In this case the component will output a string: "&lt;strong>This is a Title&lt;/strong>".</code> 
+</pre>
+
+        <p> </p>
+        <h2>JSX Represents Objects</h2>
+        <p>When the JSX gets compiled, it is converted into an object that represents the nodes to be created:</p>
+
+        <pre>
+          <code class="language-javascript">
+function header() {
+  return (
+    &lt;h1 class='heading' title='This is the header'>This is the Header!&lt;/h1>
+  )
+}
+const result = header()
+// result will equal:
+{
+  type: "h1", 
+  props: {
+    title: "This is the header!", 
+    class: "header"
+  }, 
+  children: ["This is the Header!"]
+}</code>
+</pre>
+        <p> </p>
+        <h2>dangerouslySetInnerHTML</h2>
+        <p>React has a property, <code>dangerouslySetInnerHTML</code> that allows you to inject unescaped markup into the DOM. This is highly risky since it does enable malicious script injection. Composi does not support this type of code injection.</p>
+
+
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
