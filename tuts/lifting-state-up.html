@@ -39,19 +39,164 @@
     <article class='tutorial__article'>
       <section>
         <div class='tutorial'>
-          <h1>Listing State Up</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <h1>Lifting State Up</h1>
+          <p class="tutorial__intro">A component can have child components that need to share the same state. In order to make that work, we recommend raising the state up to the parent component.</p>
+          <p>To understand how to list state up, we are going to create a temperature calculator that determines whether water would boil or not. It will accept both Celcius and Fahrenheit, converting between them. So, here's are first function:</p>
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
-            </code>
+            <code class="language-javascript">
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return &lt;p>The water will boil.&lt;/p>;
+  }
+  return &lt;p>The water will not boil.&lt;/p>;
+}</code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>The functional component <code>BoilingVerdict</code> will print out whether the temperature would cause water to boil or not. Next we need to create the <code>Calculator</code> component. It will keep track of temperature through <code>this.state.temperature</code>. It will also render the <code>BoilingVerdict</code> component based on the current temperature:</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <pre>
+            <code class="language-javascript">
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return &lt;p>The water will boil.&lt;/p>;
+  }
+  return &lt;p>The water will not boil.&lt;/p>;
+}
+
+class Calculator extends Component {
+  constructor(props) {
+    super(props);
+    this.container = 'section'
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {temperature: ''};
+  }
+
+  handleChange(e) {
+    this.setState({temperature: e.target.value});
+  }
+
+  render() {
+    const temperature = this.state.temperature;
+    return (
+      &lt;fieldset>
+        &lt;legend>Enter temperature in Celsius:&lt;/legend>
+        &lt;input
+          value={temperature}
+          oninput={this.handleChange} />
+        &lt;BoilingVerdict
+          celsius={parseFloat(temperature)} />
+      &lt;/fieldset>
+    );
+  }
+}
+
+const calculator = new Calculator()</code>
+          </pre>
+          <p>A quick FYI for the Americans viewing this. 0&deg; Celcius is the freezing point and 100&deg; Celcius is the boiling point. So, any value less than 100 should show: 'The water would not boil', and any value of 100 or higher should show: 'The water will boil'.</p>
+
+          <h2>A Second Temperature Input</h2>
+          <p>Now we want to add a second input for Fahrenheit. And we want them both synched, so that a change in the value of one will update the value of the other. In order for the two inputs to show the correct values, we'll start off by creating a funcional component to create them:</p>
+
+          <pre>
+            <code class="language-javascript">
+const TemperatureInput = (props) => (
+  &lt;fieldset>
+    &lt;legend>Enter temperature in {scaleNames[props.scale]}:&lt;/legend>
+    &lt;input id={props.scale} value={props.temperature} />
+  &lt;/fieldset>
+)</code>
+          </pre>
+          <p>We can use this functional input as a custom tag in our <code>Calculator</code> component. Because it is a functional component, it has no state. It depends on data being passed to it. We will let the parent component manage state for everyone.</p> 
+          
+          <p>We also need to give our component two new methods to convert between Celcius and Fahrenheight: <code>toCelsius</code> and <code>toFahrenheit</code>. We'll also add a <code>handleEvent</code> method to manage the user input on the two form inputs. With all this in mind, here is our update temperature calculator:</p>
+
+          <pre>
+            <code class="language-javascript">
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+}
+
+function tryConvert(temperature, convert) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
+  }
+  const output = convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return &lt;p>The water would boil.&lt;/p>;
+  }
+  return &lt;p>The water would not boil.&lt;/p>;
+}
+
+const TemperatureInput = (props) => (
+  &lt;fieldset>
+    &lt;legend>Enter temperature in {scaleNames[props.scale]}:&lt;/legend>
+    &lt;input id={props.scale} value={props.temperature} />
+  &lt;/fieldset>
+)
+
+class Calculator extends Component {
+  constructor(props) {
+    super(props);
+    this.root = '#root'
+    this.state = {temperature: 32, scale: 'c', celsius: 0, fahrenheit: 32};
+  }
+  toCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+  }
+  toFahrenheit(celsius) {
+    return (celsius * 9 / 5) + 32;
+  }
+
+  handleEvent(e) {
+    const scale = e.target.id
+    if (scale === 'f') {
+      const temperature = e.target.value
+      if (temperature) {
+        const celsius = tryConvert(temperature, this.toCelsius) || temperature
+        this.setState({celsius: celsius, fahrenheit: temperature})
+      }
+    } else if (scale === 'c') {
+      const temperature = e.target.value
+      if (temperature) {
+        const fahrenheit = tryConvert(temperature, this.toFahrenheit) || temperature
+        this.setState({fahrenheit: fahrenheit, celsius: temperature})
+      }
+    }
+  }
+
+  render(data) {
+    const scale = this.state.scale;
+    const temperature = this.state.temperature;
+
+    return (
+      &lt;div>
+        &lt;TemperatureInput temperature={this.state.celsius} scale='c'/>
+        &lt;TemperatureInput temperature={this.state.fahrenheit} scale='f'/>
+        &lt;BoilingVerdict celsius={this.state.celsius} />
+      &lt;/div>
+    );
+  }
+
+  componentWasCreated() {
+    this.element.addEventListener('input', this)
+  }
+}
+
+const calculator = new Calculator()</code>
+          </pre>
+          <p>Now we have a calculator with two child components sharing the state of their parent. The parent component handle the state of the child components. The child inputs get their values through props. Since the child inputs are dumb, no knowing anything about their parent, we could more easily reuse them elsewhere.</p>
+          <p>We could have written the <code>TemperatureInput</code> component in such a way that each input had state and used event emitters to inform the parent of their change, which would then have to notify the other child. As you can see from that description, that would be convoluted. Raising the state of the child inputs to their parent component relieves this unnecessary complexity and results in an easier to understand and maintain component.</p>
+
+          <h2>Data Show Flow Down</h2>
+          <p>Always keep in mind that with components data show always flow down to their children. The only time you might need some type of event emitter would be where you had to disparate class components that needed to communicate. It can happen. Any <a target='__blank' href='https://www.npmjs.com/search?q=pubsub'>pubsub solution</a> from NPM would be sufficient in such a case.</p>
+
+          <p>&nbsp;</p>  
         </div>
         <aside>
           <menu>
@@ -100,9 +245,6 @@
               </li>
               <li class="tutorials__menu__item">
                 <a href='./composi-without-jsx.html'>Composi Without JSX</a>
-              </li>
-              <li class="tutorials__menu__item">
-                <a href='./redux-mobx.html'>Using Redux or Mobx for State Management</a>
               </li>
             </ul>
           </menu>
