@@ -40,18 +40,313 @@
       <section>
         <div class='tutorial'>
           <h1>State and Lifecycle</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="tutorial__intro">Previously we made a clock that was re-render every second by a <code>setInterval</code> loop. Now we're going to see how to make a component that updates itself automatically using state.</p> 
+
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
+            <code class="language-javascript">
+function tick() {
+  const clock = (
+    &lt;div id='dingo'>
+      &lt;h1>Hello, world!&lt;/h1>
+      &lt;h2>It is {new Date().toLocaleTimeString()}.&lt;/h2>
+    &lt;/div>
   )
+  
+  render(
+    clock,
+    'body'
+  )
+}
+
+setInterval(tick, 1000)
             </code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>In the above example, the <code>tick</code> function is passing the <code>clock</code> element to the <code>render</code> function inside a <code>setInterval</code>. This works, but we can do better by converting it into a case-based component.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <h2>Convert a Function Component into a Class-based One</h2>
+
+          <p>We can easily convert a function component into one the uses the Component class by following these steps:</p>
+
+          <ol>
+            <li>Create an ES6 class with the same name as the functional component that extends Component.</li>
+            <li>Add a single empty method <code>render()</code> to the new class.</li>
+            <li>Move the body of the functional component into the <code>render()</code> method.</li>
+            <li>Replace <code>props</code> with <code>this.props</code> in the <code>render()</code> body.</li>
+            <li>Delete the old, functional component.</li>
+          </ol>
+
+          <p>Following these steps with our clock from above, we get this:</p>
+          <pre>
+            <code class="language-javascript">
+class Clock extends Component {
+  render() {
+    return (
+      &lt;div>
+        &lt;h1>Hello, world!&lt;/h1>
+        &lt;h2>It is {this.props.date.toLocaleTimeString()}.&lt;/h2>
+      &lt;/div>
+    )
+  }
+}</code>
+          </pre>
+          <p>Now we have the basis for a Clock component, but we need to add local state and lifecycle hooks.</p>
+          <h2>Adding Local State to a Class</h2>
+          <p>In order to add local state to the class, we'll first need to give it a constructor. The constructor always needs to come first in a class. Because this is an extension of the Component class, we'll also need to invoke <code>super</code> in the constructor so we can pass the class's props to the Component class. Right after the <code>super</code> call we can add in state. Remember that state in the constructor needs to be attached to the <code>this</code> keyword. And finally, since the class now has state, we don't need to use <code>this.props.date</code> to access the date. Instead we switch that to use the class's state.</p>
+          <p>One more thing about component classes. When we make a functional component and pass it to render, we also pass in a selector for where we want the component to be rendered. For component classes we indicate where we want it render by giving the class a <code>container</code> property. In this case we'll be adding that to the constructor, right after the state:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Clock extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {date: new Date()}
+    this.container = 'body'
+  }
+  render() {
+    return (
+      &lt;div>
+        &lt;h1>Hello, world!&lt;/h1>
+        &lt;h2>It is {this.state.date.toLocaleTimeString()}.&lt;/h2>
+      &lt;/div>
+    )
+  }
+}</code>
+          </pre>
+          <p>Since we now have a class with state, we no longer need to pass it to the <code>render</code> function. Instead we simply create an instance with the <code>new</code> keyword:</p>
+
+          <pre>
+            <code class="language-javascript">
+const clock = new Clock()
+            </code>
+          </pre>
+          <p>When we instantiate our clock as above, it will render in the browser. However, as it is the clock will not update every second. We need a way to know that the component was created and inserted into the document before starting a loop to do so.</p>
+          
+          <h2>Adding Lifecycle Methods to a Class</h2>
+          <p>Class components have five different lifecycle methods that we can use. These hooks let your do something right after your component is created, before or after it is updated, and before it is destroyed. In our case, we want to start an interval loop as soon as the component was create. At the same time, if the component gets unmounted and destroyed, we want a way to end the loop. For this we will need to add <code>componentWasCreated</code> and <code>componentWillUnmount</code> to our class:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Clock extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {date: new Date()}
+    this.container = 'body'
+  }
+  render() {
+    return (
+      &lt;div>
+        &lt;h1>Hello, world!&lt;/h1>
+        &lt;h2>It is {this.state.date.toLocaleTimeString()}.&lt;/h2>
+      &lt;/div>
+    )
+  }
+  // When the component is create,
+  // start the setInterval loop for tick:
+  componentWasCreated() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    )
+  }
+  // When the component is unmounted,
+  // ends the setInterval loop:
+  componentWilUnmount() {
+    clearInterval(this.timerID)
+  }
+}</code></pre>
+          <p>With the lifecycle hooks setup, instanciating a new instance of the clock will cause the loop to kick in, resulting in a clock that updates itself automatically. Using class components with state is a more efficient way of creating component with encapsulated behaviors.</p>
+
+          <h2>Using State Correctly</h2>
+          <p>Although you can in some cases change state directly, it's always better to use <code>setState</code> to do so. When state is a primitive type, such as string, number or boolean, it is possible to set the state directly through assignment:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Hello extends Component {
+  render(name) {
+    return (
+      &lt;h1>Hello, {name}!&lt;h1>
+    )
+  }
+}
+const hello = new Hello()
+// This is alright since it is the inital setting of state:
+hello.state = 'Joe Bodoni'
+
+// Later we may want to change the state.
+// This time we use setState:
+hello.setState('Ellen Vanderbilt')</code>
+          </pre>
+          <p>For objects, we pass in an object with the property and value we want to udpate:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Person extends Component {
+  render(person) {
+    return (
+      &lt;div>
+        &lt;h4>{person.name}&lt;/h4>
+        &lt;h5{person.job}&lt;/h5>
+      &lt;/div>
+    )
+  }
+}
+const person = new Person()
+// Assign state and cause the component to render:
+person.state = {
+  name: 'Sam Anderson',
+  job: 'developer',
+  employer: 'Google'
+}
+
+// Later we realized the employer was wrong,
+// So we need to update it:
+person.setState({employer: 'Apple'})</code>
+          </pre>
+          <p>Notice how to update the <code>employer</code> property, we passed it in as its own small object literal. When you use <code>setState</code> on state that is an object, it performs a mixin where the new property/value replaces the previous one. In the case where the new property/value don't exist on the state object, they get added.</p>
+
+          <h2>Updating an Array</h2>
+          <p>Updating the state when it is an array of primitive types is easy, just give <code>setState</code> the new value, and a number for the index in the array where you want to update the value. If the index is greater than the current number of items in the state array, the new value will be push onto the array as the last item:</p>
+          <pre>
+            <code class="language-javascript">
+// Oops! We have mispelling in the fruit names:
+const fruits = ['Apples', Orangez', 'Bananas', 'Peers]
+class List extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+    // Assign the list of fruits to state:
+    this.state = fruits
+  }
+  render(fruits) {
+    return (
+      &lt;ul>
+        {
+          fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
+        }
+      &lt;/ul>
+    )
+  }
+}
+// Create instance and render list:
+const list = new List()
+
+// Later, we see there are mispellings, so we correct them:
+list.setState('Oranges', 1)
+list.setState('Pears', 3)
+// Then we want to add a new fruit:
+list.setState('Watermelons', list.state.length)</code>
+          </pre>
+          <p> </p>
+          <h2>Updating Array of Objects</h2>
+          <p>Updating component state when it is an array of simple values is easy, provide new value and array index. But when the component state is an array of objects, it is more complicated. In such a case you need to get the entire object at the index, modify the object, and then set that as the new value at the correct index. Looks like at the problem. Suppose we have an array of persons and we assign it to a component instance called <code>personsList</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+const people = [
+  {
+    name: 'Joe Bodoni',
+    job: 'mechanic'
+  },
+  {
+    name: 'Ellen Vanderbilt',
+    job: 'lab technician'
+  },
+  {
+    name: 'Sam Anderson',
+    job: 'developer'
+  }
+]</code>
+          </pre>
+          <p>Say we wanted to change Sam Anderson's job to cook. You might think we could do this:</p>
+          <pre>
+            <code class="language-javascript">
+personsList.setState({job: 'cook'}, 2)
+            </code>
+          </pre>
+          <p>The above will indeed update the job at that index. Unfortunately it will also completely replace the entire person object. That is because when you use <code>setState</code> on an array and pass in the index, behind the scenes Composi is splicing the array. Thus the above operation results in this:</p>
+
+          <pre>
+            <code class="language-javascript">
+const people = [
+  {
+    name: 'Joe Bodoni',
+    job: 'mechanic'
+  },
+  {
+    name: 'Ellen Vanderbilt',
+    job: 'lab technician'
+  },
+  {
+    job: 'developer'
+  }
+]</code>
+  </pre>
+          <p>As you can see, the object at position 2 was replaced with what we passed in. This means that when you have component state that is an array of objects, you need to take a multi-step approach to updating it. There are two ways to do this.</p>
+          <ol>
+            <li>Get the state, extract the object at the index, perform whatever updates you need to on it, and finally set that modified object back on the state at the same index using <code>setState</code>.</li>
+            <li>Pass a callback to <code>setState</code>. In the callback you perform the same operations as above.</li>
+          </ol>
+          <h2>Passing a Callback to setState</h2>
+          <p>The first approach is of course doable, whoever it can be a bit messy. Using the second approach results in more container result. When passing a callback to <code>setState</code>, the component's state gets passed as the argument of the callback. So, using this approach, let's solve the problem of updating Sam's job:</p>
+
+          <pre>
+            <code class="language-javascript">
+peopleList.setState((state) => {
+  // Update Sam's job:
+  state[2].job = 'cook'
+  return state
+})</code>
+          </pre>
+          <p>When using a callback, you must take care to always return the modified state. Not doing so will result in the state not being updated. Returning the modified state will cause the component state to be updated properly.</p>
+
+          <h2>Updates Use requestAnimationFrame</h2>
+          <p>If you have a situation where state can get updated in rapid succession, you might be worried about unnecessary layout thrashing. However, internally Composi performs update with <code>requestAnimationFrame</code>. If even this is too much for you, there are other options to limit how many times state gets set. You could use <a href='https://www.npmjs.com/package/lodash.debounce'  target='__blank'>_.debounce</a> or <a href='https://www.npmjs.com/package/lodash.throttle' target='__blank'>_.throttle</a> from <a href='https://lodash.com' target='__blank'>lodash</a>. You could use these on the event causing state to be set, or use them direction on the code setting state.</p>
+
+          <h2>The Data Flows Down</h2>
+          <p>We alread saw that a component can have child component, and that these are always function components. By their very nature, functional components do not know about their parent, whether it is stateless or stateful. Whatever data a child consumes it gets as props passed down from its parent.</p>
+          <p>To see how this happens, we can take another look at our class component clock example, modified to use a child component:</p>
+
+
+          <pre>
+            <code class="language-javascript">
+function FormattedDate(props) {
+  return &lt;h2>It is {props.date.toLocaleTimeString()}.&lt;/h2>;
+}
+
+class Clock extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {date: new Date()}
+    this.container = 'body'
+  }
+  render() {
+    return (
+      &lt;div>
+        &lt;h1>Hello, world!&lt;/h1>
+        &lt;FormattedDate date={this.state.date} />
+      &lt;/div>
+    )
+  }
+  // When the component is create,
+  // start the setInterval loop for tick:
+  componentWasCreated() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    )
+  }
+  // When the component is unmounted,
+  // ends the setInterval loop:
+  componentWilUnmount() {
+    clearInterval(this.timerID)
+  }
+}</code></pre>
+          <p>Notice how we've create a functional component, <code>FormattedDate</code>. And in the <code>render</code> function we pass it the component state as a prop--<code>data</code>. <code>FormattedDate</code> does not know what the source of its data is. It doesn't matter. It just expects to receive and input.</p>
+          <p>Data always flows down from parent to child. This is called a unidirectional data flow. There is no two-way data binding like some libraries offer. One-way data flow makes it easy to reason about what is happening with a component's data.</p>
+
+          <h2>Summary</h2>
+          <p>State is a powerful way to make your components own their data and react when it changes. But you may prefer states components and use Redux, Mobx or other state management libraries instead.</p>
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
@@ -68,11 +363,11 @@
               <li class="tutorials__menu__item">
                 <a href='./components-n-props.html'>Components and Props</a>
               </li>
-              <li class="tutorials__menu__item">
-                <a href='./conditional-rendering.html'>Conditional Rendering</a>
-              </li>
               <li class="tutorials__menu__item selected">
                 <a href='./state-n-lifecycle.html'>State and Lifecycle</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./conditional-rendering.html'>Conditional Rendering</a>
               </li>
               <li class="tutorials__menu__item">
                 <a href='./handling-events.html'>Handling Events</a>

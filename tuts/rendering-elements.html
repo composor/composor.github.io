@@ -68,14 +68,15 @@ render(element, 'body')</code>
           <pre>
             <code class="language-javascript">
 function tick() {
-  const element = (
-    <div id='dingo'>
+  const clock = (
+    &lt;div id='dingo'>
       &lt;h1>Hello, world!&lt;/h1>
       &lt;h2>It is {new Date().toLocaleTimeString()}.&lt;/h2>
     &lt;/div>
   );
+  
   render(
-    element,
+    clock,
     'body'
   );
 }
@@ -105,10 +106,10 @@ setInterval(tick, 1000)</code>
                 <a href='./components-n-props.html'>Components and Props</a>
               </li>
               <li class="tutorials__menu__item">
-                <a href='./conditional-rendering.html'>Conditional Rendering</a>
+                <a href='./state-n-lifecycle.html'>State and Lifecycle</a>
               </li>
               <li class="tutorials__menu__item">
-                <a href='./state-n-lifecycle.html'>State and Lifecycle</a>
+                <a href='./conditional-rendering.html'>Conditional Rendering</a>
               </li>
               <li class="tutorials__menu__item">
                 <a href='./handling-events.html'>Handling Events</a>

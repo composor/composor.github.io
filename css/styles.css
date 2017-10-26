@@ -696,7 +696,9 @@ footer a:hover {
   margin: 0 3em 2em 0;
 }
 .documentation-page ul,
-.documentation-page ol {
+.documentation-page ol,
+.tutorial-page ul,
+.tutorial-page ol {
   margin: 10px 20px 10px;
 }
 .docs__menu,
