@@ -40,18 +40,307 @@
       <section>
         <div class='tutorial'>
           <h1>Handling Events</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="tutorial__intro">There are two ways to handle events: inline and with the <code>handleEvent</code> interface.</p>
+          <p>Inline events have been around since the birth of JavaScript, and the <code>handleEvent</code> interface was introduced in 2000. It's supported in browsers all the way back to IE6. Inline events are the easy way to get events working fast. However inline events do not enable delegation. That means that if you create a list that has inline events on its items, and there are hundreds or thousands of items, they will eat up a lot of memory. Inline events should only be used for the simplest use case. The <code>handleEvent</code> interface allows you to setup event delegation. You register an event on the component's base element and then use <code>handleEvent</code> to manage what happens with the event targets. This results in minimal memory use.</p>
+          <p>It's surprising that after all these years, the vast majority of developers are unaware of how to use <code>handleEvent</code> and what its benefits are. Developers are addicted to adding event listeners to elements. These you callbacks that are the source of serious memory leaks. This is because callbacks create closures that trap the reference to DOM nodes being manipulated. Even if you remove the event listener from the element, its callback's closure lives on, hold the reference to whatever nodes and objects it has. In contrast, you can implement <code>handleEvent</code> as a method of your class component. Then your have access to all your class properties and methods through normal use of the <code>this</code> keyword. Because you implemented <code>handleEvent</code> as a method of your component, there is no callback and no closure. If you decide to remove the event, there is no cleanup necessary and never any memory leaks.</p>
+
+          <h2>Inline Events</h2>
+          <p>The easiest way to implement events is to put the event handler right on the element where you want to capture the interaction. Unlike other libraries that use JSX, there is no need to camel case inline events. Use them just like you would for JavaScript. However, one important thing to bear in mind. Inline the value of an inline event must never be quoted. Instead that value needs to be inclosed in curly braces. Let's make a  simple class component and add an inline event to alert its value:</p>
+
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
+            <code class="language-javascript">
+class Hello extends Component {
+  constructor(props) {
+    super(props)
+    this.state = 'Joe Bodoni'
+  }
+  render(name) {
+    return (
+      &lt;h1 onclick={this.announce}>Hello, {name}!&lt;/h1>
+    )
+  }
+  announce(e) {
+    alert(e.target.textContent)
+  }
+}
+
+const hello = new Hello()</code>
+          </pre>
+          <p>In our above example we did two things. We create a method to handle the event, <code>announce</code>. And we put an online event handler directingly on the element we expect the user to click, in this case, the <code>h1</code>. Notice that we use the <code>this</code> keyword to access the component method inside the event handler. Now whenever the user clicks, they'll get an alert of the text of the <code>h1</code>. The above example was very simple, we just used the event target to get the text content. If we need to access over parts of the component, it get's more complicate.</p>
+          <h2>Binding "This"</h2>
+          <p>We're going to change our Hello example so that the user can enter a different name. For that we'll need to add an input and a button to submit:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Title extends Component {
+  constructor(props) {
+    super(props)
+    this.state = 'Joe Bodoni'
+  }
+  render(name) {
+    return (
+      &lt;div>
+        &lt;h1>Hello, {name}!&lt;/h1>
+        &lt;p>
+          &lt;input type='text' /> &lt;button onclick={this.announce}>Change Name&lt;/button>
+        &lt;/p>
+      &lt;/div>
+    )
+  }
+  announce() {
+    const input = this.element.querySelector('input')
+    const value = input.value
+    if (value) {
+      this.setState(value)
+    }
+  }
+}
+
+const title = new Title()</code>
+          </pre>
+          <p>In this example, we've moved the <code>onclick</code> inline event handler to the button. We expect that when the user enters a name in the input and clicks the button, that it will execute the component's <code>announce</code> method. However, this is not working. Why?</p>
+
+          <h2>Inline Events and Context</h2>
+          <p>The above example does not work because the scope of the inline event is the element that was clicked. That means for the inline event the value of <code>this</code> will be the button, not the component. We can verify this by logging the value of <code>this</code> in the <code>announce</code> method:</p>
+
+          <pre>
+            <code class="language-javascript">
+announce() {
+  console.log(this)
+  const input = this.element.querySelector('input')
+  const value = input.value
+  if (value) {
+    this.setState(value)
+  }
+}</code>
+          </pre>
+          <p>When you click the button, you'll see that the method outputs <code>&lt;button>Change Name&lt;/button></code> in the browser console. In order to give the inline event the context of the component, we'll need to change our code. There are two ways to do this: using <code>bind(this)</code> on the inline event, or simply enclosing the inline event in an arrow function. First let's look at using <code>bind</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+&lt;button onclick={this.announce.bind(this)}>Change Name&lt;/button></code>
+          </pre>
+          <p>Notice how we pass <code>this</code> to the click handler using <code>bind</code>. Doing this solves our problem and our example will now work. The <code>announce</code> method can now access the component state because its reference to <code>this</code>is correct.</p>
+
+          <h2>Move Bind to the Constructor</h2>
+          <p>Some of you may really hate the cluttered look of <code>bind(this)</code> on your inline events. There is annother way to do this, and that is to bind the component method in the constructor. To do this your put the method you want to bind there and assign it the bound version. Below is our example updated with this approach:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Title extends Component {
+  constructor(props) {
+    super(props)
+    this.state = 'Joe Bodoni'
+    // Bind the method "announce":
+    this.announce = this.announce.bind(this)
+  }
+  render(name) {
+    return (
+      &lt;div>
+        &lt;h1>Hello, {name}!&lt;/h1>
+        &lt;p>
+          &lt;input type='text' /> &lt;button onclick={this.announce}>Change Name&lt;/button>
+        &lt;/p>
+      &lt;/div>
+    )
+  }
+  announce() {
+    const input = this.element.querySelector('input')
+    const value = input.value
+    if (value) {
+      this.setState(value)
+    }
+  }
+}
+
+const title = new Title()</code>
+</pre>
+
+          <p>With this change, our example now works and our online event is clean.</p>
+
+          <h2>Use Arrow Function for Context</h2>
+          <p>If you don't like having to bind your methods in the constructor, you could just use an arrow function in the inline event handler. Inside the arrow function you invoke the component method,. Because this happens inside the arrow function, the method has the scope of the component. Here's how you do that:</p>
+
+          <pre>
+            <code class="language-javascript">
+&lt;button onclick={() => this.announce()}>Change Name&lt;/button></code>
+          </pre>
+          <p>Notice that we changed the event handler so that the arrow function returns <code>this.announce()</code>. And that's it. The example now works as expected.</p>
+
+          <h2>Summary</h2>
+          <p>When using inline events you have three ways of getting the component scope. This is purely user preference. There is no difference in result or unexpected gotchas with any of the three.</p>
+
+          <h2>handleEvent</h2>
+
+          <p>Besides inline events, you can also use the more powerful <code>handleEvent</code> interface. We prefer this over inline events for the following reasons:</p>
+          <ol>
+            <li>It results in cleaner component markup--no inline events.</li>
+            <li>Event delegation. Really important when handling events on items of long list.</li>
+            <li>No callbacks! Everything is a component method.</li>
+            <li>No memory leaks caused by callback closure.</li>
+            <li>One centralized place to handle all of the component's events</li>
+            <li>Easy to remove or modify events.</li>
+            <li>No binding issues with "this". The scope will be the class.</li>
+          </ol>
+
+          <h2>What the Heck is handleEvent?</h2>
+          <p>The TL:DR is, it's a replacement for event callbacks. Instead of writing a callback for the event, you pass it an object with a <code>handleEvent</code> method. When the browser sees that your provided an object for an event, it checks to see if there is a <code>handleEvent</code> method. If there is, it uses that for the event. When using this interface with a class component, we give the component a method called <code>handleEvent</code> and then pass the component itself to the event. That way the event examines the component class, finds the <code>handleEvent</code> method and uses that. Because the <code>handleEvent</code> is a method of component class, it has access to all the properties and methods of the class.</p>
+
+          <p>Time to refactor our <code>Hello</code> component using <code>handleEvent</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Title extends Component {
+  constructor(props) {
+    super(props)
+    this.state = 'Joe Bodoni'
+  }
+  render(name) {
+    return (
+      <div>
+        <h1>Hello, {name}!</h1>
+        <p>
+          <input type='text' /> <button onclick={() => this.announce()}>Change Name</button>
+        </p>
+      </div>
+    )
+  }
+  handleEvent(e) {
+    e.target.nodeName === 'BUTTON' && this.announce()
+  }
+  announce() {
+    const input = this.element.querySelector('input')
+    const value = input.value
+    if (value) {
+      this.setState(value)
+    }
+  }
+}
+
+const title = new Title()</code>
+          </pre>
+          <p>Our class now has a <code>handleEvent</code> method. Because it will be invoked by the event, it gets the event object as its parameter. We can use that to check what it was the user clicked. Since we want to capture a click on the button, we check the event target node name. If it equals "BUTTON", we execute the <code>announce</code> method. In the example above we are using the &amp;&amp; operator to set up a conditional check. You can read more about usig it in the tutorial for <a target='__blank' href='./conditional-rendering.html'>Conditional Rendering</a>.</p>
+
+          <h2>Use a Lifecycle Hook to Add Event</h2>
+          <p>Although we have a <code>handleEvent</code> method on our component, click the button does nothing. Remember, <code>handleEvent</code> is a replacement for the event callback. To work, <code>handleEvent</code> needs an <code>addEventListener</code> registered on the component. We can do that using a lifecycle hook. The one to use for this is <code>componentWasCreated</code>. As soon as the component is injected in the DOM we want to attach an event to it to use our <code>handleEvent</code> method:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Title extends Component {
+  constructor(props) {
+    super(props)
+    this.state = 'Joe Bodoni'
+  }
+  render(name) {
+    return (
+      &lt;div>
+        &lt;h1>Hello, {name}!&lt;/h1>
+        &lt;p>
+          &lt;input type='text' /> &lt;button onclick={() => this.announce()}>Change Name&lt;/button>
+        &lt;/p>
+      &lt;/div>
+    )
+  }
+  handleEvent(e) {
+    e.target.nodeName === 'BUTTON' && this.announce()
+  }
+  announce() {
+    const input = this.element.querySelector('input')
+    const value = input.value
+    if (value) {
+      this.setState(value)
+    }
+  }
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+}
+
+const title = new Title()
             </code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>Notice how we set up the event listener in the <code>componentWasCreated</code> hook. We designated a <code>click</code> event, and then we passed in <code>this</code> instead of a callback. Here <code>this</code> is the class itself. This means the scope of the <code>handleEvent</code> method will be the class itself, giving us access to all its properties and methods from inside the <code>handleEvent</code> method. There will be no weird binding issues like inline events.</p>
+          <p>We registered the <code>addEventListener</code> on the component's <code>element</code>. For a component the <code>element</code> property is the base parent element of all the other child elements. In the case of our <code>Hello</code> class, that will be the div tag. Because the click event is registered on the div, we can use the event target in the <code>handleEvent</code> method to test for many possible interactions. This gives use the ability to handle user interactions through event delegation in with a simple pattern of testing the event target, followed by <code>&amp;&amp;</code> and the class method to execute.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <h2>Event Delegation</h2>
+          <p>Event delegation is an important technique to reduce memory use. In out above example we handle it fairly simply, mostly because there was only one event target to test for. In a complex component your might have many event targets. In such a case you need to add a test for each target you are interested in. To make that easier you might want to use ids or classes to be more specific:</p>
+
+          <pre>
+            <code class="language-javascript">
+handleEvent(e) {
+  const id = e.target.id
+  e === 'add-item' &amp;&amp; this.addItem()
+  e === 'remove-item' &amp;&amp; this.removeItem()
+}</code>
+          </pre>
+          <p>By registering the click event on the component base element, we can test for as many event targets as we need.</p>
+
+          <h2>Dealing with Nested Children</h2>
+          <p>All the parents out there will probably sigh in agreement with the next state. Managing children can be complicated. We're talking about capturig the correct event target when dealing with a complex component stucture. To illustrate this, let's image we have a component that creates a list with list items like the following:</p>
+
+          <pre>
+            <code class="language-javascript">
+&lt;li>
+  &lt;h4>{person.name}&lt;/h4>
+  &lt;h5>{person.job}&lt;/h5>
+&lt;/li></code>
+          </pre>
+          <p>We want to capture a user click on the list item so we can alert the text content of the list item. You would think that we could do this:</p>
+
+          <pre>
+            <code class="language-javascript">
+handleEvent(e) {
+  e.target.nodeName === 'LI' && this.announce(e)
+}
+announce(e) {
+  alert(e.target.textContent)
+}</code>
+          </pre>
+          <p>If you implement a component list with this event handling, you will find that its behavior is not consistent. Most of the time when you click on the list item, it does nothing, but sometimes when you click somewhere inbetween the child element, you get the announcement. What is going on here is that we are testing for an event target of <code>LI</code>. Most of the time you would be clicking on click components, either <code>h4</code> or <code>h5</code>. Therefore these would not be caught by our target check. To handle this we could update our code like this:</p>
+
+          <pre>
+            <code class="language-javascript">
+handleEvent(e) {
+  e.target.nodeName === 'LI' && this.announce(e)
+  e.target.nodeName === 'H4' && this.announce(e)
+  e.target.nodeName === 'H5' && this.announce(e)
+}
+announce(e) {
+  alert(e.target.textContent)
+}</code>
+          </pre>
+          <p>With this change, you can now click anywhere on the list item and you will get the announcement. However, this is ugly, and not necessary. There is an easier way.</p>
+
+          <h2>Use Closest for Event Delegation</h2>
+          <p>Modern browsers have an Element method called <code>closest</code>. If you've used jQuery in the past, this works exactly the same as the jQuery function <code>closest</code>. You execute it on an element and pass it a selector to find the closest match. As we mentioned, this is available in modern browsers. For older browsers that lack it, Composi includes a polyfill to provide this. The polyfill is quite small, so it doesn't effect the overall size of Composi. We included it because it makes event delegation so much easier. Let's use <code>closest</code> to clean up our last example:</p>
+
+          <pre>
+            <code class="language-javascript">
+handleEvent(e) {
+  e.target.nodeName === 'LI' && this.announce(e)
+  e.target.closest('li') && this.announce(e)
+}
+announce(e) {
+  alert(e.target.textContent)
+}</code>
+          </pre>
+          <p>Now this list item can have as many child element as needed without complicating handling the event target.</p>
+
+          <h2>Removing the Event for handleEvent</h2>
+          <p>If you plan on deleting a component from the DOM, you need to unbind its eventListener. This is really easy when you use <code>handleEvent</code>. Just provide the event and <code>this. Composi provides a method to remove a component: <code>unmount</code>. To remove the event and unmount the component, we could do this:</code></p>
+          <pre>
+            <code class="language-javascript">
+// Remove the event listener from the component component.
+// We used handleEvent, so we pass "this" as second argument:
+clock.element.removeEventListener('click', this)
+// Unmount the component:
+clock.unmount()</code>
+          </pre>
+          <p></p>
+
+
+          
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
