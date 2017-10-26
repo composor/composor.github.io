@@ -40,18 +40,130 @@
       <section>
         <div class='tutorial'>
           <h1>Lists and Keys</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="tutorial__intro">Composi lets you use normal JavaScript to convert an array of items into a list.</p>
+          <p>The prefered way to create a list is to use <code>map</code> on the array:</p>
+
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
+            <code class="language-javascript">
+const listItems = ['One','Two','Three', 'Four', 'Five']
+class List extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+    this.state = listItems
+  }
+  render(listItems) {
+    // Use map to output indivudal list items:
+    return (
+      &lt;ul class='list'>
+        {
+          listItems.map(item => &lt;li>{item}&lt;/li>)
+        }
+      &lt;/ul>
+    )
+  }
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Rendering List Items Separately</h2>
+          <p>You can create use <code>map</code> on an array to create list items. This will make our code a bit cleaner. In that case it doesn't make sense for our component to have state:</p>
+
+          <pre>
+            <code class="language-javascript">
+const listItems = ['One','Two','Three', 'Four', 'Five']
+
+// Create list items from listItems:
+const items = listItems.map(item => &lt;li>{item}&lt;/li>)
+
+class List extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+  }
+  render() {
+    // Use items created from array:
+    return (
+      &lt;ul class='list'>
+        {items}
+      &lt;/ul>
+    )
+  }
+}</code>
+          </pre>
+          <p>The above works. If you don't like create the list items outside the class, you could move it inside the <code>render</code> function but before the <code>return</code> statement.</p>
+
+          <h2>Keys</h2>
+          <p>When you have a list created by a component, you may need to re-order them. When Composi deals with lists, it uses its virtual dom to see how to path the DOM. The nature of lists makes it very difficult to actually identify what needs to be changed in an efficient manner, resulting in whole scale re-rendering of a list. You can eliminate this problem by using keys on your lists. Keys are just unique values for each item in the list. <strong>Note:</strong> You should never use the array index as keys. This is because if you change the order of the array items, the index values remain the same. This makes the keys useless for discerning what has changed. Key values only need to be unique to the array being parsed.</p>
+          <p>You use keys by having a key value exist in the array you are using. And then you output that key value on each list item. You could import a uuid module from NPM, or you could come up with your own function to create a unique id. We'll do that with our list example from above:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Function to create key:
+function uid() {
+  return Math.floor(Math.random() * 10000000 + Math.random() * 1000)
+}
+const listItems = [
+  {
+    'value: One',
+    key: uid()
+  },
+  {
+    'value: Two',
+    key: uid()
+  },
+  {
+    'value: Three',
+    key: uid()
+  }, 
+  {
+    'value: Four',
+    key: uid()
+  }, 
+  {
+    'value: Five',
+    key: uid()
+  }
+]
+class List extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+    this.state = listItems
+  }
+  render(listItems) {
+    // Use map to output indivudal list items:
+    // Output key value on each list item:
+    return (
+      &lt;ul class='list'>
+        {
+          listItems.map(item => &lt;li key={item.key}>{item.value}&lt;/li>)
+        }
+      &lt;/ul>
+    )
+  }
+}
             </code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>When you give list items a key property, this does not get rendered to the DOM. It only gets create on the virtual dom elements. The diff and patch algorythm can use those key values to determine what changed in the list and update it efficiently.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <h2>Bad Practices</h2>
+          <p>As we already mentioned, it is a bad practice to use the array indeces as keys. These are useless when trying to determine a list whose item order has changed. Another bad practice is creating a key value directly on the list item. In our case, we could use our <code>uid</code> function on each list item:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Bad practice - creating key on list item when it is created:
+return (
+  &lt;ul class='list'>
+    {
+      listItems.map(item => &lt;li key={uid()}>{item.value}&lt;/li>)
+    }
+  &lt;/ul>
+)</code>
+          </pre>
+          <p>The problem with the above approach is each time the <code>render</code> function gets called, new key values get produced. This means the new virtual dom for the list will not match the previous version. This will for the patch algorythm to completely re-render the list. Very wasteful. It is simple better to have the key values exist on the data.</p>
+
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
@@ -100,6 +212,9 @@
               </li>
               <li class="tutorials__menu__item">
                 <a href='./composi-without-jsx.html'>Composi Without JSX</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./redux-mobx.html'>Using Redux or Mobx for State Management</a>
               </li>
             </ul>
           </menu>

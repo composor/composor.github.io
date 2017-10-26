@@ -50,16 +50,14 @@ function tick() {
       &lt;h1>Hello, world!&lt;/h1>
       &lt;h2>It is {new Date().toLocaleTimeString()}.&lt;/h2>
     &lt;/div>
-  )
-  
+  ) 
   render(
     clock,
     'body'
   )
 }
 
-setInterval(tick, 1000)
-            </code>
+setInterval(tick, 1000)</code>
           </pre>
           <p>In the above example, the <code>tick</code> function is passing the <code>clock</code> element to the <code>render</code> function inside a <code>setInterval</code>. This works, but we can do better by converting it into a case-based component.</p>
 
@@ -344,8 +342,47 @@ class Clock extends Component {
           <p>Notice how we've create a functional component, <code>FormattedDate</code>. And in the <code>render</code> function we pass it the component state as a prop--<code>data</code>. <code>FormattedDate</code> does not know what the source of its data is. It doesn't matter. It just expects to receive and input.</p>
           <p>Data always flows down from parent to child. This is called a unidirectional data flow. There is no two-way data binding like some libraries offer. One-way data flow makes it easy to reason about what is happening with a component's data.</p>
 
+          <h2>State in Class Instatiation</h2>
+          <p>Instead of assigning state in the class constructor, you can provide it as a property in the class instantiation. In that case you would not need to have a state assignment in the constructor. Taking our above clock example, we we get rid of its constructor and define its state and container in the class instantiation:</p>
+
+          <pre>
+            <code class="language-javascript">
+function FormattedDate(props) {
+  return &lt;h2>It is {props.date.toLocaleTimeString()}.&lt;/h2>;
+}
+
+class Clock extends Component {
+  render() {
+    return (
+      &lt;div>
+        &lt;h1>Hello, world!&lt;/h1>
+        &lt;FormattedDate date={this.state.date} />
+      &lt;/div>
+    )
+  }
+  // When the component is create,
+  // start the setInterval loop for tick:
+  componentWasCreated() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    )
+  }
+  // When the component is unmounted,
+  // ends the setInterval loop:
+  componentWilUnmount() {
+    clearInterval(this.timerID)
+  }
+}
+
+const clock = new Clock({
+  container: 'body',
+  state: {date: new Date()}
+})</code></pre>
+          <p>Our class is now a bit clearner without the constuctor and we can provide the container and state when we create a new component instance. Providing the container and state during instantiation allows you to create multiple instances of a component in different places in the DOM and with different state.</p>
+
           <h2>Summary</h2>
-          <p>State is a powerful way to make your components own their data and react when it changes. But you may prefer states components and use Redux, Mobx or other state management libraries instead.</p>
+          <p>State is a powerful way to make your components own their data and react when it changes. But you may prefer stateless components and use Redux, Mobx or other state management libraries instead. Check out the docs about <a target='__blank' href=''>how to use</a> Redux and Mobx with Composi.</p>
           <p>&nbsp;</p>
         </div>
         <aside>
@@ -395,6 +432,9 @@ class Clock extends Component {
               </li>
               <li class="tutorials__menu__item">
                 <a href='./composi-without-jsx.html'>Composi Without JSX</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./redux-mobx.html'>Using Redux or Mobx for State Management</a>
               </li>
             </ul>
           </menu>

@@ -127,10 +127,14 @@ const comment = {
     avatarUrl: 'http://placekitten.com/g/144/144'
   }
 };
-render(&lt;Comment
-    date={comment.date}
-    text={comment.text}
-    author={comment.author} />, 'body')</code>
+render(
+  &lt;Comment 
+    date={comment.date} 
+    text={comment.text} 
+    author={comment.author} 
+  />, 
+  'body'
+)</code>
           </pre>
           <p>This component is too complicate, so we are going to see how to break it down into smaller pieces. This is tricky because we need to pass data down to the child elements.</p>
 
@@ -252,6 +256,53 @@ function withdraw(account, amount) {
           </pre>
           <p>You should strive to make components act like pure functions with respect to their props. Of course, UI applications are dynamic and have user interactions. To handle these you can create stateful components. State allows components to change their output over time or due to user interaction without violating the pinciple of purity.</p>
 
+          <h2>Component Container</h2>
+          <p>Normally when you define a component, you also designate the container in the DOM where you want the component to render. You usually put it in the class constructor:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Hello extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+  }
+  render(name) {
+    return (
+      &lt;h1>Hello, {name}!&lt;/h1>
+    )
+  }
+}
+const hello = new Hello({
+  state: 'Joe'
+})</code>
+          </pre>
+          <p>However, if you wanted to be able to render a component in different containers, you would leave it out and provide it as an argument in the component instantiation:</p>
+
+          <pre>
+            <code class="language-javascript">
+class Hello extends Component {
+  render(name) {
+    return (
+      &lt;h1>Hello, {name}!&lt;/h1>
+    )
+  }
+}
+// Create first hello in header tag:
+const hello1 = new Hello({
+  container: 'header',
+  state: 'Joe'
+})
+
+// Create second hello in a section tag:
+const hello2 = new Hello({
+  container: 'section',
+  state: 'Susan'
+})</code>
+          </pre>
+          
+          <p> </p>
+          <h2>No Container</h2>
+          <p>It is possible to define a class component without providing a <code>container</code>. In such a case the component will be rendered in the body tag. If you will have no HTML shell in your document, you can use this technique to render you components. However, this is not a good practice. It means that when your document loads, the user may at first see nothing until the component renders. And if there is a JavaScript error, the user will get a blank page. Not good. It's therefore always best to provide a basic HTML shell into which you render you components. Always give your components a <code>container</code>.</p>
 
           <p>&nbsp;</p>
         </div>
@@ -302,6 +353,9 @@ function withdraw(account, amount) {
               </li>
               <li class="tutorials__menu__item">
                 <a href='./composi-without-jsx.html'>Composi Without JSX</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./redux-mobx.html'>Using Redux or Mobx for State Management</a>
               </li>
             </ul>
           </menu>
