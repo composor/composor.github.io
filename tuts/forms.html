@@ -40,18 +40,164 @@
       <section>
         <div class='tutorial'>
           <h1>Forms</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="tutorial__intro">Forms are different from other HTML elements. They keep track of their state through properties such as <code>value</code>, <code>checked</code>, etc.</p>
+          <p>As an example, let's use the following form. We're going to want to keep track of the value of the input when the user types:</p>
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
+            <code class="language-html">
+&lt;form>
+  &lt;label>
+    Name:&lt;input type="text">
+  &lt;/label>
+  &lt;input type="submit" value="Submit">
+&lt;/form></code>
+          </pre>
+
+          <p>We will need to create the form with the <code>render</code> function of a class component. We'll track the input changes with an inline event for now. We'll give the <code>form</code> element a <code>onsubmit</code> event handler.</p>
+
+          <pre>
+            <code class="language-javascript">
+class NameForm extends Component {
+  constructor(props) {
+    super(props);
+    this.container = 'section'
+    this.state = {value: ''};
+
+    // Bind the inline events:
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
+  }
+
+  handleSubmit(e) {
+    alert('A name was submitted: ' + this.state.value);
+    e.preventDefault();
+  }
+
+  render() {
+    return (
+      &lt;form onsubmit={this.handleSubmit}>
+        &lt;label>
+          Name:
+          &lt;input type="text" value={this.state.value} onchange={this.handleChange} />
+        &lt;/label>
+        &lt;input type="submit" value="Submit" />
+      &lt;/form>
+    );
+  }
+}
+
+const form = new NameForm()</code>
+          </pre>
+          <p>Now the state of the form is owned by the component. As the user enters data in the input, it value is being set on the component's state. This keeps the component state insynch with the form at all times.</p>
+          <p>You can use this same technique on textareas, checkboxes, radio buttons, etc. to keep track of their state in a component.</p>
+
+          <h2>The Select Tag</h2>
+          <p>This one is a bit tricky. That's because its selection is determined by the value of its <code>selectedIndex</code> property. Let's look at the follow example where are form has a select tag. We want to render it with a default value other than the first options. We want it to render showing Coconut" as the selection:</p>
+
+          <pre>
+            <code class="language-javascript">
+class FlavorForm extends Component {
+  constructor(props) {
+  
+    super(props);
+    this.container = 'section'
+    this.state = {value: 'coconut'};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
+  }
+
+  handleSubmit(e) {
+    alert('Your favorite flavor is: ' + this.state.value);
+    e.preventDefault();
+  }
+
+  render() {
+    return (
+      &lt;form onsubmit={this.handleSubmit}>
+        &lt;label>
+          Pick your favorite La Croix flavor:
+          &lt;select value={this.state.value} onchange={this.handleChange}>
+            &lt;option value="grapefruit">Grapefruit&lt;/option>
+            &lt;option value="lime">Lime&lt;/option>
+            &lt;option value="coconut">Coconut&lt;/option>
+            &lt;option value="mango">Mango&lt;/option>
+          &lt;/select>
+        &lt;/label>
+        &lt;input type="submit" value="Submit" />
+      &lt;/form>
+    );
+  }
+}
+
+const flavorForm = new FlavorForm()</code>
+          </pre>
+          <p>We've set the default value as "coconut" in the state assignment in the class constructor. With this you would expect to see that as the choice when the component renders. However, that is not what happens. The select tag renders showing the first option: "Grapefuit". However, if we click on the button, it alerts "Your favorite flavor is: coconut". Just what we would expect. Why isn't the correct selection showing. That's because of the select tag's property of <code>selectedIndex</code>. That property determines what option is shown.</p>
+
+          <h2>What Went Wrong</h2>
+          <p>So why doesn't this work? Because of how we rendered the select tag. Rendering it with a value does not cause the <code>selectedIndex</code> to be set. Normally, if you set the value of a select tag, that will trigger setting the correct <code>selectedIndex</code> value. In this case, there was no setting of the value. We rendered the select tag to the DOM with the value. That's why we can alert the value.</p>
+
+          <h2>Call in the LifeCycle Hook!</h2>
+          <p> If you want to show a selection other than the default first option, you will need to do so right after the component is create. For this you can take advantage of the component's lifecylcy hook: <code>componentWasCreate</code>. You can use that to set the value of the select:</p>
+
+          <pre>
+            <code class="language-javascript">
+componentWasCreated() {
+  // Set the value of the component's select tag, 
+  // after the component was created:
+  this.element.querySelector('select').value = this.state.value
+}
             </code>
           </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>When we add the above method to the component, the select tag renders showing the default value of "Coconut". Setting the select tag's state in the <code>componentWasCreated</code> hook causes the <code>selectedIndex</code> value to also be set. Problem solved.</p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <h2>Setting Default Values</h2>
+          <p>You can also use the <code>componentWasCreate</code> lifecycle hook to set the default values on form elements. Remember, you can easily query any child elements in a component through its <code>this.element</code> property, just as we did above to get the select tag.</p>
+
+          <h2>Handling a Form with Many Inputs</h2>
+          <p>If a form has a lot of inputs, trying to keep tract of all of them in your component's state can be difficult. In such a case you want to take another route. Don't bother trying to control the form state with the component state. Let the form be. Instead, at submit time, gather up all the form inputs and then set them to the form's state.</p>
+          <p>Let's take our previous example of <code>NameForm</code> and make it work without tracking the input value. Instead we'll just get the value of the input and use that. We can get the input through the component's <code>element</code> property. We do a query on it for the input, and then get its value:</p>
+
+          <pre>
+            <code class="language-javascript">
+class NameForm extends Component {
+  constructor(props) {
+    super(props);
+    this.container = 'section'
+    this.state = ''
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(e) {
+    // Directly access the text input and its value:
+    alert('A name was submitted: ' + this.element.querySelector('#name').value);
+    e.preventDefault();
+  }
+
+  render() {
+    return (
+      &lt;form onsubmit={this.handleSubmit}>
+        &lt;label>
+          Name:
+          &lt;input id='name' type="text" />
+        &lt;/label>
+        &lt;input type="submit" value="Submit" />
+      &lt;/form>
+    );
+  }
+}
+const form = new NameForm()</code>
+          </pre>
+          <p></p>
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
