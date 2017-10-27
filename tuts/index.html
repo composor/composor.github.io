@@ -41,16 +41,18 @@
         <div class='tutorial'>
           <h1>Hello World</h1>
           <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+
+          <blockquote>The mandatory "Hello World" example. Below is the simplest use of Composi to out a Hello world message to the document. It's using the <code>render</code> function and some JSX. The second argument, <code>section</code>, is the tag in the DOM in which we want to render this component.</blockquote>
           <pre>
             <code class='language-jsx'>
   render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
+    &lt;h1>Hello, world!&lt;/h1>, 'section'
   )</code>
           </pre>
-          <p>We will gradually show you how to use Composi. You will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p>Through these tutorials we will gradually show you how to use Composi. You will learn how to create components. This will enable you to build complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
 
           <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <p>We will be using ES6 (ECMAScript 2015) throughout the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
           <p>&nbsp;</p>
         </div>
         <aside>

@@ -70,7 +70,7 @@ hello.update('Joe Bodoni')</code>
           <p>In the above two examples, the result of the function component and class-based component are identical. Class-based component offer more functionality to create complex components.</p>
 
           <h2>Composing Components</h2>
-          <p>A component can contain other components. A functional component can have other functional components as children. A class-based component can have functional components as childre. However, a class-based component cannot have other class-based components as its children. </p>
+          <p>A component can contain other components. A functional component can have other functional components as children. A class-based component can have functional components as children. However, a class-based component cannot have another class-based components as its children. Composi does not encourage creating a giant app with one overruling component that renders your entire app of many child components. Do not build components that have deeply nested trees of descendent components. Instead, break your app down into smaller, independent components. If they do need to communicate, you can use any pubsub library for that.</p>
 
           <p>Here's an example of a functional component with other functional components as its children:</p>
 
