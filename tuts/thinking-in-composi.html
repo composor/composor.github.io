@@ -43,6 +43,794 @@
           <p class="tutorial__intro">Composi is a great tool for creating complex Web apps with JavaScript. It's flexible and versitile, working well with third party libraries and frameworks</p>
 
           <p>Because of its emphasis on components, it forces you to think about the structure of your app as you build it: functional component, class-based component, data flowing down, stateless components or stateful components.</p>
+          <p>To show how to tackle a project with Composi, we're going to walk through building a spreadsheet from scratch. It's going to be a simple spreadsheet, just so you can see the steps we take to implement it.</p>
+
+          <h2>Start With A Mockup</h2>
+          <p>Always start with a mockup of what it is you want to build. It might be a simple sketch on paper, or a Photoshop file from a graphic design. Work with whatever you have at hand. Don't try to create a mockup of every possible feature. Start with the basic. For our spreadsheet, we're keeping it basic. Here's what we want to build:</p>
+          <p><img src="../images/spreadsheet-1.png" alt="Basic spreadsheet we want to build."></p>
+
+          <h2>Identify the Component Hierarchy</h2>
+          <p>With the mockup in hand, you need to look at it and analyze the parts that need to be built. The main part will be the parent component that encompases everything in the mockup. After that, there's a spreadsheet component, and another one to add a new row. The best way to identify the parts is to draw color rectangles around them. Notice how we identify parts in the next image:</p>
+
+          <p><img src="../images/spreadsheet-3.png" alt="Basic spreadsheet we want to build."></p>
+          <p>Here's what we see as the the parts based on rectangle colors:</p>
+
+          <ul>
+            <li>Orange: the parent component</li>
+            <li>Green: a component that adds a new row to the spreadsheet</li>
+            <li>Blue: a component that implements spreadsheet functionality</li>
+            <li>Red: a component that creates the table header for the spreadsheet</li>
+            <li>Violet: a component that creates the individual spreadsheet rows</li>
+            <li>Yellow: a component that creates the sum of all the spreadsheet cells of price and quantity</li>
+          </ul>
+
+          <p>We can clarify the component hierarchy by representing it as a tree:</p>
+          
+          <div class='spreadsheet--tree'>
+            <ul>
+              <li>SpreadSheetComponent
+                <ul>
+                  <li>SpreadSheet
+                    <ul>
+                      <li>TableHeader</li>
+                      <li>TableRow</li>
+                      <li>TableFooter</li>
+                    </ul>
+                  </li>
+                  <li>AddNewRow</li>
+                </ul>
+              </li>
+            </ul>
+          </div> 
+
+          <p> </p>
+          <h2>Build a Static Version with Composi</h2>
+          <p>The best way to started is to create the main component and have it build the static markup for the entire component. Later, based on the hierarchy we established above, we will break it down in separate sub-components and use composition to assemble them together.</p>
+          <p>First things first, we need the markup. We'll start with the shell. Since it has two main parts, we'll use an unorder list with two list items. We're going to use a bit of <a target='__blank' href='http://getbem.com/introduction/'>BEM</a> for class and to make the styling easier:</p>
+
+          <pre>
+            <code class="language-html">
+&lt;ul class='list--spreadsheet'>
+  &lt;li class='list--spreadsheet__item'>&lt;/li>
+  &lt;li class='list--spreadsheet__item'>&lt;/li>
+&lt;/ul></code>
+          </pre>
+          <p>The first list item with hold the <code>SpreadSheet</code> component. The second list item will hold <code>AddNewRow</code>. For now, we're going to create the <code>AddNewRow</code> markup, because it's easier:</p>
+          <pre>
+            <code class="language-html">
+&lt;ul class='list--spreadsheet'>
+  &lt;li class='list--spreadsheet__item'>&lt;/li>
+  &lt;li class='list--spreadsheet__item'>
+    &lt;div id='newRowForm'>
+      &lt;p>
+        &lt;label for="product">Product: &lt;/label>
+        &lt;input name='product' id='product' type="text" tabindex='1' />
+      &lt;/p>
+      &lt;p>
+        &lt;label for="price">Price: &lt;/label>
+        &lt;input name='price' id='price' type="text" tabindex='2' />
+      &lt;/p>
+      &lt;p>
+        &lt;label for="quantity">Quantity: &lt;/label>
+        &lt;input name='quantity' id='quantity' type="text" tabindex='3' />
+      &lt;/p>
+      &lt;p>
+        &lt;button id='addRow'>Add Row&lt;/button>
+      &lt;/p>
+    &lt;/div>
+  &lt;/li>
+&lt;/ul></code>
+          </pre>
+          <p>Now let's tackle that spreadsheet. We've got three parts to make: the table header, the table body row and the footer with the sum in it:</p>
+
+          <pre>
+            <code class="language-html">
+&lt;table id='spreadsheet'>
+  &lt;!-- Table Header -->
+  &lt;tr>
+    &lt;th>Product&lt;/th>
+    &lt;th>Price&lt;/th>
+    &lt;th>Quantity&lt;/th>
+    &lt;th>Total&lt;/th>
+    &lt;th>&lt;/th>
+  &lt;/tr>
+  &lt;!-- Table Body Row -->
+  &lt;tr>
+    &lt;td>&lt;/td>
+    &lt;td>
+      &lt;input class='price' type='number' min='0' value='0'/>
+    &lt;/td>
+    &lt;td>
+      &lt;input class='quantity' type='number' min='0' value='0'/>
+    &lt;/td>
+    &lt;td>
+      &lt;span class='total'>&lt;/span>
+    &lt;/td>
+    &lt;td>
+      &lt;button class='list__item__button--delete'>X&lt;/button>
+    &lt;/td>
+  &lt;/tr>
+  &lt;!-- Table Footer -->
+  &lt;tfoot>
+    &lt;tr>
+      &lt;td colspan='3'>Sum:&lt;/td>
+      &lt;td colspan='2'>
+        &lt;span class='total'>&lt;/span>
+      &lt;/td>
+    &lt;/tr>
+  &lt;/tfoot>  
+&lt;/table></code>
+          </pre>
+          <p>Of course the table markup will be inserted in the first list item. When we load this in a browser, we should see something like this:</p>
+
+          <p><img src="../images/spreadsheet-4.png" alt="Basic spreadsheet we want to build."></p>
+
+          <p>As you can see, we now have basic structure, but no data. We'll need some mock data for the first render and were going with fruits:</p>
+
+          <pre>
+            <code class="language-javascript">
+const fruitData = [
+  {
+    product: 'Apple',
+    price: 1.50,
+    quantity: 5
+  },
+  {
+    product: 'Orange',
+    price: 1.00,
+    quantity: 7
+  },
+  {
+    product: 'Banana',
+    price: .90,
+    quantity: 3
+  }, {
+    product: 'Peach',
+    price: 1.10,
+    quantity: 0
+  }
+]</code>
+          </pre>
+          <p> </p>
+          <h2>Creating A Basic Component</h2>
+          <p>Time to make the component. We're first going to implement the render function that creates the previous markup, then we'll add in variables to output our mock data. So, without further ado:</p>
+
+          <pre>
+            <code class="language-javascript">
+class SpreadSheetComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+  }
+
+  render(rows) {
+    return (
+      &lt;ul class='list--spreadsheet'>
+        &lt;li class='list--spreadsheet__item'>
+          &lt;table id='spreadsheet'>
+            &lt;tr>
+              &lt;th>Product&lt;/th>
+              &lt;th>Price&lt;/th>
+              &lt;th>Quantity&lt;/th>
+              &lt;th>Total&lt;/th>
+              &lt;th>&lt;/th>
+            &lt;/tr>
+            &lt;tr>
+              &lt;td>&lt;/td>
+              &lt;td>
+                &lt;input class='price' type='number' min='0' value='0'/>
+              &lt;/td>
+              &lt;td>
+                &lt;input class='quantity' type='number' min='0' value='0'/>
+              &lt;/td>
+              &lt;td>
+                &lt;span class='total'>&lt;/span>
+              &lt;/td>
+              &lt;td>
+                &lt;button class='list__item__button--delete'>X&lt;/button>
+              &lt;/td>
+            &lt;/tr>
+            &lt;tfoot>
+              &lt;tr>
+                &lt;td colspan='3'>Sum:&lt;/td>
+                &lt;td colspan='2'>
+                  &lt;span class='total'>&lt;/span>
+                &lt;/td>
+              &lt;/tr>
+            &lt;/tfoot>
+          &lt;/table>
+        &lt;/li>
+        &lt;li class='list--spreadsheet__item'>
+          &lt;div id='newRowForm'>
+            &lt;p>
+              &lt;label for="product">Product: &lt;/label>
+              &lt;input name='product' id='product' type="text" tabindex='1' />
+            &lt;/p>
+            &lt;p>
+              &lt;label for="price">Price: &lt;/label>
+              &lt;input name='price' id='price' type="text" tabindex='2' />
+            &lt;/p>
+            &lt;p>
+              &lt;label for="quantity">Quantity: &lt;/label>
+              &lt;input name='quantity' id='quantity' type="text" tabindex='3' />
+            &lt;/p>
+            &lt;p>
+              &lt;button id='addRow'>Add Row&lt;/button>
+            &lt;/p>
+          &lt;/div>
+        &lt;/li>
+      &lt;/ul>
+    )
+  }
+}
+const spreadsheet = new SpreadSheetComponent()
+spreadsheet.update()</code>
+          </pre>
+          <p>This gives us a functioning component rendering a state shell. We need to update it to use the data, <code>fruitData</code>. Also note, that forth column with the header of "Total" needs to show the total for that row. We'll need to do some math when we render the row to print the total for that row. The total will be the item price times the item qunatity. We can access them as we did in their cells. One last thing, because both price and total represent currency, we what to make sure the numerical value always has a decimal followed by two decimal places. We can do that by using <code>.toFixed(2)</code> on the value.</p>
+
+          <pre>
+            <code class="language-javascript">
+// Loop over array of fruits,
+// printing each row:
+{
+  rows.map(row => (
+    &lt;tr>
+      &lt;td>{row.product}&lt;/td>
+      &lt;td>
+        &lt;!-- Use "toFixed(2)" on price -->
+        &lt;input class='price' type='number' min='0' value={row.price.toFixed(2)}/>
+      &lt;/td>
+      &lt;td>
+        &lt;input class='quantity' type='number' min='0' value={row.quantity}/>
+      &lt;/td>
+      &lt;td>
+        &lt;!-- Multiple quantity x price for total and format with "toFixed(2)" -->
+        &lt;span class='total'>${(row.price * row.quantity).toFixed(2)}&lt;/span>
+      &lt;/td>
+      &lt;td>
+        &lt;button class='list__item__button--delete'>X&lt;/button>
+      &lt;/td>
+    &lt;/tr>
+  ))
+}
+            </code>
+          </pre>
+          <p>With this change, our complete component should look like this:</p>
+
+          </pre>
+          <p> </p>
+          <h2>Creating A Basic Component</h2>
+          <p>Time to make the component. We're first going to implement the render function that creates the previous markup, then we'll add in variables to output our mock data.</p>
+
+          <pre>
+            <code class="language-javascript">
+class SpreadSheetComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+  }
+
+  render(rows) {
+    return (
+      &lt;ul class='list--spreadsheet'>
+        &lt;li class='list--spreadsheet__item'>
+          &lt;table id='spreadsheet'>
+            &lt;tr>
+              &lt;th>Product&lt;/th>
+              &lt;th>Price&lt;/th>
+              &lt;th>Quantity&lt;/th>
+              &lt;th>Total&lt;/th>
+              &lt;th>&lt;/th>
+            &lt;/tr>
+            {
+              rows.map(row => (
+                &lt;tr>
+                  &lt;td>{row.product}&lt;/td>
+                  &lt;td>
+                    &lt;!-- Use "toFixed(2)" on price -->
+                    &lt;input class='price' type='number' min='0' value={row.price.toFixed(2)}/>
+                  &lt;/td>
+                  &lt;td>
+                    &lt;input class='quantity' type='number' min='0' value={row.quantity}/>
+                  &lt;/td>
+                  &lt;td>
+                    &lt;!-- Multiple quantity x price for total and format with "toFixed(2)" -->
+                    &lt;span class='total'>${(row.price * row.quantity).toFixed(2)}&lt;/span>
+                  &lt;/td>
+                  &lt;td>
+                    &lt;button class='list__item__button--delete'>X&lt;/button>
+                  &lt;/td>
+                &lt;/tr>
+              ))
+            }
+            &lt;tfoot>
+              &lt;tr>
+                &lt;td colspan='3'>Sum:&lt;/td>
+                &lt;td colspan='2'>
+                  &lt;span class='total'>&lt;/span>
+                &lt;/td>
+              &lt;/tr>
+            &lt;/tfoot>
+          &lt;/table>
+        &lt;/li>
+        &lt;li class='list--spreadsheet__item'>
+          &lt;div id='newRowForm'>
+            &lt;p>
+              &lt;label for="product">Product: &lt;/label>
+              &lt;input name='product' id='product' type="text" tabindex='1' />
+            &lt;/p>
+            &lt;p>
+              &lt;label for="price">Price: &lt;/label>
+              &lt;input name='price' id='price' type="text" tabindex='2' />
+            &lt;/p>
+            &lt;p>
+              &lt;label for="quantity">Quantity: &lt;/label>
+              &lt;input name='quantity' id='quantity' type="text" tabindex='3' />
+            &lt;/p>
+            &lt;p>
+              &lt;button id='addRow'>Add Row&lt;/button>
+            &lt;/p>
+          &lt;/div>
+        &lt;/li>
+      &lt;/ul>
+    )
+  }
+}
+const spreadsheet = new SpreadSheetComponent()
+spreadsheet.update()</code>
+          </pre>
+
+          <p>This gives us the following:</p>
+          <p><img src="../images/spreadsheet-5.png" alt="Basic spreadsheet we want to build."></p>
+
+          <h2>Add Total Sum</h2>
+          <p>That footer is missing the total price of all rows. For that we need to add a function and then call it in our footer:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Function to sum up rows:
+function sumUp(rows) {
+  let total = 0
+  rows.forEach((row) => {
+    total += row.price * row.quantity
+  })
+  return total
+}
+// Updated footer:
+&lt;tfoot>
+  &lt;tr>
+    &lt;td colspan='3'>Sum:&lt;/td>
+    &lt;td colspan='2'>
+      &lt;span class='total'>${sumUp(rows).toFixed(2)}&lt;/span>
+    &lt;/td>
+  &lt;/tr>
+&lt;/tfoot></code>
+          </pre>
+          <p>This will now ouput the sum of all rows in the footer. Notice that we also added a <code>$</code> right before the sum.</p>
+
+          <h2>Add New Row</h2>
+          <p>Next let's make it so the user can add a new item. We need to be able to capture the item name, as well as its price and quantity. We'll need to provide a defalt value of 0 in case the user doesn't bother providing a price or quantity. When we add the new item, we want the spreadsheet to show it. We also want the sum to reflex the new row's values. That means we need to add the new item to the spreadsheet's state.</p>
+          <p>Adding a new item will require a user interaction. For that we will need an event on the button to submit the new values. We'll use the <code>handleEvent</code> interface and the <code>componentWasCreated</code> hook to set that up. We'll call the new method, <code>addNewRow</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+addNewRow(e) {
+  // Get the value of the inputs:
+  const productInput = this.element.querySelector('#product')
+  const priceInput = this.element.querySelector('#price')
+  const quantityInput = this.element.querySelector('#quantity')
+  const product = productInput.value
+  // Set default values for price and quantity:
+  const price = Number(priceInput.value) || 0
+  const quantity = Number(quantityInput.value) || 0
+  // Set inputs back to empty:
+  productInput.value = ''
+  priceInput.value = ''
+  quantityInput.value = ''
+  // Get the component state:
+  const state = this.state
+  // Check if user entered a product name:
+  if (product) {
+    // Update component state with new product:
+    state.push({product, price, quantity})
+    this.state = state
+  } else {
+    // User hit Add button without entering product:
+    alert('Please provide a product name before trying to add a row.')
+  }
+}
+// And set up an event to capture button click:
+componentWasCreated() {
+  this.element.addEventListener('click', this)
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Updating Price and Quantity</h2>
+          <p>Next we want to be able to update the price or quantity of a row item. Since those are input tags, we'll also need to add another event listener for type <code>input</code> in our <code>componentWasCreated</code> hook. We'll also need two more methods: <code>updatePrice</code> and <code>updateQuantity</code>.</p>
+
+          <p>In order to make the rows editable, we need a way to associate each row with the corresponding index of the state array. We can do that by printing the array index on the interactive elements. We'll use the <code>data-index</code> attribute on those elements. Here's our updated code for the table cells. Notice the new attribute <code>data-index</code> on the price input, quantity input and button:</p>
+
+          <pre>
+            <code class="language-javascript">
+{
+  rows.map(row => (
+    &lt;tr>
+      &lt;td>{row.product}&lt;/td>
+      &lt;td>
+        &lt;!-- Use "toFixed(2)" on price -->
+        &lt;input class='price' data-index={idx} type='number' min='0' value={row.price.toFixed(2)}/>
+      &lt;/td>
+      &lt;td>
+        &lt;input class='quantity' data-index={idx} type='number' min='0' value={row.quantity}/>
+      &lt;/td>
+      &lt;td>
+        &lt;!-- Multiple quantity x price for total and format with "toFixed(2)" -->
+        &lt;span class='total'>${(row.price * row.quantity).toFixed(2)}&lt;/span>
+      &lt;/td>
+      &lt;td>
+        &lt;button data-index={idx} class='list__item__button--delete'>X&lt;/button>
+      &lt;/td>
+    &lt;/tr>
+  ))
+}</code>
+          </pre>
+
+          <p>Now we can procede with adding the new methods to update price and quantity to our component:</p>
+
+          <pre>
+            <code class="language-javascript">
+updateQuantity(e) {
+  // Get the array index stored on the input.
+  // With that we can update the state.
+  const index = e.target.dataset.index
+  const value = Number(e.target.value)
+  const state = this.state
+  state[index].quantity = value
+  this.state = state
+}
+
+updatePrice(e) {
+  // Get the array index stored on the input.
+  // With that we can update the state.
+  const index = e.target.dataset.index
+  const value = Number(e.target.value)
+  const state = this.state
+  state[index].price = value
+  this.state = state
+}</code>
+          </pre>
+          <p>Then we need to update the <code>componentWasCreated</code> hook and the <code>handleUpdate</code> method:</p>
+          <pre>
+            <code class="language-javascript">
+handleEvent(e) {
+  e.target.id === 'addRow' && this.addNewRow(e)
+  e.target.className === 'list__item__button--delete' && this.deleteRow(e)
+  e.target.className === 'quantity' && this.updateQuantity(e)
+  e.target.className === 'price' && this.updatePrice(e)
+}
+
+componentWasCreated() {
+  this.element.addEventListener('click', this)
+  this.element.addEventListener('input', this)
+}</code>
+          </pre>
+          <p>With these changes, we can now increase or decrease the price or quantity and see the row total and the spreadsheet sum update in real time. Now we're only missing one thing, and that's next.</p>
+
+          <h2>Deleting a Row</h2>
+          <p>Each row has a delete button. This is so you can delete a row if you want. When this happens, the component state should update, showing the row is missing. Tapping the delete button should not delete the element from the DOM, like you would with jQuery. Instead it needs to remove the associated data from the component state. That in itself will cause the component to re-render without the deleted data.</p>
+          <p>When the user clicks the delete button, we need to know what index in the state array should be deleted. Earlier we had the same problem with know what index to update when modifying price and quantity. We used the <code>data-index</code> property to store the array index. When we did that, we also put that property on the row's delete button. So, we can now use that to now which index to delete. We will therefore add a new method to our button to handle deletion:</p>
+
+          <pre>
+            <code class="language-javascript">
+deleteRow(e) {
+  const index = e.target.dataset.index
+  console.log(index)
+  const state = this.state
+  state.splice(index, 1)
+  this.state = state
+}
+            </code>
+          </pre>
+
+          <p>We also need to update the <code>handleEvent</code> method:</p>
+          <pre>
+            <code>
+handleEvent(e) {
+  e.target.id === 'addRow' && this.addNewRow(e)
+  e.target.className === 'list__item__button--delete' && this.deleteRow(e)
+  e.target.className === 'quantity' && this.updateQuantity(e)
+  e.target.className === 'price' && this.updatePrice(e)
+}</code>
+          </pre>
+          <p>With this our spreadsheet is complete. The spreadsheet will render its default data, we can add new items to it, we can update an item's price or quantity and the total and sum will update as well. And we can delete a row from the spreadsheet, causing the total and sum to update.</p>
+
+          <h2>Breaking It Down</h2>
+          <p>Now we can begin breaking the component down into smaller pieces. We'll start with the easy parts, the table header and the Add Row form. Since they are simple, we'll make them function components that we can use in our component as custom tags:</p>
+
+          <pre>
+            <code class="language-javascript">
+function TableHeader() {
+  return (
+    &lt;tr>
+      &lt;th>Product&lt;/th>
+      &lt;th>Price&lt;/th>
+      &lt;th>Quantity&lt;/th>
+      &lt;th>Total&lt;/th>
+      &lt;th>&lt;/th>
+    &lt;/tr>
+  )
+}
+
+function AddNewRow() {
+  return (
+    &lt;li class='list--spreadsheet__item'>
+      &lt;div id='newRowForm'>
+        &lt;p>
+          &lt;label for="product">Product: &lt;/label>
+          &lt;input name='product' id='product' type="text" tabindex='1' />
+        &lt;/p>
+        &lt;p>
+          &lt;label for="price">Price: &lt;/label>
+          &lt;input name='price' id='price' type="text" tabindex='2' />
+        &lt;/p>
+        &lt;p>
+          &lt;label for="quantity">Quantity: &lt;/label>
+          &lt;input name='quantity' id='quantity' type="text" tabindex='3' />
+        &lt;/p>
+        &lt;p>
+          &lt;button id='addRow'>Add Row&lt;/button>
+        &lt;/p>
+      &lt;/div>
+    &lt;/li>
+  )
+}
+
+// Updated render function:
+render(rows) {
+  return (
+    &lt;ul class='list--spreadsheet'>
+      &lt;li class='list--spreadsheet__item'>
+        &lt;table id='spreadsheet'>
+          &lt;TableHeader/>
+          {
+            rows.map(row => (
+              &lt;tr>
+                &lt;td>{row.product}&lt;/td>
+                &lt;td>
+                  &lt;!-- Use "toFixed(2)" on price -->
+                  &lt;input class='price' type='number' min='0' value={row.price.toFixed(2)}/>
+                &lt;/td>
+                &lt;td>
+                  &lt;input class='quantity' type='number' min='0' value={row.quantity}/>
+                &lt;/td>
+                &lt;td>
+                  &lt;!-- Multiple quantity x price for total and format with "toFixed(2)" -->
+                  &lt;span class='total'>${(row.price * row.quantity).toFixed(2)}&lt;/span>
+                &lt;/td>
+                &lt;td>
+                  &lt;button class='list__item__button--delete'>X&lt;/button>
+                &lt;/td>
+              &lt;/tr>
+            ))
+          }
+          &lt;tfoot>
+            &lt;tr>
+              &lt;td colspan='3'>Sum:&lt;/td>
+              &lt;td colspan='2'>
+                &lt;span class='total'>&lt;/span>
+              &lt;/td>
+            &lt;/tr>
+          &lt;/tfoot>
+        &lt;/table>
+      &lt;/li>
+      &lt;AddNewRow/>
+    &lt;/ul>
+  )
+}</code>
+          </pre>
+          <p>Hopefully you can see where we are going with this. Rather then step through the rest, we'll just show you the final solution, finely broken down into subcomponents. This implemented the principles of composition and props for data flowing down. The subcomponents are dumb in that they do not know about their parent. They do not even know if their parent is stateful or stateless. The get their data passed down through props.</p>
+          <pre>
+            <code class="language-javascript">
+const fruitData = [
+  {
+    product: 'Apple',
+    price: 1.50,
+    quantity: 5
+  },
+  {
+    product: 'Orange',
+    price: 1.00,
+    quantity: 7
+  },
+  {
+    product: 'Banana',
+    price: .90,
+    quantity: 3
+  }, {
+    product: 'Peach',
+    price: 1.10,
+    quantity: 0
+  }
+]
+
+function sumUp(rows) {
+  let total = 0
+  rows.forEach((row) => {
+    total += row.price * row.quantity
+  })
+  return total
+}
+
+function TableHeader() {
+  return (
+    &lt;tr>
+      &lt;th>Product&lt;/th>
+      &lt;th>Price&lt;/th>
+      &lt;th>Quantity&lt;/th>
+      &lt;th>Total&lt;/th>
+      &lt;th>&lt;/th>
+    &lt;/tr>
+  )
+}
+
+function TableRow({row, idx}) {
+  return (
+    &lt;tr>
+      &lt;td>{row.product}&lt;/td>
+      &lt;td>
+        &lt;input class='price' data-index={idx} type='number' min='0' value={row.price.toFixed(2)}/>
+      &lt;/td>
+      &lt;td>
+        &lt;input class='quantity' data-index={idx} type='number' min='0' value={row.quantity}/>
+      &lt;/td>
+      &lt;td>
+        &lt;span class='total'>${(row.price * row.quantity).toFixed(2)}&lt;/span>
+      &lt;/td>
+      &lt;td>
+        &lt;button data-index={idx} class='list__item__button--delete'>X&lt;/button>
+      &lt;/td>
+    &lt;/tr>
+  )
+}
+
+function TableFooter({rows}) {
+  return (
+    &lt;tfoot>
+      &lt;tr>
+        &lt;td colspan='3'>Sum:&lt;/td>
+        &lt;td colspan='2'>
+          &lt;span class='total'>${sumUp(rows).toFixed(2)}&lt;/span>
+        &lt;/td>
+      &lt;/tr>
+    &lt;/tfoot>
+  )
+}
+
+function NewRowForm() {
+  return (
+    &lt;div id='newRowForm'>
+      &lt;p>
+        &lt;label for="product">Product: &lt;/label>
+        &lt;input name='product' id='product' type="text" tabindex='1' />
+      &lt;/p>
+      &lt;p>
+        &lt;label for="price">Price: &lt;/label>
+        &lt;input name='price' id='price' type="text" tabindex='2' />
+      &lt;/p>
+      &lt;p>
+        &lt;label for="quantity">Quantity: &lt;/label>
+        &lt;input name='quantity' id='quantity' type="text" tabindex='3' />
+      &lt;/p>
+      &lt;p>
+        &lt;button id='addRow'>Add Row&lt;/button>
+      &lt;/p>
+    &lt;/div>
+  )
+}
+
+function SpreadSheet({rows}) {
+  return (
+    &lt;li class='list--spreadsheet__item'>
+      &lt;table id='spreadsheet'>
+        &lt;TableHeader/>
+        {
+          rows.map((row, idx) => (
+            &lt;TableRow {...{row, idx}}/>
+          ))
+        }
+        &lt;TableFooter {...{rows}}/>
+      &lt;/table>
+    &lt;/li>
+  )
+}
+
+function AddNewRow() {
+  return (
+    &lt;li class='list--spreadsheet__item'>
+      &lt;NewRowForm/>
+    &lt;/li>
+  )
+}
+
+class SpreadSheetComponent extends Component{
+  constructor(props) {
+    super(props)
+    this.container = 'section'
+    this.state = fruitData
+  }
+
+  render(rows) {
+    return (
+      &lt;ul class='list--spreadsheet'>
+        &lt;SpreadSheet {...{rows}}/>
+        &lt;AddNewRow/>
+      &lt;/ul>
+    )
+  }
+
+  addNewRow(e) {
+    const productInput = this.element.querySelector('#product')
+    const priceInput = this.element.querySelector('#price')
+    const quantityInput = this.element.querySelector('#quantity')
+    const product = productInput.value
+    const price = Number(priceInput.value) || 0
+    const quantity = Number(quantityInput.value) || 0
+    productInput.value = ''
+    priceInput.value = ''
+    quantityInput.value = ''
+    const state = this.state
+    if (product) {
+      state.push({product, price, quantity})
+      this.state = state
+    } else {
+      alert('Please provide a product name before trying to add a row.')
+    }
+  }
+
+  deleteRow(e) {
+    const index = e.target.dataset.index
+    console.log(index)
+    const state = this.state
+    state.splice(index, 1)
+    this.state = state
+  }
+
+  updateQuantity(e) {
+    const index = e.target.dataset.index
+    const value = Number(e.target.value)
+    const state = this.state
+    state[index].quantity = value
+    this.state = state
+  }
+
+  updatePrice(e) {
+    const index = e.target.dataset.index
+    const value = Number(e.target.value)
+    const state = this.state
+    state[index].price = value
+    this.state = state
+  }
+
+  handleEvent(e) {
+    e.target.id === 'addRow' && this.addNewRow(e)
+    e.target.className === 'list__item__button--delete' && this.deleteRow(e)
+    e.target.className === 'quantity' && this.updateQuantity(e)
+    e.target.className === 'price' && this.updatePrice(e)
+  }
+
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+    this.element.addEventListener('input', this)
+  }
+}
+const spreadsheet = new SpreadSheetComponent()</code>
+          </pre>
+          <p> </p>
+          <h2>Tip</h2>
+          <p>After the first stage of creating a component, start breaking out subcomponents with the simplest parts first. When a subcomponent is still complex, break it into smaller parts gradually, one piece at at time, not all at once. That way if there is an error, it will be easier for you to find the cause.</p>
+
+          <h2>Inheritance vs Composition</h2>
+          <p>Composi offers a powerful class-based Component for building interfaces. And you do so by extending it. This is classical inheritance, common in all object oriented programming languages. The point is that you take a base object and extend it to add new properties and methods. In face the browser's DOM works this way. At the same time, Composi encourages the use of composition to make it complex component's more manageable. Extending the Component class one level is fine. Taking that extension and extending it again to add more featues is not a good strategy. Instead, look at how composition can let you create the complex hierarchies you need.</p>
 
 
           <p>&nbsp;</p>

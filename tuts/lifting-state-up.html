@@ -193,8 +193,8 @@ const calculator = new Calculator()</code>
           <p>Now we have a calculator with two child components sharing the state of their parent. The parent component handle the state of the child components. The child inputs get their values through props. Since the child inputs are dumb, no knowing anything about their parent, we could more easily reuse them elsewhere.</p>
           <p>We could have written the <code>TemperatureInput</code> component in such a way that each input had state and used event emitters to inform the parent of their change, which would then have to notify the other child. As you can see from that description, that would be convoluted. Raising the state of the child inputs to their parent component relieves this unnecessary complexity and results in an easier to understand and maintain component.</p>
 
-          <h2>Data Show Flow Down</h2>
-          <p>Always keep in mind that with components data show always flow down to their children. The only time you might need some type of event emitter would be where you had to disparate class components that needed to communicate. It can happen. Any <a target='__blank' href='https://www.npmjs.com/search?q=pubsub'>pubsub solution</a> from NPM would be sufficient in such a case.</p>
+          <h2>Data Should Flow Down</h2>
+          <p>Always keep in mind that with components, data should always flow down to their children. The only time you might need some type of event emitter would be where you had two disparate class components that needed to communicate with each other. It can happen. Any <a target='__blank' href='https://www.npmjs.com/search?q=pubsub'>pubsub solution</a> from NPM would be sufficient in such a case.</p>
 
           <p>&nbsp;</p>  
         </div>

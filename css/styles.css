@@ -729,5 +729,16 @@ footer a:hover {
 .tutorials__menu__item.selected {
   background-color: #ddd;
 }
+.spreadsheet--tree {
+  display: inline-block;
+  background-color: #f9f9f9;
+  border: solid 1px #ccc;
+  padding: 10px;
+}
+.spreadsheet--tree li {
+  font-size: 2rem;
+  font-weight: 300;
+  padding: 5px;
+}
 
 /* End Tutorials */
