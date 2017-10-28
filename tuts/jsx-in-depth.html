@@ -40,18 +40,261 @@
       <section>
         <div class='tutorial'>
           <h1>JSX in Depth</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
+          <p class="tutorial__intro">JSX is just JavaScript. It just happens to look like HTML. A JSX tag is a function that creates an HTML tag with attributes and children.</p> 
+          <p>Let's take an example:</p>
           <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
+            <code class="language-javascript">
+// functional component:
+function Title(title) {
+  return (
+    <h1 title='The title'>{title}</h1>
   )
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+}
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+// The functional component as a custom JSX tag:
+&lt;Title {Hello, world!}/>
+
+// The same tag as a hyperscript function:
+h('h1', {title: 'The title'}, 'Hello, world!')
+
+// The tag produces the following virtual node:
+{
+  type: "h1", 
+  props: {title: "The title"}, 
+  children: ["Hello, world!"]
+}
+
+// The virtual node gets converted into a DOM node:
+&lt;h1>Hello, world!&lt;/h1></code>
+          </pre>
+          <p>JSX is just a simplier way to represent the DOM nodes your component needs to create. Because it is JavaScript, you can use it with normal JavaScript expressions to evaluate and parse the data that you need to display.</p>
+
+          <h2>Composition</h2>
+          <p>Although you can define simple JSX tags, the real strength of JSX is that it lets you you simple JSX elements combined together to create more complex ones. These parts can even be in separate files, allowing for their reuse through your app or in other apps.</p>
+
+          <p>As an example of composition, let's create a dialog box. We are going to start with the dialog itself, which is just the border around the content:</p>
+
+          <pre>
+            <code class="language-javascript">
+function FancyBorder(props) {
+  console.log(props)
+  return (
+    &lt;div class='FancyBorder FancyBorder-blue'>&lt;/div>
+  )
+}
+// Inject the dialog in the document:
+render(&lt;FancyBorder />)</code>
+          </pre>
+          <p>We'll update this to allow the user to pass in the color as a prop:</p>
+
+          <pre>
+            <code class="language-javascript">
+function FancyBorder(props) {
+  console.log(props)
+  return (
+    &lt;div class={'FancyBorder FancyBorder-' + props.color}>&lt;/div>
+  )
+}
+// Inject the dialog in the document:
+render(
+  &lt;FancyBorder color="blue" />,
+  'body'
+)</code>
+          </pre>
+          <p>So, now we have a very basic function component. But we want to be able to render it with a child component. Here is the child:</p>
+
+          <pre>
+            <code class="language-javascript">
+function DialogMessage() {
+  return (
+    &lt;div>
+      &lt;h1 class="Dialog-title">Welcome&lt;/h1>
+      &lt;p class="Dialog-message">Thank you for visiting our spacecraft!&lt;/p>
+    &lt;/div>
+  )
+}</code>
+          </pre>
+          <p>Now, the question is, how can we get the child component into the dialog box? As you saw above, we passed the color to the dialog box as a prop. We can do the same with our child component. Since <code>FancyBorder</code> is already set up to receive props, we just need to provide one for the child component. We'll call that prop <code>children</code>:</p>
+
+          <pre>
+            <code class="language-javascript">
+function FancyBorder(props) {
+  console.log(props)
+  return (
+    &lt;div class={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    &lt;/div>
+  )
+}</code>
+          </pre>
+          <p>With the <code>FancyBorder</code> component set to capture a <code>children</code> prop, we can pass in our <code>DialogMessage</code> component when we render <code>FancyBorder</code>:</p>
+          <pre>
+            <code class="language-javascript">
+// Pass DialogMessage as a children prop:
+render(
+  &lt;FancyBorder color="blue" children={DialogMessage()}>&lt;/FancyBorder>,
+  'body'
+)</code>
+          </pre>
+          <p>This now produces the effect we want. Through composition we are able to add child components to other components to build more complex solutions.</p>
+
+          <h2>Composition with Class Components</h2>
+          <p>We can use this same technique with class components. We are going to show how to use composition of JSX functional components to create a class component. We are going to start with the same <code>FancyBorder</code> component we made earlier:</p>
+          <pre>
+            <code class="language-javascript">
+function FancyBorder(props) {
+  console.log(props)
+  return (
+    &lt;div class={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    &lt;/div>
+  )
+}</code>
+          </pre>
+          <p>We'll use this as the base for our new component. We want to have a dialog where the user can enter a name, and after tapping a button, gets a greeting. By the way, this will be a signup for the Mars Exploration Program.</p>
+
+          <h2>Issues to Deal With</h2>
+          <p>Because we are going to be passing props down from a class component to child components that are function, there will be some wrapping of the props at each level. Kind of annoying, but its what JSX does in this situation. Therefore we will need to use <code>.props</code> to get at values in places where you would expect too.</p>
+          <p>Here's the basic setup for our class component:</p>
+          <pre>
+            <code class="language-javascript">
+class SignUpDialog extends Component {
+  constructor(props) {
+    super(props);
+    this.container = 'section'
+    this.state = {
+      login: '',
+      title:"Mars Exploration Program",
+      message:"How should we refer to you?"
+    }
+  }
+
+  render(props) {
+    return (
+      &lt;FancyBorder color='blue' children={dialogChildren(props, this)} />
+    );
+  }
+}</code>
+          </pre>
+          <p>So, we have a class component that returns our <code>FancyBorder</code> component, while passing it props for <code>color</code> and <code>children</code>. Notice how <code>dialogChildren</code> is get passed props and <code>this</code>. That will pass a reference of the class component down to the children so they have access to the parent's properties. In particular we want to expose the parent's state and event methods to the children.</p>
+
+          <p>We'll need a component to create the default title and greetign for the dialog. We'll call that component <code>Dialog</code>. We'll also need a component to be the form where the user enters there name an taps a button to submit it. We'll call that <code>FormInputs</code>. Then we'll create a function called <code>dialogChildren</code> which will combine these to. We'll pass this function to the <code>FancyBorder</code> component as its <code>children</code> prop. And, we will add some methods and events to make name submission work. Here is the complete solution:</p>
+
+          <pre>
+            <code class="language-javascript">
+function FancyBorder(props) {
+  return (
+    &lt;div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    &lt;/div>
+  );
+}
+
+function Dialog(c) {
+  return (
+    &lt;div>
+      &lt;h1 class="Dialog-title">
+        {c.props.title}
+      &lt;/h1>
+      &lt;p class="Dialog-message">
+        {c.props.message}
+      &lt;/p>
+    &lt;/div>
+  )
+}
+function FormInputs(c) {
+  return (
+    &lt;div>
+      &lt;input value={c.props.state.login} onchange={c.props.handleChange} />
+      &lt;button onclick={c.props.handleSignUp}>Sign Me Up!&lt;/button>
+    &lt;/div>
+  )
+}
+
+// Return dialog children inside Fancy Frame component:
+function dialogChildren(props, c) {
+  return (
+    &lt;div>
+      &lt;Dialog props={props}/>
+      &lt;FormInputs props={c}/>
+    &lt;/div>
+  )
+}
+
+class SignUpDialog extends Component {
+  constructor(props) {
+    super(props);
+    this.root = '#root'
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.state = {
+      login: '',
+      title:"Mars Exploration Program",
+      message:"How should we refer to you?"
+    }
+  }
+
+  render(props) {
+    return (
+      &lt;FancyBorder color='blue' children={dialogChildren(props, this)} />
+    );
+  }
+
+  handleChange(e) {
+    this.setState({login: e.target.value});
+  }
+
+  handleSignUp() {
+    alert(`Welcome aboard, ${this.state.login}!`);
+  }
+}
+
+const signup = new SignUpDialog()</code>
+          </pre>
+          <p>As you can see, with some work you can use JSX composition to advantage, even inside a class component.</p>
+
+          <h2>Containement</h2>
+          <p>Another pattern for JSX development is container, where on component contains another. In our previous example we used props to pass in a function that composed several JSX function components together. We can also pass in custom JSX tags for a similar composition pattern. Take a look at the following example. Notice how we have our custom tags defined: <code>&lt;Contacts /></code> and <code>&lt;Chat /></code>, and that we pass them to the <code>SplitPane</code> tag as its value for left and right:</p>
+          <pre>
+            <code class="language-javascript">
+function Contacts() {
+  return &lt;div class="Contacts" />;
+}
+
+function Chat() {
+  return &lt;div class="Chat" />;
+}
+
+function SplitPane(props) {
+  return (
+    &lt;div class="SplitPane">
+      &lt;div className="SplitPane-left">
+        {props.left}
+      &lt;/div>
+      &lt;div class="SplitPane-right">
+        {props.right}
+      &lt;/div>
+    &lt;/div>
+  );
+}
+
+function App() {
+  return (
+    &lt;SplitPane
+      left={&lt;Contacts />}
+      right={&lt;Chat />} 
+    />
+  );
+}
+
+render(
+  &lt;App />,
+  '#root'
+);</code>
+          </pre>
+          <p></p>
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
