@@ -304,6 +304,52 @@ const hello2 = new Hello({
           <h2>No Container</h2>
           <p>It is possible to define a class component without providing a <code>container</code>. In such a case the component will be rendered in the body tag. If you will have no HTML shell in your document, you can use this technique to render you components. However, this is not a good practice. It means that when your document loads, the user may at first see nothing until the component renders. And if there is a JavaScript error, the user will get a blank page. Not good. It's therefore always best to provide a basic HTML shell into which you render you components. Always give your components a <code>container</code>.</p>
 
+          <h2>Querying the Component Tree</h2>
+          <p>Often when you are implementing complex components with events, you need to reach down into the child components to get a value from some input. You can simply the query by using the component's <code>element</code> property. This is the base element at the top of the markup hierarchy being returned by the component's <code>render</code> function. So, if a component return markup as follows:</p>
+          <pre>
+            <code class="language-javascript">
+render(data) {
+  return (
+    &lt;div class='list__container'>
+      <p>
+        <button>Hello</button>
+      </p>
+      &lt;ul>
+        {
+          data.map(item => &lt;li>{item}&lt;/li>)
+        }
+      &lt;/ul>
+    &lt;/div>
+  )
+}</code>
+          </pre>
+          <p>For the above component, <code>this.element</code> with be <code>&lt;div class='list__container'>&lt;/div></code>. Using <code>this.element</code> as the starting point, we can limit our DOM query to the component base:</p>
+          <pre>
+            <code class="language-javascript">
+componentWasCreated() {
+  // Use "this.element" as base for event:
+  this.element.addEventListener('click', this)
+}
+handleEvent(e) {
+  e.target.nodeName === 'BUTTON' && this.sayHello()
+}
+sayHello() {
+  alert('Hello!')
+}</code>
+          </pre>
+          <p>You could also do something like:</p>
+          <pre>
+            <code class="language-javascript">
+announce() {
+  // Use "this.element" as base for query:
+  const input = this.element.querySelector('input')
+  const value = input.value
+  if (value) {
+    this.setState(value)
+  }
+}</code>
+          </pre>
+
           <p>&nbsp;</p>
         </div>
         <aside>
