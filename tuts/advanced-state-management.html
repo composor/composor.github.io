@@ -40,18 +40,143 @@
       <section>
         <div class='tutorial'>
           <h1>Advanced State Management</h1>
-          <p class="tutorial__intro">The <code>render</code> function with a tag is the simplest way to create a component with Composi. Actually, this is what is called a <code>functional component</code>. It's a function that just returns some markup. The <code>render</code> function takes care of creating a virtual dom and converting the markup into HTML nodes in the document.</p>
-          <pre>
-            <code class='language-jsx'>
-  render(
-    &lt;h1>Hello, world!&lt;/h1>, '#root'
-  )
-            </code>
-          </pre>
-          <p>We will gradually introduce you to how to use Composi We will learn how to create components. This will enable you to can create complex apps from  reusable parts. The whole point is to build small, reusable components.</p>
+          <p class="tutorial__intro">Composi provides a convenient way to manage a component's state through use of its <code>setState</code> method. However, you may prefer to have a dedicate library manage state for your components. Bare in mind that if your component is not very complicated or big, it might not make sense to use a third party solution for state management. However, it your app starts to grow in size and complexity, you might want to consider Redux or Mobx. Of course, there are other solutions as well, such as <a href="https://optimizely.github.io/nuclear-js/docs/07-api.html" target='__blank'>NuclearJS</a>, <a href="http://reactivex.io/rxjs/" target='__blank'>RxJS</a> etc.</p>
+          <p>There are two popular solutions for state manage: <a href="http://redux.js.org" target='__blank'>Redux</a> and <a href="https://mobx.js.org" target='__blank'>Mobx</a>. We will take a look at using them with Composi. If you are already comfortable using these, just give this a skim to see how to update components with them.</p>
+          <p>We're going to create a simple counter component whose state is managed by Redux and Mobx:</p>
+          <p><img src="../images/counter.png" alt="A simple counter"></p>
 
-          <h2>JavaScript</h2>
-          <p>We will be using ES6 (ECMAScript 2015) through the documentation. ES6 is already supported in all currently shipping browsers. And Composi enables you to use it even for older browsers by transpiling it to ES5 at build time. As such there is no need to hesitate in using ES6 with Composi. We'll be using destructuring, classes, let, const, etc. If you are not yet familiar with how to use ES6, take the time to read this <a href='http://babeljs.io/learn-es2015/' target="__blank">tutorial</a>.</p>  
+          <h2>Redux</h2>
+          <p>To use Redux with Composi, you'll need to import it into whatever file you want to use it. Just for the purpose of showing how to integrate these two, we are going to use a very simple counter component. For Redux we will need to create our reducers, action creator and a Redux store. Our component will have have two buttons, one on either side. Licking the minus will decrease the counter value, clicking the plus will increate the value. To integrate the Composi component with Redux, we'll need to assign the Redux store to the component's state.</p>
+
+          <pre>
+            <code class='language-javascript'>
+const { h, Component } from 'composi'
+const { createStore } from 'redux'
+
+// Reducer:
+function count(state=0, action) {
+  switch(action.type) {
+    case 'INCREMENT':
+      if (state > 99) return 100
+      return state + 1
+    case 'DECREMENT':
+      if (state < 1) return 0
+      return state - 1;
+    default:
+      return state
+  }
+}
+
+// Action Creators:
+const increment = () => {
+  return {
+    type: 'INCREMENT'
+  };
+};
+
+const decrement = () => {
+  return {
+    type: 'DECREMENT'
+  };
+};
+
+// Create Redux store:
+const store = createStore(count)
+
+
+// Extend Component to create counter:
+class Counter extends Component {
+  constructor(opts) {
+    super(opts)
+    
+    // Assigning store to component:
+    this.store = opts.store
+    
+    // Update component when store state changes:
+    store.subscribe(() => this.updateFromStore())
+    
+    // Give counter default value of "0":
+    this.render = (count = 0) => (
+    &lt;div id="counter">
+      &lt;button id="dec" disabled={count==0}  onclick={() => this.dec()}>-&lt;/button>
+      &lt;span id="text">{count}&lt;/span>
+      &lt;button id="inc" onclick={() => this.inc()}>+&lt;/button>
+    &lt;/div>
+    )
+  }
+  
+  // Use ths method to udpate counter with state changes:
+  updateFromStore() {
+    const state = this.store.getState()
+    this.update(state)
+  }
+
+  inc() {
+    this.store.dispatch(increment())
+  }
+
+  dec() {
+    this.store.dispatch(decrement())
+  }
+}
+
+// Create new counter:
+const counter = new Counter({
+  root: 'article',
+  store: store
+})
+counter.update()</code>
+          </pre>
+          <p> </p>
+
+          <h2>Mobx</h2>
+          <p>Redux requires quite a bit of boilerplate to work: reducers, action creators, stores, etc. Mobx is much simpler. We are only going to need to import <code>observable</code> and <code>autorun</code>. Mobx has many other useful functions, but we don't need those here.</p>
+          <p>With Mobx, we create an observable that contains the state for the counter and we assign that to the component's state. After that, all manipulationg of component state is actually being done with the Mobx store. And we use Mobx <code>autorun</code> to tell Mobx to update the component when the Mobx store changes.</p>
+
+          <pre>
+            <code class='language-javascript'>
+const {h, Component} from 'composi'
+const { observable, autorun } from 'mobx'
+
+const store = observable({ count: 0})
+
+// Extend Component to create counter:
+class Counter extends Component {
+  constructor(opts) {
+    super(opts)
+    this.root = 'article'
+    
+    // Assign Mobx obersable store to Counter:
+    this.store = store
+    
+    // Give counter default value of "0":
+    this.render = (count = 0) => (
+    &lt;div id="counter">
+      &lt;button id="dec" onclick={() => this.dec()} disabled={count==0}>-&lt;/button>
+      &lt;span id="text">{count}&lt;/span>
+      &lt;button id="inc" onclick={() => this.inc()} disabled={count>19}>+&lt;/button>
+    &lt;/div>
+    )
+  }
+
+  inc() {
+    this.store.count++
+  }
+
+  dec() {
+    this.store.count--
+  }
+}
+
+// Create new counter:
+const counter = new Counter()
+
+// Capture observable store changes and update counter:
+autorun(() => counter.update(counter.store.count))</code>
+          </pre>
+          <p></p>
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
