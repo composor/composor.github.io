@@ -128,9 +128,10 @@ render(fruitList, 'body')</code>
           <p>If you prefer functional over classes, you will probably likeusing the <code>h</code> funtion.</p>
 
           <h2>Hyperx-ES6</h2>
-          <p>Another alternative to JSX is Hyperx-ES6. This is a clone of <a target='__blank' href='https://www.npmjs.com/package/hyperx'>Hyperx</a> whose only difference is that it exports as an ES6 module. This library allows you to ES6 template literal instead of JSX. The results are very similar. The most noticeable difference will be in the text editor. JSX with get proper syntax highlighting, whereas Hyperx template literals will be treated as strings.</p>
+          <p>Another alternative to JSX is <a target='__blank' href='https://www.npmjs.com/package/hyperx'>Hyperx</a>. The original version is in CommonJS format and cannot be easily imported into a Composi project. Therefore we've create a clone called Hyperx. The only difference is that Hyperx-ES6 gets exported as an ES6 module. This means you can use normal ES6 module import syntax and Rollup and bundle it properly. Hyperx allows you to ES6 template literal instead of JSX. The results are the same. The biggest difference in use will be in the text editor. JSX with get proper syntax highlighting, whereas Hyperx template literals will be treated as strings.</p>
+
           <h2>Hyperx Converts Template Literals into Hyperscript</h2>
-          <p>What Hyperx does is converts template literals into the same format as JSX. In this case, since we tell Hyperx to you the Composi <code>h</code> function, the result will be a virtual node that Composi can use.</p>
+          <p>Hyperx converts template literals into the same format as JSX and <code>h</code>. In this case, since we tell Hyperx to you the Composi <code>h</code> function, the result will be a virtual node that Composi can use.</p>
 
           <h2>Installation and Use</h2>
           <p>You'll need to install Hyperx-ES6 in your project and import it into any file where you want to use it. You'll have to make an update to your project's <code>gulpfile.js</code> to know to include Hyperx when it bundles all the dependencies. And you'll also need to let Babel know to use Hyperx instead of Composi's <code>h</code> function for create virtual nodes.</p>
