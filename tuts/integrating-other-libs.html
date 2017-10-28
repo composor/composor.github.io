@@ -40,8 +40,251 @@
       <section>
         <div class='tutorial'>
           <h1>Integrating with Other Libraries</h1>
-          <p class="tutorial__intro">Because of its tiny size and modular nature, it's easy to use with many other third-party libraries and frameworks.</p>
-   
+          <p class="tutorial__intro">Because of its tiny size and modular nature, it's easy to use with many other third-party libraries and frameworks. You can use 
+            <a href="https://getmdl.io" target='__blank'>Material Design Lite</a>, 
+            <a href="http://getbootstrap.com" target='__blank'>Bootstrap</a>, 
+              <a href="http://jquery.com" target='__blank'>jQuery</a>, 
+              <a href="http://redux.js.org" target='__blank'>Redux</a>, 
+              <a href="https://mobx.js.org" target='__blank'>Mobx</a>, 
+              <a href="https://lodash.com" target='__blank'>Lodash</a>, 
+              <a href="http://ramdajs.com" target='__blank'>Ramda</a>, etc.</p>
+          <p>The only thing to be aware of is markup. If you are using JSX, any markup must respect the rule of well-formedness. This means that all HTML self-closing tags will have to be escaped in the render function with a forward slash:</p>
+
+          <pre>
+            <code class="language-html">
+wrong          correct
+----------------------
+&lt;br>           &lt;br/>
+&lt;hr>           &lt;hr/>
+&lt;img>          &lt;img/>
+&lt;input>        &lt;input/>
+&lt;col>          &lt;col/>
+&lt;param>        &lt;param/>
+&lt;link>         &lt;link/>
+&lt;meta>         &lt;meta/></code>
+          </pre>
+          <p> </p>
+          <h2>Material Design Lite</h2>
+          <p>Material Design Lite is a popular frame that enbles you to use Google Material Design styles and controls from Android as the basis for a Web application. Implementation is really easy. Just include the Material Design Lite resources in out project and import them in your <code>index.html</code> file. Or you could just load them from a CDN:</p>
+          <pre>
+            <code class="language-javascript">
+&lt;head>
+  &lt;meta charset="UTF-8">
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+  &lt;meta name="viewport-fit" content="cover">
+  &lt;title>mdl&lt;/title>
+  &lt;link rel="stylesheet" href="./css/styles.css">
+  &lt;link rel="stylesheet" href="./css/material.css">
+  &lt;link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  &lt;link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&lang=en">
+  &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.css"></code>
+&lt;/head>
+&lt;body>
+  &lt;header>&lt;!-- Page header here -->&lt;/header>
+  &lt;section>&lt;!-- Content goes here -->&lt;/section>
+  &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.js">&lt;/script>
+  &lt;script src="./js/material.js">&lt;/script>
+  &lt;script src="./js/app.js">&lt;/script>
+&lt;/body></code>
+          </pre>
+          <p>With this shell set up, we can start using Material Design Lite with Composi. We'll start with the header. We'll make a component as usual that outputs the Hello world message. But we're also going to add a Material Design dropdown menu in the top right of the menu:</p>
+          <pre>
+            <code class="language-javascript">
+const mdl_menu_items = [
+  {
+    value: 'Some Action',
+    disabled: false
+  },
+  {
+    value: 'Another Action',
+    disabled: false
+  },
+  {
+    value: 'Disabled Action',
+    disabled: true
+  },
+  {
+    value: 'Yet Another Action',
+    disabled: false
+  }
+]
+
+const title = new Component({
+  root: 'header',
+  render: (message) => (
+    &lt;div class="mdl-layout__header-row">
+      &lt;h1 class='mdl-layout-title'>Hello, {message}!&lt;/h1>
+      &lt;div class="mdl-layout-spacer">&lt;/div>
+      &lt;button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
+        &lt;i class="material-icons">more_vert&lt;/i>
+      &lt;/button>
+        {
+          mdl_menu_items.map(item => &lt;li class="mdl-menu__item" disabled={item.disabled}>{item.value}&lt;/li>)
+        }
+      &lt;/ul>
+    &lt;/div>
+  )
+})
+title.state = 'World'</code>
+          </pre>
+          <p>Literally, it's just a question of using the Material Design Lite classes on the markup that a component creates for Material Design Lite to initialize dynamic components. Since we've imported the resources to implement a Material Design dialog in our <code>index.html</code> file, let's see how to use it. We'll make a component that creates a Material Design Lite card that has a button to show a dialog. The MDL dialogs work, the markup uses the HTML tag <code>dialog</code>. This is not supported by older browsers, hence our need for the dialog polyfill that we have inported above. The dialog itself is static markup for now. We output it with the card. The card button will show the dialog:</p>
+
+          <pre>
+            <code class="language-javascript">
+class DialogCard extends Component {
+  render() {
+    return (
+      &lt;div>
+        &lt;div class="demo-card-wide mdl-card mdl-shadow--2dp">
+          &lt;div class="mdl-card__title">
+            &lt;h2 class="mdl-card__title-text">Welcome&lt;/h2>
+          &lt;/div>
+          &lt;div class="mdl-card__supporting-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Mauris sagittis pellentesque lacus eleifend lacinia...
+          &lt;/div>
+          &lt;div class="mdl-card__actions mdl-card--border">
+            &lt;a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect dialog-button">Show Dialog&lt;/a>
+          &lt;/div>
+          &lt;div class="mdl-card__menu">
+            &lt;button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              &lt;i class="material-icons">share&lt;/i>
+            &lt;/button>
+          &lt;/div>
+        &lt;/div>
+        
+        &lt;dialog id="dialog" class="mdl-dialog">
+          &lt;h3 class="mdl-dialog__title">MDL Dialog&lt;/h3>
+          &lt;div class="mdl-dialog__content">
+            &lt;p>
+              This is an example of the Material Design Lite dialog component.
+              Please use responsibly.
+            &lt;/p>
+          &lt;/div>
+          &lt;div class="mdl-dialog__actions">
+            &lt;button type="button" class="mdl-button">Close&lt;/button>
+            &lt;button type="button" class="mdl-button" disabled>Disabled action&lt;/button>
+          &lt;/div>
+        &lt;/dialog>
+      &lt;/div>
+    )
+  }
+  // Initialize the dialog box and add event listeners to show/hide:
+  componentWasCreated() {
+    const dialogButton = this.element.querySelector('.dialog-button')
+    const dialog = this.element.querySelector('#dialog')
+    if (! dialog.showModal) {
+      dialogPolyfill.registerDialog(dialog)
+    }
+    dialogButton.addEventListener('click', function() {
+      dialog.showModal()
+    })
+    dialog.querySelector('button:not([disabled])')
+    .addEventListener('click', function() {
+      dialog.close();
+    })
+  }
+}
+const dialogCard = new DialogCard()
+dialogCard.update()</code>
+          </pre>
+          <p> </p>
+          <h2>Bootstrap</h2>
+          <p>Like we did with Material Design Lite, we need to import the Bootstrap resources into our <code>index.html</code> file:</p>
+        
+          <pre>
+            <code class="language-javascript">
+&lt;head>
+  &lt;!-- Bootstrap CSS -->
+  &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+&lt;/head>
+&lt;body>
+    &lt;!-- Optional JavaScript -->
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   &lt;script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">&lt;/script>
+    &lt;!-- &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous">&lt;/script> -->
+    &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous">&lt;/script>
+    &lt;script src="./js/app.js">&lt;/script>
+&lt;/body></code>
+          </pre>
+          <p>And here we have a Jumbotron with a drop down menu. Notice how we had to unwrap the props in the end. That's because each time you nest a function component using JSX that passes props down, the props get wrapped in another enclosing object. Because we have our Bootstrap resources load, we can just output this markup from our component:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Data for dropdown menu:
+const menuItems = [
+  'Action',
+  'Another',
+  'Something else here'
+]
+
+// Function component to create dropdown menu:
+function DropDownButton(data) {
+  const menuItems = data.props.menuItems
+  return (
+    &lt;div class="dropdown">
+      &lt;button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+      &lt;/button>
+      &lt;div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {
+          menuItems.map(item => &lt;a class="dropdown-item" href="#">{item}&lt;/a>)
+        }
+      &lt;/div>
+    &lt;/div>
+  )
+}
+
+// Functional component to create Jumbotron content:
+function JumbotronContent(props) {
+  console.log(props)
+  return (
+    &lt;div>
+      &lt;p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.&lt;/p>
+      &lt;p>
+        &lt;DropDownButton {...{props}} />
+      &lt;/p>
+    &lt;/div>
+  )
+}
+
+// Component to output Bootstrap components:
+class Jumbotron extends Component {
+  constructor(props) {
+    super(props)
+    this.container = '#jumbotron-container'
+  }
+  render(message) {
+    return (
+      &lt;div class="jumbotron">
+        &lt;div class="container">
+          &lt;div id='jumbo-title'>
+            &lt;h1 class="display-3">Hello, {message}!&lt;/h1>
+          &lt;/div>
+          &lt;JumbotronContent {...{menuItems}} />
+        &lt;/div>
+      &lt;/div>
+    )
+  }
+}
+const jumbotron = new Jumbotron()
+jumbotron.update('Joe Bodoni')</code>
+          </pre>
+          <p> </p>
+
+          <h2>jQuery</h2>
+          <p>In our example with Bootstrap we already demonstrated using a jQuery plugin with Composi. It's that simple.</p>
+          <p>A jQuery plugin can be used on the same page as Composi, and even inside a Composi component, as we did with Bootstrap, as long as the plugin is not going to modify the DOM structure. Remember, it's Composi's job to manage your app's DOM. If you need to use a jQuery plugin that does manage the DOM structure, use it outside of your Composi components.</p>
+
+          <h5>Communicating between jQuery and Composi</h5>
+          <p>You might have a jQuery plugin whose state you want to track in a Composi component, or vise-a-versa. Depending on the API of the plugin, you might be able to do this by using a <a href="https://www.npmjs.com/search?q=pubsub" target="__blank">pubsub library</a>. These are tiny and powerful for communication between disparate components.</p>
+
+          <h2>Redux &amp; Mobx</h2>
+          <p>We already have a <a href="./advanced-state-management.html" target='__blank'>tutorial</a> on how to use Redux and Mobx with Composi.</p>
+
+
+
+          <p>&nbsp;</p>
         </div>
         <aside>
           <menu>
