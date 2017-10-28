@@ -142,14 +142,6 @@ render(fruitList, 'body')</code>
 npm i -D hyperx-es6
             </code>
           </pre>
-          <p>Open your <code>gulpfile.js</code>, scroll down to the build task and look for <code>commonjs()</code>,. Update it to the following:</p>
-          <pre>
-            <code class="language-javascript">
-commonjs({
-  include: 'node_modules/**',
-  ignoreGlobal: true
-}),</code>
-          </pre>
           <p>In your project's <code>app.js</code> file add:</p>
           
           <pre>
@@ -158,7 +150,7 @@ import {h, Component} from 'composi'
 import {hyperx} from 'hyperx-es6'
 
 // Tell Hyperx to use the Composi h function,
-// by passing it to hyperx:
+// by passing it to Hyperx:
 const html = hyperx(h)
             </code>
           </pre>
