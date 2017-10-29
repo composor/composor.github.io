@@ -793,6 +793,9 @@ footer a:hover {
     margin: 0 .5em 0;
     font-weight: 300;
   }
+  .main__header h2 {
+    font-weight: 200;
+  }
 }
 
 @media only screen and (max-width: 737px) {
