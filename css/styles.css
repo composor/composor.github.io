@@ -759,8 +759,8 @@ footer a:hover {
   .main__column {
     width: 100%;
   }
-  .main__editor--result {
-    display: none;
+  .cp_embed_wrapper {
+    width: 100%;
   }
   .docs__article aside, 
   .tutorial__article aside {
@@ -800,8 +800,8 @@ footer a:hover {
   .main__column {
     width: 100%;
   }
-  .main__editor--result {
-    display: none;
+  .cp_embed_wrapper {
+    width: 100%;
   }
   .main__section__separator {
     padding: 0 2rem;
