@@ -440,7 +440,32 @@ gulp.task('postcss', function () {
 // Then add new PostCSS task to build:
 gulp.task('default', ['postcss', 'serve', 'watch'])</code>
           </pre>
-          <p></p>
+          <p> </p>
+          <h2>Font Size</h2>
+          <p>A Composi project includes the Boostrap 4.0 CSS reset. This has one slight change affecting font sizes. The <code>html</code> tag has its font size set to 65.5%. And the <code>body</code> tag has its font size set to 1.4rem. In fact, all font sizes in this stylesheet are set with <code>rem</code>. This gives you a more flexible and responsive result.</p>
+          <p>Using Rem</p>
+          <p>When using <code>rem</code>, if you want an equivalent to pixel values, add a decimal to it:</p>
+          <pre>
+            <code class="language-css">
+1.4rem = 14px
+1.6rem = 16px
+ .5rem = 5px
+1rem   = 10px
+2rem   = 20px</code>
+          </pre>
+          <p>Since a <code>rem</code> value is set on the body tag, all other <code>rem</code> values will be based on that. You can change the proportion of fonts in your app by changing the <code>rem</code> value of the body tag. You can do this by opening your project's <code>styles.css</code> file. Scroll to the bottom where you'll find the comment <code>/* Local Styles */</code>. Any where after that you can add your own desired value for your project's base font size:</p>
+          <pre>
+            <code class="language-css">
+body {
+  /* font base of 16px */
+  font-size: 1.6rem 
+  /* or  font base of 12px */
+  font-size: 1.2rem
+}
+            </code>
+          </pre>
+          p
+
 
           <p>&nbsp;</p>
       </div>
