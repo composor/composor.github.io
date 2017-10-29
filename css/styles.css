@@ -516,7 +516,7 @@ article > section {
   flex-direction: row;
   align-items: stretch;
   width: 44%;
-  height: 40rem;
+  height: 46rem;
   overflow-y: scroll;
   margin: 0;
 }
@@ -524,7 +524,7 @@ article > section {
   width: 20%;
   display: flex;
   flex-direction: column;
-  height: 40rem;
+  height: 46rem;
   overflow-y: scroll;
 } 
 .main__example__result--title {
@@ -742,3 +742,96 @@ footer a:hover {
 }
 
 /* End Tutorials */
+
+/* Media Queries */
+
+@media only screen and (max-width: 760px) {
+  .nav--menu,
+  footer section {
+    padding: 0 2rem;
+  }
+  article > section,
+  .main__header section,
+  .main__example--section {
+    padding: 4rem 2rem;
+  }
+  .docs__article aside, 
+  .tutorial__article aside {
+    padding: 2rem 1rem;
+  }
+}
+@media only screen and (max-width: 766px) and (orientation: portrait) {
+  article > section,
+  .main__example--section {
+    flex-direction: column;
+  }
+  .main__example--column,
+  .main__editor--example,
+  .main__column {
+    width: 100%;
+  }
+  .main__editor--result {
+    display: none;
+  }
+  .docs__article aside, 
+  .tutorial__article aside {
+    width: 100%;
+  }
+  .tutorial > p > img {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 737px) {
+  .docs__article aside, 
+  .tutorial__article aside {
+    padding: 2rem .25rem;
+  }
+  .documentation-page ul, .documentation-page ol, .tutorial-page ul, .tutorial-page ol {
+    margin: 10px 10px 10px;
+  }
+  .documentation-page .tutorial__intro, .tutorial-page .tutorial__intro {
+    font-size: 1.75rem;
+  }
+  blockquote {
+    font-size: 1.75rem;
+    margin: 30px 0;
+  }
+  .main__example--column,
+  .main__editor--example,
+  .main__column {
+    width: 100%;
+  }
+  .main__editor--result {
+    display: none;
+  }
+}
+@media only screen and (max-width: 600px) {         .nav--menu,
+  footer section {
+    padding: 0 1rem;
+  }
+  article > section,
+  .main__header section,
+  .main__example--section {
+    padding: 3rem .5rem;
+  }
+  .docs__article aside, 
+  .tutorial__article aside {
+    padding: 2rem .5rem;
+  }
+  .main__header section {
+    background-position: 95% center;
+  }
+  .tutorial > p > img {
+    width: 80%;
+  }
+  .documentation-page *,
+  .tutorial-page * {
+    font-size: 1.6rem;
+  }
+  .documentation-page .tutorial__intro,
+  .tutorial-page .tutorial__intro {
+    font-size: 2.5rem;
+    margin: 0 .5em 0;
+  }
+}
