@@ -694,6 +694,7 @@ footer a:hover {
 .tutorial-page .tutorial__intro {
   font-size: 2.5rem;
   margin: 0 3em 1em 0;
+  font-weight: 100;
 }
 .documentation-page ul,
 .documentation-page ol,
@@ -763,6 +764,7 @@ footer a:hover {
   .tutorial-page .tutorial__intro {
     font-size: 2rem;
     margin: 0 .5em 0;
+    font-weight: 300;
   }
 }
 @media only screen and (max-width: 766px) and (orientation: portrait) {
@@ -789,6 +791,7 @@ footer a:hover {
   .tutorial-page .tutorial__intro {
     font-size: 2rem;
     margin: 0 .5em 0;
+    font-weight: 300;
   }
 }
 
