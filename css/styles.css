@@ -796,6 +796,9 @@ footer a:hover {
   .main__header h2 {
     font-weight: 200;
   }
+  .main__section__separator {
+    padding: 0 2rem;
+  }
 }
 
 @media only screen and (max-width: 737px) {
@@ -818,8 +821,12 @@ footer a:hover {
   .main__editor--result {
     display: none;
   }
+  .main__section__separator {
+    padding: 0 2rem;
+  }
 }
-@media only screen and (max-width: 600px) {         .nav--menu,
+@media only screen and (max-width: 600px) {         
+  .nav--menu,
   footer section {
     padding: 0 1rem;
   }
