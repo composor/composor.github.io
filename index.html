@@ -69,33 +69,8 @@
         <p>Componets use a render function. This takes data and returns the HTML to create. The <code>render</code> function expects a name to render. We pass that to the component through its <code>update</code> method.</p>
         <p>Update with a name trigger's the virtual dom, which then patches the document.</p>
       </div>
-      <div class='main__editor--example'>
-        <pre>
-          <code class="language-jsx">
-class HelloMessage extends Component {
-  render(name) {
-    return (
-      &lt;div>
-        Hello, {name}!
-      &lt;/div>
-    )
-  }
-}
-// Instantiate the component:
-const helloMsg = new HelloMessage()
-
-// Define container in which to render the component:
-helloMsg.container = '#hello-world'
-
-// Pass the instance some data to render it:
-helloMsg.update('Joe')
-          </code>
-        </pre>
-      </div>
-      <div class='main__editor--result'>
-        <h4 class='main__example__result--title'>Result</h4>
-        <aside id='hello-world' class='main__example__output'></aside>
-      </div>
+<p data-height="300" data-theme-id="6688" data-slug-hash="KywPPR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Front Page-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/KywPPR/">Composi Front Page-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
     </section>
     <section>
       <div class="main__example--column">
@@ -103,55 +78,8 @@ helloMsg.update('Joe')
         <p>Beside passing data to a component through its <code>update</code> method, we can make a component stateful. When we do this, whenever the component's state changes, the component will automatically invoke its <code>update</code> method with the new data.</p>
         <p>We've put a guard in the <code>tick</code> method to stop after 30 seconds. We use the lifecycle method <code>componentWasCreated</code> to start the <code>tick</code> method.</p>
       </div>
-      <div class='main__editor--example'>
-        <pre>
-          <code class="language-jsx">
-class Timer extends Component {
-  constructor(props) {
-    super(props)
-    this.container = 'body'
-    this.state = { seconds: 0 }
-  }
-
-  tick() {
-    // Stop after 30 ticks:
-    if (this.state.seconds === 30) {
-      clearInterval(this.interval)
-    }
-    this.setState((prevState) => ({
-      seconds: prevState.seconds + 1
-    }))
-  }
-
-  componentWasCreated() {
-    this.interval = setInterval(() => this.tick(), 1000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval)
-  }
-
-  render() {
-    return (
-      &lt;div>
-        Seconds: {this.state.seconds}
-      &lt;/div>
-    );
-  }
-}
-
-// Instantiate the timer to start it.
-// Since it has state, it will render automatically.
-const timer = new Timer()
-          </code>
-        </pre>
-      </div>
-      <div class='main__editor--result'>
-        <h4 class='main__example__result--title'>Result</h4>
-        <aside class='main__example__output' id='timer'>
-          
-        </aside>
-      </div>
+      <p data-height="300" data-theme-id="6688" data-slug-hash="MOYgYq" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Front Page-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYgYq/">Composi Front Page-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
     </section>
     <section>
       <div class="main__example--column">
@@ -159,80 +87,8 @@ const timer = new Timer()
         <p>Here we put together a simple Todo list. We give the component state and pass down that state to child component as props in curly braces.</p>
         <p>For events we use the <code>handleEvent</code> interface and a lifecycle method, <code>componentWasCreated</code> to wire up some event listeners. We want to listen for changes to the text input and to the button click for submission.</p> 
       </div>
-      <div class='main__editor--example'>
-        <pre>
-          <code class="language-jsx">
-class TodoApp extends Component {
-  constructor(props) {
-    super(props);
-    this.container = 'section'
-    this.state = { items: [], text: '' };
-  }
-
-  render(state) {
-    return (
-      &lt;div>
-        &lt;h3>TODO</h3>
-        &lt;TodoList {...{state}} />
-        &lt;form>
-          &lt;input value={state.text} />
-          &lt;button>
-            Add #{state.items.length + 1}
-          &lt;/button>
-        &lt;/form>
-      &lt;/div>
-    );
-  }
-
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-    this.element.addEventListener('change', this)
-  }
-  handleEvent(e) {
-    e.target.id === 'add-item' && this.handleSubmit(e)
-    e.target.id === 'input__add-item' && this.handleChange(e)
-  }
-
-  handleChange(e) {
-    this.setState({ text: e.target.value });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    if (!this.state.text.length) {
-      return;
-    }
-    const newItem = {
-      text: this.state.text,
-      id: Date.now()
-    };
-    this.setState((prevState) => ({
-      items: prevState.items.concat(newItem),
-      text: ''
-    }));
-  }
-}
-
-function TodoList({state}) {
-  return (
-  &lt;ul>
-    {
-      state.items.map(item => <li key={item.id}>{item.text}</li>)
-    }
-  &lt;/ul>
-  );
-}
-
-// Instantiate the todo list.
-// Since it has state, it will render automatically.
-const app = new TodoApp()
-          </code>
-        </pre>
-      </div>
-      <div class='main__editor--result'>
-        <h4 class='main__example__result--title'>Result</h4>
-        <aside class='main__example__output' id='todo-list'></aside>
-      </div>
+<p data-height="300" data-theme-id="6688" data-slug-hash="BmyBNd" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Front Page-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/BmyBNd/">Composi Front Page-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
     </section>
   </article>
   <footer>
@@ -251,133 +107,5 @@ const app = new TodoApp()
 
   <script src="./js/prism.min.js"></script>
   <script src="./js/prism-jsx.js"></script>
-  <script src="./js/composi.js"></script>
-  <script>
-    var h = composi.h
-    var Component = composi.Component
-
-    // Hello World:
-    class HelloMessage extends Component {
-    
-      render(name) {
-        return h('div', {}, `Hello, ${name}!`)
-      }
-    }
-    const helloMsg = new HelloMessage()
-    helloMsg.container = '#hello-world'
-    helloMsg.update('Joe')
-
-    // Timer:
-    class Timer extends Component {
-    constructor(props) {
-      super(props);
-      this.container = '#timer'
-      this.state = { seconds: 0 };
-    }
-
-    tick() {
-      if (this.state.seconds === 29) clearInterval(this.interval)
-      this.setState((prevState) => ({
-        seconds: prevState.seconds + 1
-      }));
-    }
-
-    componentWasCreated() {
-      this.interval = setInterval(() => this.tick(), 1000);
-    }
-
-    componentWillUnmount() {
-      clearInterval(this.interval);
-    }
-
-    render() {
-      return h('div', {}, `Seconds: ${this.state.seconds}`)
-    }
-  }
-
-  const timer = new Timer()
-
-
-    // Todo List:
-    class TodoApp extends Component {
-      constructor(props) {
-        super(props);
-        this.container = '#todo-list'
-        this.state = { items: [], text: '' };
-      }
-
-      render(state) {
-        return h(
-          "div",
-          null,
-          h(
-            "h3",
-            null,
-            "TODO"
-          ),
-          h(TodoList, { state: state }),
-          h(
-            "form",
-            null,
-            h("input", {
-              id: "input__add-item",
-              value: state.text
-            }),
-            h(
-              "button",
-              { id: "add-item" },
-              "Add #",
-              state.items.length + 1
-            )
-          )
-        )
-      }
-
-      handleEvent(e) {
-        e.target.id === 'add-item' && this.handleSubmit(e)
-        e.target.id === 'input__add-item' && this.handleChange(e)
-      }
-
-      componentWasCreated() {
-        this.element.addEventListener('click', this)
-        this.element.addEventListener('change', this)
-      }
-
-      handleChange(e) {
-        this.setState({ text: e.target.value })
-      }
-
-      handleSubmit(e) {
-        e.preventDefault();
-        if (!this.state.text.length) {
-          return
-        }
-        const newItem = {
-          text: this.state.text,
-          id: Date.now()
-        };
-        this.setState((prevState) => ({
-          items: prevState.items.concat(newItem),
-          text: ''
-        }));
-      }
-    }
-
-    function TodoList({state}) {
-      return h(
-        "ul",
-        null,
-        state.items.map(function (item) {
-          return h(
-            "li",
-            { key: item.id },
-            item.text
-          )
-        })
-      )
-    }
-
-    const app = new TodoApp()
-  </script>
 </body>
 </html>

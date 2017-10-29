@@ -355,7 +355,7 @@ dt, dd, blockquote, address, table {
 /* Local Styles */
 /*==============*/
 body {
-  background-color: #333;
+  background-color: #fff;
 }
 blockquote {
   margin: 20px 40px;
@@ -499,8 +499,11 @@ article > section {
 }
 
 .main__example--column {
-  width: 25%;
+  width: 30%;
   margin: 0 4rem 0 0;
+}
+.cp_embed_wrapper {
+  width: 60%;
 }
 .main__column code,
 .main__example--column code,
@@ -510,28 +513,6 @@ article > section {
   background-color: #eee;
   color: rgb(21, 159, 255);
   padding: 0 3px;
-}
-.main__editor--example {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  width: 44%;
-  height: 46rem;
-  overflow-y: scroll;
-  margin: 0;
-}
-.main__editor--result {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  height: 46rem;
-  overflow-y: scroll;
-} 
-.main__example__result--title {
-  background-color: #666;
-  color: #fff;
-  padding: 5px 1rem;
-  margin: 0;
 }
 #add-item {
   transition: all .25s ease-out;
@@ -559,6 +540,7 @@ article > section {
 .main__editor--example pre * {
   font-size: 13px;
 }
+
 .main__section__separator {
   padding: 0 10rem;
 }

@@ -75,7 +75,10 @@ const list = CreateList(fruits)
 
 // Insert the list in the document body:
 render(list, 'body')</code>
-          </pre>
+</pre>
+  <p>Codepen Example:</p>
+<p data-height="300" data-theme-id="6688" data-slug-hash="YEzmBX" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi render-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEzmBX/">Composi render-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>We could use the <code>createList</code> function above to make several lists. To do that, we're going to use what's called a custom tag. This is a feature of JSX where when you define a functional component that begins with an uppercase letter, you can use it as a tag. Notice how we pass the <code>CreateList</code> function to <code>render</code> as a JSX tag, <code>&lt;CreateList data={fruits} /></code>. At build time, Babel will convert that into a function that returns the virtual node for the render function to insert in the DOM.</p>
           <p>Since we are using a custom JSX tag, the data that would normally be passed as a parameter to the functional component instead gets passed as a prop. That's the reason we inclosed the parameter <code>data</code> in curly braces when we defined <code>CreateList</code>. We used the term <code>data</code> because the data is generic. Use whatever term makes sense for what you are using.</p>
           <pre>
@@ -95,7 +98,11 @@ const names = {id: '102', items:['Joe', 'Ellen', 'Sam']}
 // Create lists and instert in their containers:
 render(&lt;CreateList data={fruits} />, '#list1')
 render(&lt;CreateList data={names} />, '#list2')</code>
-          </pre>
+</pre>
+
+          <p>Codepen Examples:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="xPxveN" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi render-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xPxveN/">Composi render-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>In the above example, each subsequent call of the <code>render</code> function in the same container will patch and update whatever was previously rendered there. Be aware that the inital invocation of <code>render</code> will not replace any static content already in the container. Please read <a href='#gotchas'>Gotchas</a> and <a href='#scope'>Scope</a> below to better understand how <code>render</code> patches the DOM.</p>
 
           <a name="gotchas"></a>

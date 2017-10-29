@@ -99,7 +99,11 @@ const name = 'World'
 // Render the component into header tag.
 // We pass the name variable in as a property in curly braces:
 render(&lt;Title {...{name}}/>, 'header')</code>
-        </pre>
+</pre>
+
+        <p>Codepen Example:</p>
+        <p data-height="300" data-theme-id="6688" data-slug-hash="MOWNMB" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOWNMB/">Composi functional-components-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
         <p>This will convert the functional component into a virtual node (vnode) and then convert that into actual nodes inside the header tag. Because a virtual node was created, we can re-render this later with new data and Composi will patch the DOM efficiently for us. In this case that would involve patching the text node of the <code>h1</code> tag.</p>
 
