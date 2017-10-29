@@ -430,7 +430,7 @@ nav > svg {
   font-size: 2.4rem;
   margin-bottom: 2rem;
   color: #ccc;
-  font-weight: 100;
+  font-weight: 200;
 }
 h2 {
   font-size: 2.4rem;
@@ -794,7 +794,7 @@ footer a:hover {
     font-weight: 300;
   }
   .main__header h2 {
-    font-weight: 300;
+    font-weight: 200;
   }
 }
 
