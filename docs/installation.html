@@ -79,21 +79,21 @@ composi -n "My Project"</code>
             <p>After creating a project, open the folder and take a look inside. You should see a structure like this:</p>
             <pre>
               <code class="language-bash">
-|- myproject
-|  |- css
-|  |--- styles.css
-|  |- dev
-|  |--- app.js
-|  |  |- components
-|  |  |--- title.js
-|  |- js
-|  |--- app.js
-|- .babelrc
-|- .editorconfig
-|- gulpfile.js
-|- index.html
-|- package.json
-|- README.md</code>
+|--myproject
+|  |--css
+|  |----styles.css
+|  |--dev
+|  |  |--app.js
+|  |  |--components
+|  |  |  |--title.js
+|  |--js
+|  |  |--app.js
+|--.babelrc
+|--.editorconfig
+|--gulpfile.js
+|--index.html
+|--package.json
+|--README.md</code>
             </pre>
             <p>After creating a Composi project, you will spend most of your time working in your project's <code>dev</code> folder. When you build your project, Composi will take the files in the <code>dev</code> folder, bundle them, transpile the bundle and output it to your project's <code>js</code> folder as <code>app.js</code>. The <code>index.html</code> file is already set up to import that bundle.</p>
             <p>The core of your app is the <code>app.js</code> file in the <code>dev</code> folder. This is where you assemble all the pieces together.</p>
