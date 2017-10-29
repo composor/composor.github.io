@@ -39,78 +39,54 @@
   <article class='docs__article'>
     <section>
       <div class='docs'>
-          <h1>Render</h1>
-          <p class="docs__intro">Components provide a powerful and convenient way for you to create modular chunks of UI. However, sometimes they are overkill. If you just need to output some static markup, a component is not necessary. Instead you can define a function that returns the markup. This is sometimes called a <code>functional component</code>. Once you've created a function to do that, you can render it into the document with the <code>render</code> function. To use it, you will need to import it into your code:</p>
-          <pre>
-            <code class='language-jsx'>
-import {h, render} from 'composi'</code>
-          </pre>
-          <p><code>render</code> takes two parameters:</p>
+          <h1>Deployment</h1>
+          <p class="docs__intro">After completing your project, you'll want to deploy it to where you will serve the site/app from. By default a Composi development project has a log of files and folder you don't need in deployment. The Composi command like can help you separate the final project from the development parts.</p>
+
+          <h2>CLI Deploy</h2>
+          <p>The Composi CLI can separate out the parts you need for deployment from the parts you need for development. There a just a few steps to follow. Open the terminal. There are two flags for deployment:</p>
 
           <ol>
-            <li>tag - the element to create and insert into the DOM</li>
-            <li>container - the element in the DOM in which to insert the new element</li>
+            <i><code>-d</code>: tells Composi to deploy. Should be followed by a space and the path to the project you want to deploy.</i>
+            <i><code>-p</code>: the path to deploy your project at. Should be followd by space and then the path. If no <code>-p</code> is provided, it will deploy to the same location as the value of <code>-d</code>.</i>
           </ol>
 
-          <h2>Define a Function That Retuns JSX</h2>
+          <p>When Composi deploys you project, it uses the same name you gave but appends '-production' to the folder name. Internally all names will stay the same.</p>
+
           <pre>
-            <code class="language-javascript">
-import {h, render} from 'composi'
-
-const fruits = ['Apples', 'Oranges', 'Bananas']
-
-// Define function that returns JSX:
-function CreateList(fruits) {
-  return (
-    &lt;ul>
-      {
-        fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
-      }
-    &lt;/ul>
-  )
-}
-
-// Create virtual node of list:
-const list = CreateList(fruits)
-
-// Insert the list in the document body:
-render(list, 'body')</code>
+            <code class="language-bash">
+composi -d /Users/wobba/Desktop/test -p ~/dev</code>
           </pre>
-          <p>We could use the <code>createList</code> function above to make several lists. To do that, we're going to use what's called a custom tag. This is a feature of JSX where when you define a functional component that begins with an uppercase letter, you can use it as a tag. Notice how we pass the <code>CreateList</code> function to <code>render</code> as a JSX tag, <code>&lt;CreateList data={fruits} /></code>. At build time, Babel will convert that into a function that returns the virtual node for the render function to insert in the DOM.</p>
-          <p>Since we are using a custom JSX tag, the data that would normally be passed as a parameter to the functional component instead gets passed as a prop. That's the reason we inclosed the parameter <code>data</code> in curly braces when we defined <code>CreateList</code>. We used the term <code>data</code> because the data is generic. Use whatever term makes sense for what you are using.</p>
+          <p>With the above command, you will find the deployed project at: <code>/Users/wobba/dev/test-production</code></p>
+
+          <p>For Windows uses, this would be:</p>
           <pre>
-            <code class="language-javascript">
-function CreateList({data}) {
-  return (
-    &lt;ul id={data.id}>
-      {data.items.map(item => &lt;li>{item}&lt;/li>)}
-    &lt;/ul>
-  )
-}
-
-// Data for lists:
-const fruits = {id: '101', items:['Apples', 'Oranges', 'Bananas']}
-const names = {id: '102', items:['Joe', 'Ellen', 'Sam']}
-
-// Create lists and instert in their containers:
-render(&lt;CreateList data={fruits} />, '#list1')
-render(&lt;CreateList data={names} />, '#list2')</code>
+            <code class="language-bash">
+composi -d C:\Users\wobba\Desktop\test -p ~\dev</code>
           </pre>
-          <p>In the above example, each subsequent call of the <code>render</code> function in the same container will patch and update whatever was previously rendered there. Be aware that the inital invocation of <code>render</code> will not replace any static content already in the container. Please read <a href='#gotchas'>Gotchas</a> and <a href='#scope'>Scope</a> below to better understand how <code>render</code> patches the DOM.</p>
+          <p>This would be deployed project at: <code>C:\Users\wobba\dev\test-production</code></p>
 
-          <a name="gotchas"></a>
-          <h2>Gotchas</h2>
-          <p>The first time <code>render</code> is executed, it does not check to see what is in the container. It just appends to it. If you want to have server-side rendered content and replace it with new content using <code>render</code>, you'll need to remove the nodes yourself before invoking <code>render</code>. After the inital execution, <code>render</code> will patch whatever a previous invocation appended to the container. This means that if you render a completely different function component with the <code>render</code> function to the same container, whatever the was previously rendered will be patched with the new functional component. In contrast, when you use the Component class, you can hydrate content rendered on the server. Read the documentation for <a href="./hydration.html">Hydration</a> to learn how to do it.</p>
-          <p>If you want to be able to create multiple instances of the same component, then you will want to use the Component class to do so. Please read the docs about <a href='./extending-component.html'>how to extend</a> the Component class</a>.</p>
+          <h2>What Gets Deployed</h2>
+          <p>When you deploy a project, Composi exports certain files and folders. They are all at the root leve of the project:</p>
 
-          <a name="scope"></a>
-          <h2>Scope</h2>
-          <p>When <code>render</code> patches the DOM, it keeps track of changes scoped to the current call scope. So, if you used <code>render</code> to output some JSX in your <code>app.js</code> and then invoked the same function again in another file, because the scope is different, it would result in two versions of the same content being rendered in the container. When using <code>render</code>, understanding scope is very important to avoid duplication bugs.</p>
+          <pre>
+            <code class="language-bash">
+|--css
+|--icons
+|--images
+|--js
+|--index.html</code>
+          </pre>
+          <p>The default Composi project build does not contain a folder for icons and images. However, if you want to use icons and images with your project, you can create these folders at the root of your project. Then during deployment Composi will include them. Everything in the above folders will be transfered to the deployment destination.</p>
 
-          <h2>Summary</h2>
-          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>. It has its use in very limited circumstances. Otherwise, components offer more functionality and versitility.</p>
+          <h2>Changing Paths for Files</h2>
+          <p>Depending on how you intended to serve your project, you may need to change where CSS, icons, images and JavaScript reside. If this is so, be sure to adjust the paths to CSS and JavaScript in the <code>index.html</code> file, as well as any paths that for images in your <code>styles.css</code> file.</p>
+
+
+          <h2>Standalone</h2>
+          <p>When you create the deployment version of your project, you get a standalone version. You could doubleclick the <code>index.html</code> to open it in your browser. Or you could open the terminal, <code>cd</code> to the deployed project and run an node server (<a target='__blank' href='https://www.npmjs.com/package/http-server'>http-server</a>) in the project to launch it.</p>
+
+
           <p>&nbsp;</p>
-          
       </div>
 
       <aside>
@@ -119,7 +95,7 @@ render(&lt;CreateList data={names} />, '#list2')</code>
             <li class="docs__menu__item">
               <a href='./installation.html'>Installation</a>
             </li>
-            <li class="docs__menu__item selected">
+            <li class="docs__menu__item">
               <a href='./render.html'>Render</a>
             </li>
             <li class="docs__menu__item">
@@ -158,7 +134,7 @@ render(&lt;CreateList data={names} />, '#list2')</code>
             <li class="docs__menu__item">
               <a href='./hydration.html'>Hydration</a>
             </li>
-            <li class="docs__menu__item">
+            <li class="docs__menu__item selected">
               <a href='./deployment.html'>Deployment</a>
             </li>
             <li class="docs__menu__item">
