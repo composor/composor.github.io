@@ -149,7 +149,11 @@ render(&lt;Title {...{name}}/>, 'header')
 
 // Render list component into section with items data:
 render(&lt;List {...{items}}/>, 'section')</code>
-          </pre>
+</pre>
+
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="aVzzGQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/aVzzGQ/">Composi functional-components-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           
           <p> </p>
           <h2>Custom Tags</h2>
@@ -176,7 +180,9 @@ export function List(props) {
   )
 }</code>
           </pre>
-
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="RjNNYP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/RjNNYP/">Composi functional-components-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Data Flows Down</h2>
           <p>When using custom tags inside a functional component, the data flows down, from the parent to the children. There is no two-way data binding. This makes it easy to reason about. If you need a child component to communicate some kind of data change to its parent, you can use events or any pubsub solution from NPM. We have a tiny and efficient pubsub module on NPM called <a target='__blank' href='https://www.npmjs.com/package/pubber'>pubber</a> that is perfect for these situations.</p>
@@ -272,6 +278,10 @@ document.querySelector('.container--list').addEventListener('click', events)</co
           </pre>
 
           <p>And that's it. With that we now have an interactive functional component that updates in real time with a virtual dom.</p>
+
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="YEPPJz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEPPJz/">Composi functional-components-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
           <h2>Component Class Advantages</h2>
 
