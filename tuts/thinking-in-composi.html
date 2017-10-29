@@ -266,7 +266,7 @@ class SpreadSheetComponent extends Component {
 const spreadsheet = new SpreadSheetComponent()
 spreadsheet.update()</code>
           </pre>
-          <p>This gives us a functioning component rendering a state shell. We need to update it to use the data, <code>fruitData</code>. Also note, that forth column with the header of "Total" needs to show the total for that row. We'll need to do some math when we render the row to print the total for that row. The total will be the item price times the item qunatity. We can access them as we did in their cells. One last thing, because both price and total represent currency, we what to make sure the numerical value always has a decimal followed by two decimal places. We can do that by using <code>.toFixed(2)</code> on the value.</p>
+          <p>This gives us a functioning component rendering a static shell. We need to update it to use the data, <code>fruitData</code>. Also note, that forth column with the header of "Total" needs to show the total for that row. We'll need to do some math when we render the row to print the total for that row. The total will be the item price times the item qunatity. We can access them as we did in their cells. One last thing, because both price and total represent currency, we what to make sure the numerical value always has a decimal followed by two decimal places. We can do that by using <code>.toFixed(2)</code> on the value.</p>
 
           <pre>
             <code class="language-javascript">
