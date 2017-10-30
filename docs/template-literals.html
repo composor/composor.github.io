@@ -43,27 +43,19 @@
           <p class="docs__intro">Many people really dislike JSX. At the same time, some people also do not like having to define markup with the <code>h</code> function. For them there is another way: ES6 template literals. It is possible to use template literals to define what the <code>render</code> function returns, but he requires a litter setup.</p>
 
           <h2>Hyperx</h2>
-          <p>There is a module on NPM called <a href='https://www.npmjs.com/package/hyperx' target='__blank'>Hyperx</a> that allows you to define markup with template literals and have it converted to virtual node compatible code. To enable this you will have to first install Hyperx.</p>
-          <p>Open your terminal and <code>cd</code> to your project. Then install Hyperx as a dependency:</p>
+          <p>There is a module on NPM called Hyperx that lets you use ES6 template literals and converts them to hyperscript functions. Unfortunately it does not work with Rollup for ES6 module imports. We therefore forked it as an ES6 module and called it: <a href='https://www.npmjs.com/package/hyperx-es6' target='__blank'>Hyperx-ES6</a>. To use it you'll have to install it.</p>
+          <p>Open your terminal and <code>cd</code> to your project. Then install Hyperx-ES6 as a dependency:</p>
           <pre>
             <code class="language-bash">
-npm i -D hyperx
+npm i -D hyperx-es6
             </code>
           </pre>
-          <p>After install Hyperx, you need to update your project's <code>gulpfile</code> so that it can find Hyperx. Scroll down to the <code>build</code> task and look for <code>commonjs(),</code>. Update it to the following:</p>
-          <pre>
-            <code class="language-javascript">
-commonjs({
-  include: 'node_modules/**',
-  ignoreGlobal: true
-}),</code>
-          </pre>
 
-          <p>With Hyperx installed, you can now use it with your components. To do so, you'll need to import it into where you want to use it. You still need to import the <code>h</code> funtion. When Hyperx transpiles the template literals, it will use the <code>h</code> function to convert the result into virtual nodes that Composi understands:</p>
+          <p>With Hyperx-ES6 installed, you can now use it with your components. To do so, you'll need to import it into where you want to use it. You still need to import the <code>h</code> funtion. When Hyperx transpiles the template literals, it will use the <code>h</code> function to convert the result into virtual nodes that Composi understands:</p>
           <pre>
             <code class="language-javascript">
 import {h, Component} from 'composi'
-import {hyperx} from 'hyperx'
+import {hyperx} from 'hyperx-es6'
 
 // Tell Hyperx to use the Composi h function:
 const html = hyperx(h)</code>
@@ -76,7 +68,7 @@ const html = hyperx(h)</code>
           <pre>
             <code class="language-javascript">
 import {h, Component} from 'composi'
-import {hyperx} from 'hyperx'
+import {hyperx} from 'hyperx-es6'
 const html = hyperx(h)
 
 // Use class attribute as normal:
@@ -96,7 +88,7 @@ function header(data) {
           <pre>
             <code class="language-javascript">
 import {h, Component} from 'composi'
-import {hyperx} from 'hyperx'
+import {hyperx} from 'hyperx-es6'
 const html = hyperx(h)
 
 function userList(users) {

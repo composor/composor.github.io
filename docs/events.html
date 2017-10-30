@@ -57,36 +57,9 @@
           <h2>Inline Events</h2>
           <p>Inline events (DOM Level 0) have been around since 1996. They are the original event system for JavaScript. In versions of Internet Export upto 8, inline events were a source of serious memory leaks that could crash the browser. Composi's support for Internet Explorer starts at version 9, so this is not a concern. You can use inline events with a Component instance or when extending Component. How you do so in each case differs quite a bite. This is due to the way Component instantiation happens. When you create an instance of the Component class, you pass it an object literal of properties. That object literal will not have access to the Component instance, so no <code>this</code>. You'll need to define your callbacks and other custom properties separate from the component initialization.</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-const increase = () => {
-  counter.setState({disabled: false, number: counter.state.number + 1})
-}
-
-const decrease = () => {
-  if (counter.state.number < 2) {
-    counter.setState({disabled: true, number: counter.state.number - 1})
-  } else {
-    counter.setState({disabled: false, number: counter.state.number - 1})
-  }
-} 
-export const counter = new Component({
-  container: '#counter',
-  state: {disabled: false, number: 1},
-  render: (data) => {
-    const {disabled, number} = data
-    return (
-      &lt;div class='counter' id={uuid()}>
-        &lt;button key='beezle' disabled={disabled} onclick={decrease} id="decrease">-&lt;/button>
-        &lt;span>{number}&lt;/span>
-        &lt;button onclick={increase} id="increase">+&lt;/button>
-      &lt;/div>
-    )
-  }
-})</code>
-          </pre>
+          
+          <p data-height="450" data-theme-id="6688" data-slug-hash="wPBaey" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/wPBaey/">Composi events-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Notice how in the above example, <code>increase</code> and <code>decrease</code> are separate functions. This may not be a big deal for you, or it may drive you up the wall.</p>
 
           <h2>Inline Events on Extended Component</h2>
@@ -97,21 +70,27 @@ export const counter = new Component({
 import {h, Component} from 'composi'
 
 // Define Counter class by extending Component:
-export class Counter extends Component {
-  constructor (opts) {
-    super(opts)
-  }
-
+class Counter extends Component {
   render(data) {
-    const {disabled, number} = data
+
     // Use bind on the inline events:
-    return (
-      &lt;div class='counter' id={uuid()}>
-        &lt;button key='beezle' disabled={disabled} onclick={this.decrease.bind(this)} id="decrease">-&lt;/button>
-        &lt;span>{number}&lt;/span>
-        &lt;button onclick={this.increase.bind(this)} id="increase">+&lt;/button>
-      &lt;/div>
-    )
+    if (data.disabled) {
+      return (
+        &lt;div class='counter'>
+          &lt;button key='beezle' disabled onclick={this.decrease.bind(this)} id="decrease">-&lt;/button>
+          &lt;span>{data.number}&lt;/span>
+          &lt;button onclick={this.increase.bind(this)} id="increase">+&lt;/button>
+        &lt;/div>
+      )
+    } else {
+      return (
+        &lt;div class='counter'>
+          &lt;button key='beezle' onclick={this.decrease.bind(this)} id="decrease">-&lt;/button>
+          &lt;span>{data.number}&lt;/span>
+          &lt;button onclick={this.increase.bind(this)} id="increase">+&lt;/button>
+        &lt;/div>
+      )
+    }
   }
 
   // Because these methods are part of the class,
@@ -121,55 +100,26 @@ export class Counter extends Component {
   }
 
   decrease() {
-    if (this.state.number < 2) {
+    if (this.state.number &lt; 2) {
       this.setState({disabled: true, number: this.state.number - 1})
     } else {
       this.setState({disabled: false, number: this.state.number - 1})
     }
   }
-}</code>
+}
+
+const counter = new Counter({
+  container: 'body',
+  state: {
+    disabled: false,
+    number: 1
+  }
+})</code>
           </pre>
           <p>One way to avoid the necessity of binding the inline event is to move that to the constructor:</p>
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-// Define Counter class by extending Component:
-export class Counter extends Component {
-  constructor (opts) {
-    super(opts)
-    // Bind events to "this":
-    this.increase = this.increase.bind(this)
-    this.decrease = this.decrease.bind(this)
-  }
-
-  render(data) {
-    const {disabled, number} = data
-    // Use bind on the inline events:
-    return (
-      &lt;div class='counter' id={uuid()}>
-        &lt;button key='beezle' disabled={disabled} onclick={this.decrease} id="decrease">-&lt;/button>
-        &lt;span>{number}&lt;/span>
-        &lt;button onclick={this.increase} id="increase">+&lt;/button>
-      &lt;/div>
-    )
-  }
-
-  // Because these methods are part of the class,
-  // we can accesss the component directly to set state:
-  increase() {
-    this.setState({disabled: false, number: this.state.number + 1})
-  }
-
-  decrease() {
-    if (this.state.number < 2) {
-      this.setState({disabled: true, number: this.state.number - 1})
-    } else {
-      this.setState({disabled: false, number: this.state.number - 1})
-    }
-  }
-}</code>
-          </pre>
+          
+          <p data-height="450" data-theme-id="6688" data-slug-hash="GOgpGP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/GOgpGP/">Composi events-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Arrow Functions for Inline Events</h2>
           <p>Another way to get around having to use <code>bind(this)</code> on your inline events by using arrows functions. To do this, the value of the inline event needs to be an arrow function that returns the component method. Refactoring the <code>render</code> method from above, we get this:</p>
@@ -209,189 +159,30 @@ const handler = {
           <h2>Component Instance</h2>
           <p>interface. In this case we define a separate object with properties, including the <code>handleEvent</code> method. Notice that the handler object has its own private state that we can access easily from the <code>handleEvent</code> method. To set up the event listener for <code>handleEvent</code> we use the <code>componentWasCreated</code> lifecycle method:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-const title = new Component({
-  container: 'body',
-  state: 'World',
-  render: (message) => (
-    &lt;h1>Hello, {message}!&lt;/h1>
-  ),
-  // Bind event with handleEvent object after component is injected in DOM:
-  componentWasCreated: () => {
-    document.querySelector('h1').addEventListener('click', handler)
-  }
-})
-
-// Define handleEvent object:
-const handler = {
-  state: 0,
-  handleEvent: function(e) {
-    alert(e.target.textContent)
-    // Increase this object's state:
-    this.state++
-    // Log the new state:
-    console.log(this.state)
-  }
-}
-
-// Render the title:
-const title.update()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="qVEOQo" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/qVEOQo/">Composi events-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Notice that the <code>handleEvent</code> function in the <code>handler</code> object above has access to other object properties through the <code>this</code> keyword.</p>
 
           <h2>Component Class Extension</h2>
           <p>Using a <code>handleEvent</code> object when extending the Component class is the same. Like the previous example, we use the <code>componentWasCreated</code> lifecycle method to add an event listener and pass it a <code>handleEvent</code> object:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-class Title extends Component {
-  constructor(props) {
-    super(props)
-    this.container = 'header'
-    this.state = 'World'
-  }
-  render(message) {
-    return (
-      <h1>Hello, {message}!</h1>
-    )
-  }
-
-  // Bind event with handleEvent object after component is injected in DOM:
-  componentWasCreated() {
-    this.element.addEventListener('click', handler)
-  }
-}
-
-// Define handleEvent object:
-const handler = {
-  state: 0,
-  handleEvent: function(e) {
-    alert(e.target.textContent)
-    // Increase this object's state:
-    this.state++
-    // Log the new state:
-    console.log(this.state)
-  }
-}
-// Create new title component:
-const title = new Title()
-
-// Render the title:
-title.update()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="gXbaZy" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXbaZy/">Composi events-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>With the above code, when you click on the title, the console will output the value of the state of <code>handler</code>. Each click will increase its value.</p>
 
           <h2>handleEvent Method in Components</h2>
           <p>The other way to use the <code>handleEvent</code> interface is as a method of a class. When we extend the Component class, we can make <code>handleEvent</code> one of its methods. Because the <code>handleEvent</code> method is defined directly on the class, we pass the class itself directly to the event listener by means of the <code>this</code> keyword. This means that the <code>handleEvent</code> method will have access to all the properties and methods of the class through normal use of <code>this</code>. Notice how we can directly access the component's state property from within the <code>handleEvent</code> method. Because we are putting this directly on the component class, we this method <code>handleEvent</code>:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Title extends Component {
-  constructor(props) {
-    super(props)
-    this.container = 'header'
-    this.state = 'World',
-  }
-  render(message) {
-    return (
-      &lt;h1>Hello, {message}!&lt;/h1>
-    )
-  }
-  handleEvent(e) {
-    // Log the event target:
-    console.log(e.target.nodeName)
-    // Alert the state.
-    // We can access it from the 'this' keyword:
-    alert(this.state)
-  }
-
-  // Bind event with handleEvent object after component is injected in DOM:
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-}
-// Create new title component:
-const title = new Title()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="MOYaxb" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYaxb/">Composi events-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>In the above code there is no <code>handler</code> object. Instead we've given the component a <code>handleEvent</code> method. When we pass the component to the <code>addEventListener</code> as <code>this</code>, the browser see that this is an object and looks for a method called <code>handleEvent</code>. From there on everything works as expected.</p>
 
           <h2>Event Delegation with handleEvent</h2>
           <p>In the previous examples, we only registered one event on an element. Inline events allow us to register events that are captured on multiple items. This is useful when you have a list of interactive items. We can implement event delegation with the <code>handleEvent</code> interface as well. It just requires a little extra code on our part.</p>
           <p>Remember that the only argument <code>handleEvent</code> receives is the event. From this we can check the event target to see what the user interacted with. Below is an example doing this:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-const fruits = [
-  {
-    key: 101,
-    name: 'Apples'
-  },
-  {
-    key: 102,
-    name: 'Oranges'
-  },
-  {
-    key: 103,
-    name: 'Bananas'
-  }
-]
-
-class List extends Component {
-  constructor(opts) {
-    super(opts)
-    this.state = fruits
-    // key to use for adding new items:
-    this.key = 1000
-  }
-  render() {
-    let state = this.state
-    return (
-      &lt;div>
-        &lt;p>
-          &lt;input id='nameInput' type='text' />
-          &lt;button id='addItem'>Add&lt;/button>
-        &lt;/p>
-        &lt;ul id='fruitList' class='list'>
-          {
-            this.state.map(fruit => &lt;li key={fruit.key}>{fruit.name}&lt;/li>)
-          }
-        &lt;/ul>
-      &lt;/div>
-    )
-  }
-  handleEvent(e) {
-    // Handle button click:
-    if (e.target.id === 'buttonAdd') {
-      const nameInput = this.element.querySelector('#nameInput')
-      const name = nameInput.value
-      if (!name) {
-        alert('Please provide a name!')
-        return
-      }
-      this.setState({name, key: this.key++}, this.state.length)
-      nameInput.value = ''
-      nameInput.focus()
-    // Handle list item click:
-    } else if (e.target.nodeName === 'LI') {
-      alert(e.target.textContent.trim())
-    }
-  }
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-}
-const list = new List({
-  container: 'section'
-})
-list.update()</code>
-          </pre>
+          <p data-height="500" data-theme-id="6688" data-slug-hash="GOgpeL" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/GOgpeL/">Composi events-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>We could refactor the  <code>handleEvent</code> method to make it a bit cleaner. We'll check the <code>e.target</code> value and use the <code>&&</code> operator to execute a function:</p>
 
           <pre>
@@ -416,79 +207,11 @@ handleEvent(e) {
   e.target.nodeName === 'LI' && alert(e.target.textContent.trim())
 }</code>
           </pre>
+          
           <p>As you can see in the above example, <code>handleEvent</code> allows us to implement events in a very efficient manner without any drawbacks. No callback hell with scope issues. If you have a lot of events of the same type on different elements, you can use a switch statement to simplify things. To make your guards simpler, you might resort to using classes on all interactive elements. We've redone the above example to show this approach:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-const fruits = [
-  {
-    key: 101,
-    name: 'Apples'
-  },
-  {
-    key: 102,
-    name: 'Oranges'
-  },
-  {
-    key: 103,
-    name: 'Bananas'
-  }
-]
-
-class List extends Component {
-  constructor(opts) {
-    super(opts)
-    this.state = fruits
-    this.key = 1000
-  }
-  render() {
-    let state = this.state
-    return (
-      &lt;div>
-        &lt;p>
-          &lt;input id='nameInput' type='text' />
-          &lt;button class='addItem'>Add&lt;/button>
-        &lt;/p>
-        &lt;ul id='fruitList' class='list'>
-          {
-            this.state.map(fruit => &lt;li class='listItem' key={fruit.key}>{fruit.name}&lt;/li>)
-          }
-        &lt;/ul>
-      &lt;/div>
-    )
-  }
-  handleEvent(e) {
-    switch(e.target.className) {
-      // Handle button click:
-      case 'addItem':
-        const nameInput = this.element.querySelector('#nameInput')
-        const name = nameInput.value
-        if (!name) {
-          alert('Please provide a name!')
-          return
-        }
-        this.setState({name, key: this.key++}, this.state.length)
-        nameInput.value = ''
-        nameInput.focus()
-        break
-      // Handle list item clic:
-      case 'listItem':
-        alert(e.target.textContent.trim())
-        break
-      // Other checks here:
-    }
-  }
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-}
-const list = new List({
-  container: 'section'
-})
-list.update()</code>
-          </pre>
+          <p data-height="500" data-theme-id="6688" data-slug-hash="gXbayJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXbayJ/">Composi events-7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Removing Event with handleEvent</h2>
           <p>Event removal with <code>handleEvent</code> interface couldn't be simpler. Just use the event and <code>this</code>:</p>
@@ -534,69 +257,9 @@ class List extends Component {
 
           <p>For example, let's say you have a <code>handleEvent</code> method on a class and under certain circumstances you want to change how it functions. Instead of hanving the handler full of conditional checks, you can jsut toggle it for a completely different <code>handleEvent</code>. Let's take a look at how to do this. Below we have a simple list. To switch out the behavior of the <code>handleEvent</code> method, we'll give the class a new method: <code>newHandleEvent</code>. And when we want to switch from the current, default version, we'll just assign it to <code>oldHandleEvent</code>. It's that simple:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-export class List extends Component {
-  constructor(opts) {
-    super(opts)
-    const beezle = this
-    // Keep track of toggle handleEvent behavior:
-    this.toggle = false
-    this.render = (fruits) => (
-      &lt;div>
-        &lt;p>
-          &lt;br/>
-          &lt;br/>
-          &lt;button id='change-behavior'>Change List Behavior&lt;/button>
-        &lt;/p>
-        &lt;ul class='list'>
-          {
-            fruits.map((fruit, idx) => 
-            &lt;li data-foo={fruit.name} key={fruit.key}>
-              &lt;h3>{idx +1}: {fruit.name}&lt;/h3>
-            &lt;/li>)
-          }
-        &lt;/ul>
-      &lt;/div>
-    )
-  }
-  handleEvent(e) {
-    const li = e.target.nodeName === 'LI' ? e.target : e.target.closest('li')
-    if (li && li.nodeName && li.nodeName === 'LI') {
-      alert(li.dataset.foo)
-    }
-    if (e.target.id === 'change-behavior' && !this.toggle) {
-      // Save original handleEvent so we can get it back on next toggle:
-      this.oldHandleEvent = this.handleEvent
-      // Use new handleEvent:
-      this.handleEvent = this.newHandleEvent
-      // Update toggle value for next check:
-      this.toggle = !this.toggle
-    }
-    
-  }
-  // We'll use this one to switch with default one defined above.
-  newHandleEvent(e) {
-    const li = e.target.nodeName === 'LI' ? e.target : e.target.closest('li')
-    if (li && li.nodeName && li.nodeName === 'LI') {
-      console.log('This is the new behavior.')
-      console.log(li.dataset.foo)
-    }
-    if (e.target.id === 'change-behavior' && this.toggle) {
-      // Get back orginal handleEvent:
-      this.handleEvent = this.oldHandleEvent
-      // Update toggle value for next check:
-      this.toggle = !this.toggle
-    }
-  }
-  // Attach event to capture handleEvent:
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-}</code>
-          </pre>
+          
+          <p data-height="500" data-theme-id="6688" data-slug-hash="POwPvr" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-8" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/POwPvr/">Composi events-8</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Because this approach does not involve callbacks, there are no scope issues, DOM memory leaks, etc.</p>
 
           <h2>Event Target Gotchas</h2>

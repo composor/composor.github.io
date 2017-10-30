@@ -47,129 +47,15 @@
 
           <p>If you want a custom component that you can reuse multiple times in the same app with different data, then you would need to extend. Below we are going to create a list component to create multiple lists with different datasets:</p>
 
-          <pre>
-            <code class="language-javascript">
-const fruits = [
-{
-  name: 'Apple',
-  quantity: 2
-},
-{
-  name: 'Orange',
-  quantity: 3
-},
-{
-  name: 'Banana',
-  quantity: 1
-}
-]
-
-const pets = [
-{
-  name: 'cat',
-  quantity: 1
-},
-{
-  name: 'dog',
-  quantity: 1
-},
-{
-  name: 'turtle',
-  quantity: 0
-}
-]
-
-const tools = [
-{
-  name: 'hammer',
-  quantity: 1
-},
-{
-  name: 'nails',
-  quantity: 100
-},
-{
-  name: 'screw driver',
-  quantity: 1
-}
-]
-
-// Extend Component:
-class List extends Component {
-  constructor(opts) {
-    super(opts)
-    // Render all instances in the body:
-    this.container = 'body'
-  }
-
-  render(data) {
-    return (
-      &lt;ul>
-        {
-          data.map(item => (
-          &lt;li>
-            &lt;div>Name: {item.name}&lt;/div>
-            &lt;div>Quanity: {item.quantity}&lt;/div>
-          &lt;/li>))
-        }
-      &lt;/ul>
-    )
-  }
-}
-
-// Create three instances of List.
-// Then assign them state to render them.
-const fruitsList = new List()
-fruitsList.state = fruits
-
-const petsList = new List()
-petsList.state = pets
-
-const toolsList = new List()
-toolsList.state = tools</code>
-          </pre>
-
+          <p data-height="600" data-theme-id="6688" data-slug-hash="eemNOQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi extending component-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/eemNOQ/">Composi extending component-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>In the above example, notice that we defined the render function as a method of the class. We also designated the component's <code>container</code> directly in the class constructor. Because of this, all instances of it will use the same container. If you wanted to render each list in a different container, then you would not bother assign the container in the constructor. Instead you'd pass it in during initialization:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Extend Component:
-class List extends Component {
-  // No need for a constructor since we are not designating a container here.
-  render(data) {
-    return (
-      &lt;ul>
-        {
-          data.map(item => (
-          &lt;li>
-            &lt;div>Name: {item.name}&lt;/div>
-            &lt;div>Quanity: {item.quantity}&lt;/div>
-          &lt;/li>))
-        }
-      &lt;/ul>
-    )
-  }
-}
-
-// Create three instances of List while passing in a selector for their containers.
-// Then assign them state to render them.
-const fruitsList = new List({
-  container: '#fruits-list'
-})
-fruitsList.state = fruits
-
-const petsList = new List({
-  container: '#pets-list'
-})
-petsList.state = pets
-
-const toolsList = new List({
-  container: '#tools-list'
-})
-toolsList.state = tools</code>
-          </pre>
+          <p data-height="600" data-theme-id="6688" data-slug-hash="KywpKR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi extending component-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/KywpKR/">Composi extending component-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
 
+          <p>&nbsp;</p>
           
           
           

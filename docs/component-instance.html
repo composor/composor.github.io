@@ -75,7 +75,9 @@ const hello = new Component({
 // Render the component to the DOM by passing data to the component's update method:
 hello.update('World') // Returns &lt;p>Hello, World!&lt;/p></code>
           </pre>
-
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="xPbbmB" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xPbbmB/">Composi component-instance-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Stateless Component</h2>
           <p>In the previous example we rendered the component in the DOM by running the <code>update</code> function on it an passing it some data. This is called a stateless component. It will not render anything unless we pass it some data through the <code>update</code> method.</p>
@@ -89,8 +91,8 @@ import {h, Component} from 'composi'
 // A person object:
 const person = {
   name: {
-    firstName: 'Joe',
-    lastName: 'Bodoni'
+    first: 'Joe',
+    last: 'Bodoni'
   },
   job: 'Mechanic',
   age: 23
@@ -109,7 +111,9 @@ const user = new Component({
 // Render the component with the person object:
 user.update(person)</code>
           </pre>
-
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="MOYYLG" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYYLG/">Composi component-instance-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Dataless Components</h2>
           <p>Usually when you create stateless components you'll pass them data through their <code>update</code> method. But you could also make a component that does not consume any data. It would just create some state markup:</p>
@@ -123,78 +127,26 @@ const title = new Component({
   render: () => &lt;h1>This is a Title!&lt;/h1>
 })
 // Render component without data:
-titleComponent.update()
+title.update()
             </code>
           </pre>
 
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="dZPPLy" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/dZPPLy/">Composi component-instance-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Usually if you want to create dataless components, that would be a good fit to use <a href='./functional-components.html' target='__blank'>functional components</a>.</p>
 
           <p> </p>
           <h2>Using Map to Loop Arrays</h2>
           <p>You can also use an array as the source of data for a component. This can be an array of simple types or of objects. In order to output the contents of an array you'll need to use the <code>map</code> function on the array and return the markup for each array loop instance:</p>
-
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-const fruits = ['Apples', 'Oranges', 'Bananas']
-
-const fruitList = new Component({
-  container: '#fruits',
-  // Loop over the fruits array with "map":
-  render: (fruits) => (
-    &lt;ul>
-      {
-        fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
-      }
-    &lt;/ul>)
-})
-// Render the list of fruits:
-fruitList.update(fruits)</code>
-          </pre>
+          
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="zPxxQe" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/zPxxQe/">Composi component-instance-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Using this same pattern, we can output an array of objects:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-const people = [
-  {
-    firstName: 'Joe',
-    lastName: 'Bodoni',
-    job: 'Mechanic'
-  },
-  {
-    firstName: 'Ellen',
-    lastName: 'Vanderbilt',
-    job: 'Lab Technician'
-  },
-  {
-    firstName: 'Sam',
-    lastName: 'Anderson',
-    job: 'Developer'
-  }
-]
-
-const peopleList = new Component({
-  container: '#people',
-  render: (people) => (
-    &lt;ul>
-      {
-        people.map(person => (
-          &lt;li>
-          &lt;div>Name: {person.firstName} {person.lastName}&lt;/div>
-          &lt;div>Job: {person.job}&lt;/div>
-          &lt;/li>
-        ))
-      }
-    &lt;/ul>)
-})
-
-// Render the peopleList component:
-peopleList.update(people)</code>
-          </pre>
-
+          <p data-height="300" data-theme-id="6688" data-slug-hash="rYaaEQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/rYaaEQ/">Composi component-instance-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Understanding Component Instances</h2>
           <p>When you create an instance of Component with the <code>new</code> keyword, you do so by passing in a object literal of properties and values. Because of this, the scope of those properties is not the component but the object itself. This means that one property does not have access to another, even though they are defined in the same object literal. The only way to access these is from the instance itself. For example, suppose we create a new component instance with state. If we want to access that state inside an event, we would need to do so through the variable we used to create the instance:</p>
@@ -219,18 +171,9 @@ const person = new Component({
 
           <h2>Stateful Component</h2>
           <p>Besides stateless components that receive data through their <code>update</code> method, you can create stateful components. When you create a stateful component, there is no need to run <code>update</code> on it. The act of giving it state will cause it to render in the document. Notice how we use the <code>state</code> property on the component instance:</p>
-          <pre>
-            <code class="language-javascript">
-// Define component:
-const hello = new Component({
-  container: 'body',
-  render: (name) => &lt;h1>Hello, {name}!&lt;/h1>
-})
-
-// Setting state on the Component instance will cause the component to render to the DOM into the body tag:
-hello.state = 'World'</code>
-          </pre>
-
+          
+          <p data-height="300" data-theme-id="6688" data-slug-hash="NwPPQa" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/NwPPQa/">Composi component-instance-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
 
           <h2>Lifecycle Methods</h2>
@@ -248,45 +191,12 @@ hello.state = 'World'</code>
           <p>You would use a lifecycle method when you want to be able to run some code at a particular time in the component's life. For example, you would use <code>componentWasCreate</code> to attach an event listener to the component. Or you could use <code>componentWasUpdate</code> to trigger some other action.</p>
           <p>In the following example we use <code>componentWasCreate</code> to launch a setInterval loop. Because this component has state assigned, as soon as we run <code>update</code> on it, the loop kicks in.</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-function tick() {
-  clock.setState({
-    time: new Date()
-  });
-}
-let timerID
-const clock = new Component({
-  root: '#clock',
-  state: {time: new Date()},
-  render: (date) => {
-    return (
-    &lt;div>
-      &lt;h2>The Current Time&lt;/h2>
-      &lt;p>It is {date.time.toLocaleTimeString()}.&lt;/p>
-    &lt;/div>
-  )},
-
-  componentWasCreated() {
-    timerID = setInterval(
-      () => {
-        tick()
-      },
-      1000
-    );
-  },
-
-  componentWillUnmount() {
-    clearInterval(timerID);
-  }
-})
-
-clock.update()</code>
-          </pre>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="ZaYYgM" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ZaYYgM/">Composi component-instance-7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
           <p>To learn more about lifecycle events, consult their <a href="./lifecycle-methods.html" target='__blank'>docs</a>.</p>
+
+
           <p>&nbsp;</p>
           
           

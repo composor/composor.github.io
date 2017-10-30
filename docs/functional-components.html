@@ -152,7 +152,7 @@ render(&lt;List {...{items}}/>, 'section')</code>
 </pre>
 
           <p>Codepen Example:</p>
-          <p data-height="300" data-theme-id="6688" data-slug-hash="aVzzGQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/aVzzGQ/">Composi functional-components-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <p data-height="500" data-theme-id="6688" data-slug-hash="aVzzGQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/aVzzGQ/">Composi functional-components-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           
           <p> </p>
@@ -181,7 +181,7 @@ export function List(props) {
 }</code>
           </pre>
           <p>Codepen Example:</p>
-          <p data-height="300" data-theme-id="6688" data-slug-hash="RjNNYP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/RjNNYP/">Composi functional-components-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="RjNNYP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/RjNNYP/">Composi functional-components-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Data Flows Down</h2>
@@ -256,32 +256,11 @@ export const events = {
           <h2>Using the handleEvent Object</h2>
           <p>Now that we have our <code>handleEvent</code> object defined, we need to wire it up to our component. We'll do that in our <code>app.js</code> file:</p>
 
-          <pre>
-            <code class="language-javascript">
-// app.js:
-import {h, render} from 'composi'
-import {Title} from './components/title'
-import {List} from './components/list'
-import {events} from './events'
-import {items} from './items'
-
-// Define data for component:
-const name = 'World'
-// Render component into header:
-render(&lt;Title {...{name}}/>, 'header')
-
-// Render list component into section:
-render(&lt;List {...{items}}/>, 'section')
-
-// Add event listener to the component's container and pass in the handleEvent object instead of a callback:
-document.querySelector('.container--list').addEventListener('click', events)</code>
-          </pre>
-
-          <p>And that's it. With that we now have an interactive functional component that updates in real time with a virtual dom.</p>
-
+ 
           <p>Codepen Example:</p>
-          <p data-height="300" data-theme-id="6688" data-slug-hash="YEPPJz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEPPJz/">Composi functional-components-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="YEPPJz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEPPJz/">Composi functional-components-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p>And that's it. With that we now have an interactive functional component that updates in real time with a virtual dom.</p>
 
           <h2>Component Class Advantages</h2>
 
