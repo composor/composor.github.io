@@ -41,7 +41,7 @@
         <div class='tutorial'>
           <h1>Lifting State Up</h1>
           <p class="tutorial__intro">A component can have child components that need to share the same state. In order to make that work, we recommend raising the state up to the parent component.</p>
-          <p>To understand how to list state up, we are going to create a temperature calculator that determines whether water would boil or not. It will accept both Celcius and Fahrenheit, converting between them. So, here's are first function:</p>
+          <p>To understand how to list state up, we are going to create a temperature calculator that determines whether water would boil or not. It will accept both Cesius and Fahrenheit, converting between them. So, here's are first function:</p>
           <pre>
             <code class="language-javascript">
 function BoilingVerdict(props) {
@@ -55,7 +55,7 @@ function BoilingVerdict(props) {
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="58eddc47b5e67631d74815bdb82f6428" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Lifting State-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/58eddc47b5e67631d74815bdb82f6428/">Composi Tuts - Lifting State-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>A quick FYI for the Americans viewing this. 0&deg; Celcius is the freezing point and 100&deg; Celcius is the boiling point. So, any value less than 100 should show: 'The water would not boil', and any value of 100 or higher should show: 'The water will boil'.</p>
+          <p>A quick FYI for the Americans viewing this. 0&deg; Cesius is the freezing point and 100&deg; Cesius is the boiling point. So, any value less than 100 should show: 'The water would not boil', and any value of 100 or higher should show: 'The water will boil'.</p>
 
           <h2>A Second Temperature Input</h2>
           <p>Now we want to add a second input for Fahrenheit. And we want them both synched, so that a change in the value of one will update the value of the other. In order for the two inputs to show the correct values, we'll start off by creating a funcional component to create them:</p>
@@ -71,7 +71,7 @@ const TemperatureInput = (props) => (
           </pre>
           <p>We can use this functional input as a custom tag in our <code>Calculator</code> component. Because it is a functional component, it has no state. It depends on data being passed to it. We will let the parent component manage state for everyone.</p> 
           
-          <p>We also need to give our component two new methods to convert between Celcius and Fahrenheight: <code>toCelsius</code> and <code>toFahrenheit</code>. We'll also add a <code>handleEvent</code> method to manage the user input on the two form inputs. With all this in mind, here is our update temperature calculator:</p>
+          <p>We also need to give our component two new methods to convert between Cesius and Fahrenheight: <code>toCelsius</code> and <code>toFahrenheit</code>. We'll also add a <code>handleEvent</code> method to manage the user input on the two form inputs. With all this in mind, here is our update temperature calculator:</p>
 
           <p data-height="400" data-theme-id="6688" data-slug-hash="3f0198df7881049e286f6d8fff146ae9" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Lifting State-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/3f0198df7881049e286f6d8fff146ae9/">Composi Tuts - Lifting State-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
