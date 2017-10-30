@@ -46,44 +46,23 @@
             <code class="language-javascript">
 import {h, render} from 'composi'
 
-const element = <h1>A Title</h1></code>
+const element = &lt;h1>A Title&lt;/h1></code>
           </pre>
           <p>Elements are merely a piece of markup. Notice there is no function and no functionality. Components on the other hand consist of functions or classes and can container many possible features. Elements are not components, but components are made up of elements.</p>
 
           <h2>Rendering an Element into the DOM</h2>
           <p>Composi provides the <code>render</code> function to enable injecting a JSX element into the DOM. The <code>render</code> function takes two arguments: an element to create, and a container in the DOM in which to inject the element:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, render} from 'composi'
-
-const element = <h1>Hello, World!</h1>
-render(element, 'body')</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="MOYyRN" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYyRN/">Composi Tuts - JSX-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>The render function takes an element and inserts it into the container you indicated.</p>
 
           <h2>Virtual Dom</h2>
           <p>When you inject an element into the DOM with the <code>render</code> function, it also creates a virtual dom of the element. That means that if your element had dynamic content that could change, the render function would diff and patch the element if its data changed.</p>
 
-          <pre>
-            <code class="language-javascript">
-function tick() {
-  const clock = (
-    &lt;div id='dingo'>
-      &lt;h1>Hello, world!&lt;/h1>
-      &lt;h2>It is {new Date().toLocaleTimeString()}.&lt;/h2>
-    &lt;/div>
-  );
-  
-  render(
-    clock,
-    'body'
-  );
-}
-
-setInterval(tick, 1000)</code>
-          </pre>
-          <p>[Codepen]</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="JOoXqR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/JOoXqR/">Composi Tuts - JSX-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p> </p>
           <h2>Composi Only Updates What is Necessary</h2>
           <p>Because of its virtual dom, Composi will only update the parts of the DOM that needs to. In many cases this will only be text nodes, so there is minimal layout thrashing. In the above example, only the text node for the time will be updated, even though we are passing in the complete element at each tick.</p>
 

@@ -45,26 +45,12 @@
           
           <h2>Functional and Class Components</h2>
           <p>The simplest way to create a component is to write a function. We use props to pass down the data to the component. To do this, we wrap the function component's argument in curly braces. And when we pass the JSX tag to the render function, we pass the data to use inside curly braces again using the spread operator:</p>
-          <pre>
-            <code class="language-javascript">
-function Hello({name}) {
-  return &lt;h1>Hello, {name}!&lt;/h1>
-}
-render(&lt;Hello {...{name: 'Joe Bodoni'}} />, 'body')</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="mqyPYp" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/mqyPYp/">Composi Tuts - Components and Props-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>The above example is what is called a functional component. It's a function that returns markup to create. Another type of component is create using the Component class:</p>
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
-  render(name) {
-    return (
-      &lt;h1>Hello, {name}!&lt;/h1>
-    )
-  }
-}
-const hello = new Hello()
-hello.update('Joe Bodoni')</code>
-          </pre>
+  
+          <p data-height="300" data-theme-id="6688" data-slug-hash="ZaYWdz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ZaYWdz/">Composi Tuts - Components and Props-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>For a class-based component, the <code>render</code> is defined directly on the component. We cause the class-based component to be rendered by passing data to its <code>update</code> function.</p>
 
           <p>In the above two examples, the result of the function component and class-based component are identical. Class-based component offer more functionality to create complex components.</p>
@@ -74,68 +60,15 @@ hello.update('Joe Bodoni')</code>
 
           <p>Here's an example of a functional component with other functional components as its children:</p>
 
-          <pre>
-            <code class="language-javascript">
-function Welcome(props) {
-  return &lt;h1>Hello, {props.name}&lt;/h1>;
-}
-
-function App() {
-  return (
-    &lt;div>
-      &lt;Welcome name="Joe" />
-      &lt;Welcome name="Ellen" />
-      &lt;Welcome name="Paul" />
-    &lt;/div>
-  );
-}
-render(&lt;App />,'body')</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="oogxrZ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oogxrZ/">Composi Tuts - Components and Props-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Notice that we enclose all our <code>Welcome</code> tags in a <code>div</code> tag. That's because there must always be one enclosing tag for any markup we want to produce.</p>
 
           <h2>Breaking Components Down</h2>
           <p>You should always try to break your components down into smaller pieces that get assembled into the final component. Take the following component as an example:</p>
 
-          <pre>
-            <code class="language-javascript">
-function Comment(props) {
-  return (
-    &lt;div className="Comment">
-      &lt;div className="UserInfo">
-        &lt;img className="Avatar"
-             src={props.author.avatarUrl}
-             alt={props.author.name} />
-        &lt;div className="UserInfo-name">
-          {props.author.name}
-        &lt;/div>
-      &lt;/div>
-      &lt;div className="Comment-text">
-        {props.text}
-      &lt;/div>
-      &lt;div className="Comment-date">
-        {formatDate(props.date)}
-      &lt;/div>
-    &lt;/div>
-  );
-}
-
-const comment = {
-  date: new Date(),
-  text: 'Learning Composi is easy!',
-  author: {
-    name: 'Hello Kitty',
-    avatarUrl: 'http://placekitten.com/g/144/144'
-  }
-};
-render(
-  &lt;Comment 
-    date={comment.date} 
-    text={comment.text} 
-    author={comment.author} 
-  />, 
-  'body'
-)</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="MOYyNg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYyNg/">Composi Tuts - Components and Props-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>This component is too complicate, so we are going to see how to break it down into smaller pieces. This is tricky because we need to pass data down to the child elements.</p>
 
           <p>The first thing we'll do is extract the avatar part:</p>
@@ -181,7 +114,7 @@ function Comment(props) {
     &lt;/div>
   );
 }</code>
-          </pre>
+</pre>
           <p>Next we extract the user info, which includes the avatar component:</p>
 
           <pre>
@@ -234,7 +167,12 @@ function Comment(props) {
     &lt;/div>
   );
 }</code>
-          </pre>
+</pre>
+
+          <p>And here's the working example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="NwPrNJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/NwPrNJ/">Composi Tuts - Components and Props-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
           <p>If you wanted to, you to put the sub-components--Avatar and UserInfo--in separated files and import them into the Comment file. This would allow you to reuse them elsewhere in your project, or even reuse them in other projects.</p>
 
           <h2>Props Should Be Read-Only</h2>
@@ -259,46 +197,12 @@ function withdraw(account, amount) {
           <h2>Component Container</h2>
           <p>Normally when you define a component, you also designate the container in the DOM where you want the component to render. You usually put it in the class constructor:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
-  constructor(props) {
-    super(props)
-    this.container = 'section'
-  }
-  render(name) {
-    return (
-      &lt;h1>Hello, {name}!&lt;/h1>
-    )
-  }
-}
-const hello = new Hello({
-  state: 'Joe'
-})</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="KywMMO" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/KywMMO/">Composi Tuts - Components and Props-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>However, if you wanted to be able to render a component in different containers, you would leave it out and provide it as an argument in the component instantiation:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
-  render(name) {
-    return (
-      &lt;h1>Hello, {name}!&lt;/h1>
-    )
-  }
-}
-// Create first hello in header tag:
-const hello1 = new Hello({
-  container: 'header',
-  state: 'Joe'
-})
-
-// Create second hello in a section tag:
-const hello2 = new Hello({
-  container: 'section',
-  state: 'Susan'
-})</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="qVENaj" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/qVENaj/">Composi Tuts - Components and Props-7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           
           <p> </p>
           <h2>No Container</h2>

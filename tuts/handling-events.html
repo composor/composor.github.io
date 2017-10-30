@@ -47,57 +47,14 @@
           <h2>Inline Events</h2>
           <p>The easiest way to implement events is to put the event handler right on the element where you want to capture the interaction. Unlike other libraries that use JSX, there is no need to camel case inline events. Use them just like you would for JavaScript. However, one important thing to bear in mind. Inline the value of an inline event must never be quoted. Instead that value needs to be inclosed in curly braces. Let's make a  simple class component and add an inline event to alert its value:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
-  constructor(props) {
-    super(props)
-    this.state = 'Joe Bodoni'
-  }
-  render(name) {
-    return (
-      &lt;h1 onclick={this.announce}>Hello, {name}!&lt;/h1>
-    )
-  }
-  announce(e) {
-    alert(e.target.textContent)
-  }
-}
-
-const hello = new Hello()</code>
-          </pre>
+         <p data-height="300" data-theme-id="6688" data-slug-hash="qVEXxL" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/qVEXxL/">Composi Tuts - events-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>In our above example we did two things. We create a method to handle the event, <code>announce</code>. And we put an online event handler directingly on the element we expect the user to click, in this case, the <code>h1</code>. Notice that we use the <code>this</code> keyword to access the component method inside the event handler. Now whenever the user clicks, they'll get an alert of the text of the <code>h1</code>. The above example was very simple, we just used the event target to get the text content. If we need to access over parts of the component, it get's more complicate.</p>
           <h2>Binding "This"</h2>
           <p>We're going to change our Hello example so that the user can enter a different name. For that we'll need to add an input and a button to submit:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Title extends Component {
-  constructor(props) {
-    super(props)
-    this.state = 'Joe Bodoni'
-  }
-  render(name) {
-    return (
-      &lt;div>
-        &lt;h1>Hello, {name}!&lt;/h1>
-        &lt;p>
-          &lt;input type='text' /> &lt;button onclick={this.announce}>Change Name&lt;/button>
-        &lt;/p>
-      &lt;/div>
-    )
-  }
-  announce() {
-    const input = this.element.querySelector('input')
-    const value = input.value
-    if (value) {
-      this.setState(value)
-    }
-  }
-}
-
-const title = new Title()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="WXbEJp" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/WXbEJp/">Composi Tuts - events-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>In this example, we've moved the <code>onclick</code> inline event handler to the button. We expect that when the user enters a name in the input and clicks the button, that it will execute the component's <code>announce</code> method. However, this is not working. Why?</p>
 
           <h2>Inline Events and Context</h2>
@@ -120,41 +77,16 @@ announce() {
             <code class="language-javascript">
 &lt;button onclick={this.announce.bind(this)}>Change Name&lt;/button></code>
           </pre>
-          <p>Notice how we pass <code>this</code> to the click handler using <code>bind</code>. Doing this solves our problem and our example will now work. The <code>announce</code> method can now access the component state because its reference to <code>this</code>is correct.</p>
+          <p>Notice how we pass <code>this</code> to the click handler using <code>bind</code>. Doing this solves our problem and our example will now work. The <code>announce</code> method can now access the component state because its reference to <code>this</code>is correct:</p>
+
+          <p data-height="300" data-theme-id="6688" data-slug-hash="vWEJQY" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/vWEJQY/">Composi Tuts - events-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
           <h2>Move Bind to the Constructor</h2>
           <p>Some of you may really hate the cluttered look of <code>bind(this)</code> on your inline events. There is annother way to do this, and that is to bind the component method in the constructor. To do this your put the method you want to bind there and assign it the bound version. Below is our example updated with this approach:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Title extends Component {
-  constructor(props) {
-    super(props)
-    this.state = 'Joe Bodoni'
-    // Bind the method "announce":
-    this.announce = this.announce.bind(this)
-  }
-  render(name) {
-    return (
-      &lt;div>
-        &lt;h1>Hello, {name}!&lt;/h1>
-        &lt;p>
-          &lt;input type='text' /> &lt;button onclick={this.announce}>Change Name&lt;/button>
-        &lt;/p>
-      &lt;/div>
-    )
-  }
-  announce() {
-    const input = this.element.querySelector('input')
-    const value = input.value
-    if (value) {
-      this.setState(value)
-    }
-  }
-}
-
-const title = new Title()</code>
-</pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="YEPxBz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEPxBz/">Composi Tuts - events-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
           <p>With this change, our example now works and our online event is clean.</p>
 
@@ -165,7 +97,11 @@ const title = new Title()</code>
             <code class="language-javascript">
 &lt;button onclick={() => this.announce()}>Change Name&lt;/button></code>
           </pre>
-          <p>Notice that we changed the event handler so that the arrow function returns <code>this.announce()</code>. And that's it. The example now works as expected.</p>
+          <p>Notice that we changed the event handler so that the arrow function returns <code>this.announce()</code>. And that's it. The example now works as expected. Notice for the <code>onclick</code> for <code>announce</code> that we had to pass in the event object to the arrow function and the method invocation:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="KywvJy" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/KywvJy/">Composi Tuts - events-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          
+          <p> </p>
 
           <h2>Summary</h2>
           <p>When using inline events you have three ways of getting the component scope. This is purely user preference. There is no difference in result or unexpected gotchas with any of the three.</p>
@@ -188,76 +124,16 @@ const title = new Title()</code>
 
           <p>Time to refactor our <code>Hello</code> component using <code>handleEvent</code>:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Title extends Component {
-  constructor(props) {
-    super(props)
-    this.state = 'Joe Bodoni'
-  }
-  render(name) {
-    return (
-      <div>
-        <h1>Hello, {name}!</h1>
-        <p>
-          <input type='text' /> <button onclick={() => this.announce()}>Change Name</button>
-        </p>
-      </div>
-    )
-  }
-  handleEvent(e) {
-    e.target.nodeName === 'BUTTON' && this.announce()
-  }
-  announce() {
-    const input = this.element.querySelector('input')
-    const value = input.value
-    if (value) {
-      this.setState(value)
-    }
-  }
-}
-
-const title = new Title()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="NwPaPa" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/NwPaPa/">Composi Tuts - events-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Our class now has a <code>handleEvent</code> method. Because it will be invoked by the event, it gets the event object as its parameter. We can use that to check what it was the user clicked. Since we want to capture a click on the button, we check the event target node name. If it equals "BUTTON", we execute the <code>announce</code> method. In the example above we are using the &amp;&amp; operator to set up a conditional check. You can read more about usig it in the tutorial for <a target='__blank' href='./conditional-rendering.html'>Conditional Rendering</a>.</p>
 
           <h2>Use a Lifecycle Hook to Add Event</h2>
           <p>Although we have a <code>handleEvent</code> method on our component, click the button does nothing. Remember, <code>handleEvent</code> is a replacement for the event callback. To work, <code>handleEvent</code> needs an <code>addEventListener</code> registered on the component. We can do that using a lifecycle hook. The one to use for this is <code>componentWasCreated</code>. As soon as the component is injected in the DOM we want to attach an event to it to use our <code>handleEvent</code> method:</p>
 
           <pre>
-            <code class="language-javascript">
-class Title extends Component {
-  constructor(props) {
-    super(props)
-    this.state = 'Joe Bodoni'
-  }
-  render(name) {
-    return (
-      &lt;div>
-        &lt;h1>Hello, {name}!&lt;/h1>
-        &lt;p>
-          &lt;input type='text' /> &lt;button onclick={() => this.announce()}>Change Name&lt;/button>
-        &lt;/p>
-      &lt;/div>
-    )
-  }
-  handleEvent(e) {
-    e.target.nodeName === 'BUTTON' && this.announce()
-  }
-  announce() {
-    const input = this.element.querySelector('input')
-    const value = input.value
-    if (value) {
-      this.setState(value)
-    }
-  }
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-}
-
-const title = new Title()
-            </code>
+            <p data-height="300" data-theme-id="6688" data-slug-hash="QOwqKm" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/QOwqKm/">Composi Tuts - events-7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           </pre>
           <p>Notice how we set up the event listener in the <code>componentWasCreated</code> hook. We designated a <code>click</code> event, and then we passed in <code>this</code> instead of a callback. Here <code>this</code> is the class itself. This means the scope of the <code>handleEvent</code> method will be the class itself, giving us access to all its properties and methods from inside the <code>handleEvent</code> method. There will be no weird binding issues like inline events.</p>
           <p>We registered the <code>addEventListener</code> on the component's <code>element</code>. For a component the <code>element</code> property is the base parent element of all the other child elements. In the case of our <code>Hello</code> class, that will be the div tag. Because the click event is registered on the div, we can use the event target in the <code>handleEvent</code> method to test for many possible interactions. This gives use the ability to handle user interactions through event delegation in with a simple pattern of testing the event target, followed by <code>&amp;&amp;</code> and the class method to execute.</p>

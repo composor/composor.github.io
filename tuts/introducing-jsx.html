@@ -55,31 +55,8 @@ function Title() {
           <h2>Embedding Expressions in JSX</h2>
           <p>Because JSX is ultimately just JavaScript, you can embed JavaScript expressions in it. In the following example, <code>2 + 2</code>, <code>user.firstName</code>, and <code>formatName(user)</code> are all valid expressions:</p>
 
-            <pre>
-              <code class="language-javascript">
-import {h, Component, render} from 'composi'
-
-function formatName(user) {
-  return user.firstName + ' ' + user.lastName;
-}
-
-const user = {
-  firstName: 'Joe',
-  lastName: 'Bodoni'
-}
-
-const element = (
-  &lt;h1>
-    Hello, {formatName(user)}!
-  &lt;/h1>
-)
-
-render(
-  element,
-  document.getElementById('root')
-)</code>
-            </pre>
-            <p>[Insert Codepen Here]</p>
+            <p data-height="300" data-theme-id="6688" data-slug-hash="dZPMQN" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/dZPMQN/">Composi Tuts - JSX-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
             <p>We split the JSX over multiple lines for readability. We also recommend wrapping JSX in parentheses to avoid the pitfalls of automatic semicolon insertion caused by new lines.</p>
 
             <h2>JSX is an Expression Too</h2>
@@ -87,33 +64,8 @@ render(
 
             <p>That means that you can include JSX inside of if statements and for loops, assign it to variables, accept it as an argument, and return it from functions:</p>
 
-            <pre>
-              <code class="language-javascript">
-import {h, Component, render} from 'composi'
-
-function formatName(user) {
-  return user.firstName + ' ' + user.lastName;
-}
-
-const user = {
-  firstName: 'Joe',
-  lastName: 'Bodoni'
-}
-function greet(user) {
-  if (user) {
-    return &lt;h1>Hello, {formatName(user)}!&lt;/h1>
-  } else {
-    return &lt;h1>Hello, Stranger.&lt;/h1>
-  }
-}
-
-const element = greet(user)
-
-render(
-  element,
-  document.getElementById('root')
-)</code>
-            </pre>
+            <p data-height="300" data-theme-id="6688" data-slug-hash="ZaYWmg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ZaYWmg/">Composi Tuts - JSX-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
             <p> </p>
             <h2>Specifying Attributes with JSX</h2>
             <p>To specify string literals as attributes, use quotes:</p>
@@ -131,18 +83,8 @@ const element = &lt;img src={user.avatarUrl} />;</code>
             </pre>
             <p>Unlike React, Preact and Inferno, which require attribute names to use camel case, with Composi you can use their normal HTML versions. In the following example, notice that all the attributes in the JSX resemble normal HTML attributes:</p>
 
-            <pre>
-              <code class="language-javascript">
-function announce(e) {
-  alert(e.target.textContent)
-}
-function Title() {
-  return (
-    &lt;h1 class='heading' title='This is a title' onclick={announce}>This is a Title&lt;/h1>
-  )
-}
-render(&lt;Title />, document.body)</code>
-            </pre>
+            <p data-height="300" data-theme-id="6688" data-slug-hash="QOwNzz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/QOwNzz/">Composi Tuts - JSX-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
             <p> </p>
             <h2>JSX Tags Can Have Children</h2>
             <p>A JSX tag can be single. In such a case it needs to be close with a forward slash:</p>
@@ -184,23 +126,10 @@ const test = new Test()
 // nothing gets output. The component will not render:
 test.update(title)</code>
             </pre>
-            <p>In the case that the data contained markup, this two will be escaped:</p>
+            <p>In the case that the data contained markup, this too will be escaped:</p>
 
-            <pre>
-              <code class="language-javascript">
-const title = '<strong>This is a Title</strong>'
-class Test extends Component {
-  constructor(props) {
-    super(props)
-    this.root = 'header'
-    this.render = (data) => <h1>{data}</h1>
-  } 
-}
-const test = new Test()
-// When we pass the function title as data to the component,
-test.update(title)
-// In this case the component will output a string: "&lt;strong>This is a Title&lt;/strong>".</code> 
-</pre>
+            <p data-height="300" data-theme-id="6688" data-slug-hash="zPxqeG" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/zPxqeG/">Composi Tuts - JSX-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
         <p> </p>
         <h2>JSX Represents Objects</h2>

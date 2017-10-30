@@ -55,121 +55,18 @@ function GuestGreeting(props) {
   return &lt;h1>Please sign in.&lt;/h1>;
 }</code>
           </pre>
-          <p>Now lets create a component that returns these two sub-components and based on the loggedon condition, returns one or the other:</p>
+          <p>Now lets create a component that returns these two sub-components and based on the loggedon condition, returns one or the other. Try opening the Codepen and changing the value of <code>isLoggedIn</code> to false.</p>
 
-          <pre>
-            <code class="language-javascript">
-function UserGreeting(props) {
-  return &lt;h1>Welcome back!&lt;/h1>
-}
-
-function GuestGreeting(props) {
-  return &lt;h1>Please sign in.&lt;/h1>;
-}
-
-function Greeting(props) {
-  const isLoggedIn = props.isLoggedIn;
-  if (isLoggedIn) {
-    return &lt;UserGreeting />
-  }
-  return &lt;GuestGreeting />
-}
-
-render(
-  // Try changing to isLoggedIn={true}:
-  &lt;Greeting isLoggedIn={true} />,
-  'body'
-);</code>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="YEPWBJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - conditional-rendering-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEPWBJ/">Composi Tuts - conditional-rendering-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           </pre>
           <p> </p>
 
           <h2>Conditional Element Variables</h2>
           <p>You can use a variable to conditional store an element and the return that in the <code>render</code> function. In the next example we are going to combined the Greeting element from above with conditional rendering of buttons for a login. When the user clicks the button, the logged in status will change visibly on the page. Notice how we store the button in a variable and out put it with <code>{button}</code> in the component's <code>render</code> function, keeping it very clean:</code></p>
 
-          <pre>
-            <code class="language-javascript">
-function UserGreeting(props) {
-  return &lt;h1>Welcome back!&lt;/h1>;
-}
-
-function GuestGreeting(props) {
-  return &lt;h1>Please sign up.&lt;/h1>;
-}
-function Greeting(props) {
-  const isLoggedIn = props.isLoggedIn;
-  if (isLoggedIn) {
-    return &lt;UserGreeting />;
-  }
-  return &lt;GuestGreeting />;
-}
-
-function LoginButton(props) {
-  return (
-    &lt;button class='login'>
-      Login
-    &lt;/button>
-  );
-}
-
-function LogoutButton(props) {
-  return (
-    &lt;button class='logout'>
-      Logout
-    &lt;/button>
-  );
-}
-
-class LoginControl extends Component {
-  constructor(props) {
-    super(props);
-    this.container = 'section'
-    this.state = {isLoggedIn: false};
-  }
-
-  // Use handleEvent to manage button clicks:
-  handleEvent(e) {
-    if (e.target.className === 'login') {
-      this.handleLoginClick(e)
-    } else if (e.target.className === 'logout') {
-      this.handleLogoutClick(e)
-    }
-  }
-
-  handleLoginClick() {
-    this.setState({isLoggedIn: true});
-  }
-
-  handleLogoutClick() {
-    this.setState({isLoggedIn: false});
-  }
-
-  // Use lifecycle event to add event listener.
-  // Pass in component thru "this" so we can access "handleEvent":
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-
-  render() {
-    const isLoggedIn = this.state.isLoggedIn;
-
-    let button = null;
-    if (isLoggedIn) {
-      button = &lt;LogoutButton />;
-    } else {
-      button = &lt;LoginButton />;
-    }
-
-    return (
-      &lt;div>
-        &lt;Greeting isLoggedIn={isLoggedIn} />
-        {button}
-      &lt;/div>
-    );
-  }
-}
-
-const login = new LoginControl()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="POwzLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - conditional-rendering-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/POwzLv/">Composi Tuts - conditional-rendering-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Using the Logical &amp;&amp; Operator</h2>
           <p>You can also use the JavaScript logical && operator for conditional situations. In the above example we can simplify the <code>handleEvent</code> method by using the &amp;&amp; operator as a condition check:</p>
@@ -195,27 +92,8 @@ const login = new LoginControl()</code>
 
           <p>We can also use the &amp;&amp; operator to conditionally render an element. If the first statement is true, then return the element to render. In the next example, the element will render only if the number of messages is greater than 0:</p>
 
-          <pre>
-            <code class="language-javascript">
-function Mailbox(props) {
-  const unreadMessages = props.unreadMessages;
-  // Conditionally render the H2 message based on 
-  // the number of messages using the &amp;&amp: operator:
-  return (
-    &lt;div>
-      &lt;h1>Hello!&lt;/h1>
-      {unreadMessages.length > 0 &&
-        &lt;h2>
-          You have {unreadMessages.length} unread messages.
-        &lt;/h2>
-      }
-    &lt;/div>
-  );
-}
-
-const messages = ['Composi', 'Re: Composi', 'Re:Re: Composi'];
-render(&lt;Mailbox unreadMessages={messages} />, 'section')</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="ZaYOZe" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - conditional-rendering-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ZaYOZe/">Composi Tuts - conditional-rendering-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Inline Ternary Operator</h2>
 
@@ -273,53 +151,8 @@ render() {
           <h2>Prevent an Component from Rendering</h2>
           <p>Sometimes you want to not render a component from rendering. The best way to do that is to test for a condition and have the <code>render</code> function return <code>null</code>. Notice how we do that with the <code>WarningBanner</code> component below:</p>
 
-          <pre>
-            <code class="language-javascript">
-function WarningBanner(props) {
-  if (!props.warn) {
-    return null;
-  }
-
-  return (
-    &lt;div className="warning">
-      Warning!
-    &lt;/div>
-  );
-}
-
-class Page extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {showWarning: true}
-  }
-
-  handleToggleClick(e) {
-    this.setState(prevState => ({
-      showWarning: !prevState.showWarning
-    }));
-  }
-  
-  handleEvent(e) {
-    e.target.id === 'toggle' && this.handleToggleClick(e)
-  }
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-  
-  render() {
-    return (
-      &lt;div>
-        &lt;WarningBanner warn={this.state.showWarning} />
-        &lt;button id='toggle'>
-          {this.state.showWarning ? 'Hide' : 'Show'}
-        &lt;/button>
-      &lt;/div>
-    );
-  }
-}
-
-const page = new Page()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="MOYeMJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - conditional-rendering-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYeMJ/">Composi Tuts - conditional-rendering-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Because <code>WarningBanner</code> is a child component to <code>Page</code>, when <code>WarningBanner</code> returns null, that only affects its output. It will not affect the output of the button nor the lifecycle methods and events.</p>
 
           <p>&nbsp;</p>

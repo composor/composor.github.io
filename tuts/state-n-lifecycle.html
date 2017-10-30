@@ -117,123 +117,34 @@ class Clock extends Component {
 const clock = new Clock()
             </code>
           </pre>
+          <p>Codepen Example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="yPyJVy" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/yPyJVy/">Composi Tuts -State and Lifecycle-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>When we instantiate our clock as above, it will render in the browser. However, as it is the clock will not update every second. We need a way to know that the component was created and inserted into the document before starting a loop to do so.</p>
+          <p> </p>
           
           <h2>Adding Lifecycle Methods to a Class</h2>
           <p>Class components have five different lifecycle methods that we can use. These hooks let your do something right after your component is created, before or after it is updated, and before it is destroyed. In our case, we want to start an interval loop as soon as the component was create. At the same time, if the component gets unmounted and destroyed, we want a way to end the loop. For this we will need to add <code>componentWasCreated</code> and <code>componentWillUnmount</code> to our class:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Clock extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {date: new Date()}
-    this.container = 'body'
-  }
-  render() {
-    return (
-      &lt;div>
-        &lt;h1>Hello, world!&lt;/h1>
-        &lt;h2>It is {this.state.date.toLocaleTimeString()}.&lt;/h2>
-      &lt;/div>
-    )
-  }
-  // When the component is create,
-  // start the setInterval loop for tick:
-  componentWasCreated() {
-    this.timerID = setInterval(
-      () => this.tick(),
-      1000
-    )
-  }
-  // When the component is unmounted,
-  // ends the setInterval loop:
-  componentWilUnmount() {
-    clearInterval(this.timerID)
-  }
-}</code></pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="xPbOgq" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xPbOgq/">Composi Tuts -State and Lifecycle-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>With the lifecycle hooks setup, instanciating a new instance of the clock will cause the loop to kick in, resulting in a clock that updates itself automatically. Using class components with state is a more efficient way of creating component with encapsulated behaviors.</p>
 
           <h2>Using State Correctly</h2>
           <p>Although you can in some cases change state directly, it's always better to use <code>setState</code> to do so. When state is a primitive type, such as string, number or boolean, it is possible to set the state directly through assignment:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
-  render(name) {
-    return (
-      &lt;h1>Hello, {name}!&lt;h1>
-    )
-  }
-}
-const hello = new Hello()
-// This is alright since it is the inital setting of state:
-hello.state = 'Joe Bodoni'
-
-// Later we may want to change the state.
-// This time we use setState:
-hello.setState('Ellen Vanderbilt')</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="oogLWo" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oogLWo/">Composi Tuts -State and Lifecycle-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>For objects, we pass in an object with the property and value we want to udpate:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Person extends Component {
-  render(person) {
-    return (
-      &lt;div>
-        &lt;h4>{person.name}&lt;/h4>
-        &lt;h5{person.job}&lt;/h5>
-      &lt;/div>
-    )
-  }
-}
-const person = new Person()
-// Assign state and cause the component to render:
-person.state = {
-  name: 'Sam Anderson',
-  job: 'developer',
-  employer: 'Google'
-}
-
-// Later we realized the employer was wrong,
-// So we need to update it:
-person.setState({employer: 'Apple'})</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="gXbMoZ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXbMoZ/">Composi Tuts -State and Lifecycle-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Notice how to update the <code>employer</code> property, we passed it in as its own small object literal. When you use <code>setState</code> on state that is an object, it performs a mixin where the new property/value replaces the previous one. In the case where the new property/value don't exist on the state object, they get added.</p>
 
           <h2>Updating an Array</h2>
           <p>Updating the state when it is an array of primitive types is easy, just give <code>setState</code> the new value, and a number for the index in the array where you want to update the value. If the index is greater than the current number of items in the state array, the new value will be push onto the array as the last item:</p>
-          <pre>
-            <code class="language-javascript">
-// Oops! We have mispelling in the fruit names:
-const fruits = ['Apples', Orangez', 'Bananas', 'Peers]
-class List extends Component {
-  constructor(props) {
-    super(props)
-    this.container = 'section'
-    // Assign the list of fruits to state:
-    this.state = fruits
-  }
-  render(fruits) {
-    return (
-      &lt;ul>
-        {
-          fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
-        }
-      &lt;/ul>
-    )
-  }
-}
-// Create instance and render list:
-const list = new List()
-
-// Later, we see there are mispellings, so we correct them:
-list.setState('Oranges', 1)
-list.setState('Pears', 3)
-// Then we want to add a new fruit:
-list.setState('Watermelons', list.state.length)</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="POwzeL" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/POwzeL/">Composi Tuts -State and Lifecycle-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Updating Array of Objects</h2>
           <p>Updating component state when it is an array of simple values is easy, provide new value and array index. But when the component state is an array of objects, it is more complicated. In such a case you need to get the entire object at the index, modify the object, and then set that as the new value at the correct index. Looks like at the problem. Suppose we have an array of persons and we assign it to a component instance called <code>personsList</code>:</p>
@@ -305,80 +216,16 @@ peopleList.setState((state) => {
           <p>To see how this happens, we can take another look at our class component clock example, modified to use a child component:</p>
 
 
-          <pre>
-            <code class="language-javascript">
-function FormattedDate(props) {
-  return &lt;h2>It is {props.date.toLocaleTimeString()}.&lt;/h2>;
-}
-
-class Clock extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {date: new Date()}
-    this.container = 'body'
-  }
-  render() {
-    return (
-      &lt;div>
-        &lt;h1>Hello, world!&lt;/h1>
-        &lt;FormattedDate date={this.state.date} />
-      &lt;/div>
-    )
-  }
-  // When the component is create,
-  // start the setInterval loop for tick:
-  componentWasCreated() {
-    this.timerID = setInterval(
-      () => this.tick(),
-      1000
-    )
-  }
-  // When the component is unmounted,
-  // ends the setInterval loop:
-  componentWilUnmount() {
-    clearInterval(this.timerID)
-  }
-}</code></pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="bYNeKX" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/bYNeKX/">Composi Tuts -State and Lifecycle-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Notice how we've create a functional component, <code>FormattedDate</code>. And in the <code>render</code> function we pass it the component state as a prop--<code>data</code>. <code>FormattedDate</code> does not know what the source of its data is. It doesn't matter. It just expects to receive and input.</p>
           <p>Data always flows down from parent to child. This is called a unidirectional data flow. There is no two-way data binding like some libraries offer. One-way data flow makes it easy to reason about what is happening with a component's data.</p>
 
           <h2>State in Class Instatiation</h2>
           <p>Instead of assigning state in the class constructor, you can provide it as a property in the class instantiation. In that case you would not need to have a state assignment in the constructor. Taking our above clock example, we we get rid of its constructor and define its state and container in the class instantiation:</p>
 
-          <pre>
-            <code class="language-javascript">
-function FormattedDate(props) {
-  return &lt;h2>It is {props.date.toLocaleTimeString()}.&lt;/h2>;
-}
-
-class Clock extends Component {
-  render() {
-    return (
-      &lt;div>
-        &lt;h1>Hello, world!&lt;/h1>
-        &lt;FormattedDate date={this.state.date} />
-      &lt;/div>
-    )
-  }
-  // When the component is create,
-  // start the setInterval loop for tick:
-  componentWasCreated() {
-    this.timerID = setInterval(
-      () => this.tick(),
-      1000
-    )
-  }
-  // When the component is unmounted,
-  // ends the setInterval loop:
-  componentWilUnmount() {
-    clearInterval(this.timerID)
-  }
-}
-
-const clock = new Clock({
-  container: 'body',
-  state: {date: new Date()}
-})</code></pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="eemzLg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/eemzLg/">Composi Tuts -State and Lifecycle-7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Our class is now a bit clearner without the constuctor and we can provide the container and state when we create a new component instance. Providing the container and state during instantiation allows you to create multiple instances of a component in different places in the DOM and with different state.</p>
 
           <h2>Summary</h2>
