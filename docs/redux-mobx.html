@@ -45,137 +45,15 @@
           <h2>Rddux</h2>
           <p>In the following example, we are going to create a Redux reducer and actions and use them to handle the state of a stateful component. Of course, to work with Redux you'd need to install it as a dependency of your project:</p>
 
-          <pre>
-            <code class="language-bash">
-npm i -D redux</code>
-          </pre>
-          <p>After installing Redux you can import it into your project and use it:</p>
-          <pre>
-            <code class="language-javascript">
-const { h, Component } from 'composi'
-const { createStore } from 'redux'
-
-// Reducer:
-function count(state=0, action) {
-  switch(action.type) {
-    case 'INCREMENT':
-      if (state > 99) return 100
-      return state + 1
-    case 'DECREMENT':
-      if (state < 1) return 0
-      return state - 1;
-    default:
-      return state
-  }
-}
-
-// Action Creators:
-const increment = () => {
-  return {
-    type: 'INCREMENT'
-  };
-};
-
-const decrement = () => {
-  return {
-    type: 'DECREMENT'
-  };
-};
-
-// Create Redux store:
-const store = createStore(count)
-
-
-// Extend Component to create counter:
-class Counter extends Component {
-  constructor(opts) {
-    super(opts)
-    
-    // Assigning store to component:
-    this.store = opts.store
-    
-    // Update component when store state changes:
-    store.subscribe(() => this.updateFromStore())
-    
-    // Give counter default value of "0":
-    this.render = (count = 0) => (
-    &lt;div id="counter">
-      &lt;button id="dec" disabled={count==0}  onclick={() => this.dec()}>-&lt;/button>
-      &lt;span id="text">{count}&lt;/span>
-      &lt;button id="inc" onclick={() => this.inc()}>+&lt;/button>
-    &lt;/div>
-    )
-  }
-  
-  // Use ths method to udpate counter with state changes:
-  updateFromStore() {
-    const state = this.store.getState()
-    this.update(state)
-  }
-
-  inc() {
-    this.store.dispatch(increment())
-  }
-
-  dec() {
-    this.store.dispatch(decrement())
-  }
-}
-
-// Create new counter:
-const counter = new Counter({
-  root: 'article',
-  store: store
-})
-counter.update()</code>
-          </pre>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="oervxx" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi & Redux" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oervxx/">Composi & Redux</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>This was a trivial example of using Redux with Composi. Please consult <a href="Redux documention</a>http://redux.js.org/docs/basics/" target='__blank'></a> to learn more about how Redux can solve your state management needs.</p>
 
           <h2>Mobx</h2>
           <p>You can also use <a href='https://mobx.js.org' target='__blank'>Mobx</a> for state management. Like in the Redux example above, you'll want to use state components.</p>
 
-          <pre>
-            <code class="language-javascript">
-const {h, Component} from 'composi'
-const { observable, autorun } from 'mobx'
-
-const store = observable({ count: 0})
-
-// Extend Component to create counter:
-class Counter extends Component {
-  constructor(opts) {
-    super(opts)
-    this.root = 'article'
-    
-    // Assign Mobx obersable store to Counter:
-    this.store = store
-    
-    // Give counter default value of "0":
-    this.render = (count = 0) => (
-    &lt;div id="counter">
-      &lt;button id="dec" onclick={() => this.dec()} disabled={count==0}>-&lt;/button>
-      &lt;span id="text">{count}&lt;/span>
-      &lt;button id="inc" onclick={() => this.inc()} disabled={count>19}>+&lt;/button>
-    &lt;/div>
-    )
-  }
-
-  inc() {
-    this.store.count++
-  }
-
-  dec() {
-    this.store.count--
-  }
-}
-
-// Create new counter:
-const counter = new Counter()
-
-// Capture observable store changes and update counter:
-autorun(() => counter.update(counter.store.count))
-            </code>
-          </pre>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="EbaKwY" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi 1.0.0 & Mobx" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/EbaKwY/">Composi 1.0.0 & Mobx</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Of course, Mobx has many more useful and powerful features. This was just a trivial example. Consult the <a href="https://mobx.js.org/refguide/api.html" target='__blank'>Mobx documentation</a> to learn more about how Mobx can solve your state management needs.</p>
 
           <p>&nbsp;</p>
