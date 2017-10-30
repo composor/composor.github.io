@@ -65,57 +65,8 @@
           <h2>Inline Events on Extended Component</h2>
           <p>When we extend the Component class, we can avoid all the above issues of inline event callbacks. This gives us direct access to the component instance through the <code>this</code> keyword and results in code that is more readable and maintainable. To preserve the scope of the component, you do need to bind the inline event. Notice how we do this below:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-
-// Define Counter class by extending Component:
-class Counter extends Component {
-  render(data) {
-
-    // Use bind on the inline events:
-    if (data.disabled) {
-      return (
-        &lt;div class='counter'>
-          &lt;button key='beezle' disabled onclick={this.decrease.bind(this)} id="decrease">-&lt;/button>
-          &lt;span>{data.number}&lt;/span>
-          &lt;button onclick={this.increase.bind(this)} id="increase">+&lt;/button>
-        &lt;/div>
-      )
-    } else {
-      return (
-        &lt;div class='counter'>
-          &lt;button key='beezle' onclick={this.decrease.bind(this)} id="decrease">-&lt;/button>
-          &lt;span>{data.number}&lt;/span>
-          &lt;button onclick={this.increase.bind(this)} id="increase">+&lt;/button>
-        &lt;/div>
-      )
-    }
-  }
-
-  // Because these methods are part of the class,
-  // we can accesss the component directly to set state:
-  increase() {
-    this.setState({disabled: false, number: this.state.number + 1})
-  }
-
-  decrease() {
-    if (this.state.number &lt; 2) {
-      this.setState({disabled: true, number: this.state.number - 1})
-    } else {
-      this.setState({disabled: false, number: this.state.number - 1})
-    }
-  }
-}
-
-const counter = new Counter({
-  container: 'body',
-  state: {
-    disabled: false,
-    number: 1
-  }
-})</code>
-          </pre>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="eemZNQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-1a" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/eemZNQ/">Composi events-1a</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>One way to avoid the necessity of binding the inline event is to move that to the constructor:</p>
           
           <p data-height="450" data-theme-id="6688" data-slug-hash="GOgpGP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi events-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/GOgpGP/">Composi events-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
