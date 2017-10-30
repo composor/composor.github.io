@@ -8,45 +8,45 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual dom to make efficient updates to the DOM based on a component's data or state.">
   <meta name="keywords" content="javascript, framework, performance, small, fast, UI, programming, code, component, composi, chocolatechipui, chocolatechip-ui, reactive, virtual dom">
-  <title>Composi - Tutorials</title>
+  <title>Composi - Docs</title>
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/prism-tomorrow.css">
 </head>
-<body class='tutorial-page'>
-    <nav>
-      <ul class='nav--menu'>
-        <li class='nav--menu__item'>
-          <a class='nav--menu__item__link' href="../index.html">
-            <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>Composi Logo</title>
-              <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                <g id="Composi-Logo-Solid" fill="#fff">
-                  <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
-                </g>
+<body class='documentation-page'>
+  <nav>
+    <ul class='nav--menu'>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../index.html">
+          <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Composi Logo</title>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Composi-Logo-Solid" fill="#fff">
+                <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
               </g>
-            </svg>
-          <span class='logo__link--text'>Composi</span></a>
-        </li>
-        <li class='nav--menu__item'>
-          <a class='nav--menu__item__link' href="../docs/installation.html">Docs</a>
-        </li>
-        <li class='nav--menu__item selected'>
-          <a class='nav--menu__item__link' href="./index.html">Tutorials</a>
-        </li>
-      </ul>
-    </nav>
-    <article class='tutorial__article'>
-      <section>
-        <div class='tutorial'>
-          <h1>Advanced State Management</h1>
-          <p class="tutorial__intro">Composi provides a convenient way to manage a component's state through use of its <code>setState</code> method. However, you may prefer to have a dedicate library manage state for your components. Bare in mind that if your component is not very complicated or big, it might not make sense to use a third party solution for state management. However, it your app starts to grow in size and complexity, you might want to consider Redux or Mobx. Of course, there are other solutions as well, such as <a href="https://optimizely.github.io/nuclear-js/docs/07-api.html" target='__blank'>NuclearJS</a>, <a href="http://reactivex.io/rxjs/" target='__blank'>RxJS</a> etc.</p>
-          <p>There are two popular solutions for state manage: <a href="http://redux.js.org" target='__blank'>Redux</a> and <a href="https://mobx.js.org" target='__blank'>Mobx</a>. We will take a look at using them with Composi. If you are already comfortable using these, just give this a skim to see how to update components with them.</p>
-          <p>We're going to create a simple counter component whose state is managed by Redux and Mobx:</p>
-          <p><img src="../images/counter.png" alt="A simple counter"></p>
+            </g>
+          </svg>
+        <span class='logo__link--text'>Composi</span></a>
+      </li>
+      <li class='nav--menu__item selected'>
+        <a class='nav--menu__item__link' href="./installation.html">Docs</a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../tuts/index.html">Tutorials</a>
+      </li>
+    </ul>
+  </nav>
+  <article class='tutorial__article'>
+    <section>
+      <div class='tutorial'>
+          <h1>Redux and Mobx</h1>
+          <p class="tutorial__intro">Composi provides a convenient way to manage a component's state through use of its <code>setState</code> method. However, you may prefer to have a dedicated library manage state for your components.</p>
+          <p>Bare in mind that if your component is not very complicated or big, it might not make sense to use a third party solution for state management. However, it your app starts to grow in size and complexity, you might want to consider Redux or Mobx. Of course, there are other solutions as well, such as <a href="https://optimizely.github.io/nuclear-js/docs/07-api.html" target='__blank'>NuclearJS</a>, <a href="http://reactivex.io/rxjs/" target='__blank'>RxJS</a> etc.</p>
 
+          <p>There are two popular solutions for state manage: <a href="http://redux.js.org" target='__blank'>Redux</a> and <a href="https://mobx.js.org" target='__blank'>Mobx</a>. We will take a look at using them with Composi. If you are already comfortable using these, just give this a skim to see how to update components with them.</p>
           <h2>Redux</h2>
           <p>To use Redux with Composi, you'll need to import it into whatever file you want to use it. Just for the purpose of showing how to integrate these two, we are going to use a very simple counter component. For Redux we will need to create our reducers, action creator and a Redux store. Our component will have have two buttons, one on either side. Licking the minus will decrease the counter value, clicking the plus will increate the value. To integrate the Composi component with Redux, we'll need to assign the Redux store to the component's state.</p>
+          <p>Notice that we're limiting <code>INCREMENT</code> so that you can't go over 20, and <code>DECREMENT</code> so that you can't go below 0:</p>
 
           <pre>
             <code class='language-javascript'>
@@ -57,7 +57,7 @@ const { createStore } from 'redux'
 function count(state=0, action) {
   switch(action.type) {
     case 'INCREMENT':
-      if (state > 99) return 100
+      if (state > 19) return 20
       return state + 1
     case 'DECREMENT':
       if (state < 1) return 0
@@ -81,104 +81,35 @@ const decrement = () => {
 };
 
 // Create Redux store:
-const store = createStore(count)
+const store = createStore(count)</code></pre>
+          <p>And here's the <code>Counter</code> component integrated with the above Redux reducers and actions:</p>
 
-
-// Extend Component to create counter:
-class Counter extends Component {
-  constructor(opts) {
-    super(opts)
-    
-    // Assigning store to component:
-    this.store = opts.store
-    
-    // Update component when store state changes:
-    store.subscribe(() => this.updateFromStore())
-    
-    // Give counter default value of "0":
-    this.render = (count = 0) => (
-    &lt;div id="counter">
-      &lt;button id="dec" disabled={count==0}  onclick={() => this.dec()}>-&lt;/button>
-      &lt;span id="text">{count}&lt;/span>
-      &lt;button id="inc" onclick={() => this.inc()}>+&lt;/button>
-    &lt;/div>
-    )
-  }
-  
-  // Use ths method to udpate counter with state changes:
-  updateFromStore() {
-    const state = this.store.getState()
-    this.update(state)
-  }
-
-  inc() {
-    this.store.dispatch(increment())
-  }
-
-  dec() {
-    this.store.dispatch(decrement())
-  }
-}
-
-// Create new counter:
-const counter = new Counter({
-  root: 'article',
-  store: store
-})
-counter.update()</code>
-          </pre>
-          <p> </p>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="oervxx" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi & Redux" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oervxx/">Composi & Redux</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p>This was a trivial example of using Redux with Composi. Please consult <a href="Redux documention</a>http://redux.js.org/docs/basics/" target='__blank'></a> to learn more about how Redux can solve your state management needs.</p>
 
           <h2>Mobx</h2>
           <p>Redux requires quite a bit of boilerplate to work: reducers, action creators, stores, etc. Mobx is much simpler. We are only going to need to import <code>observable</code> and <code>autorun</code>. Mobx has many other useful functions, but we don't need those here.</p>
           <p>With Mobx, we create an observable that contains the state for the counter and we assign that to the component's state. After that, all manipulationg of component state is actually being done with the Mobx store. And we use Mobx <code>autorun</code> to tell Mobx to update the component when the Mobx store changes.</p>
-
+          
+          <p>Here's the intial Mobx setup for our counter:</p>
           <pre>
             <code class='language-javascript'>
 const {h, Component} from 'composi'
 const { observable, autorun } from 'mobx'
 
-const store = observable({ count: 0})
+const store = observable({ count: 0})</code></pre>
+              <p>And here's our counter using Mobx for state management:</p>
 
-// Extend Component to create counter:
-class Counter extends Component {
-  constructor(opts) {
-    super(opts)
-    this.root = 'article'
-    
-    // Assign Mobx obersable store to Counter:
-    this.store = store
-    
-    // Give counter default value of "0":
-    this.render = (count = 0) => (
-    &lt;div id="counter">
-      &lt;button id="dec" onclick={() => this.dec()} disabled={count==0}>-&lt;/button>
-      &lt;span id="text">{count}&lt;/span>
-      &lt;button id="inc" onclick={() => this.inc()} disabled={count>19}>+&lt;/button>
-    &lt;/div>
-    )
-  }
-
-  inc() {
-    this.store.count++
-  }
-
-  dec() {
-    this.store.count--
-  }
-}
-
-// Create new counter:
-const counter = new Counter()
-
-// Capture observable store changes and update counter:
-autorun(() => counter.update(counter.store.count))</code>
-          </pre>
-          <p></p>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="EbaKwY" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi 1.0.0 & Mobx" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/EbaKwY/">Composi 1.0.0 & Mobx</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p>Of course, Mobx has many more useful and powerful features. This was just a trivial example. Consult the <a href="https://mobx.js.org/refguide/api.html" target='__blank'>Mobx documentation</a> to learn more about how Mobx can solve your state management needs.</p>
 
           <p>&nbsp;</p>
-        </div>
-        <aside>
+          
+      </div>
+
+      <aside>
           <menu>
             <ul class="tutorials__menu">
               <li class="tutorials__menu__item">
@@ -228,10 +159,10 @@ autorun(() => counter.update(counter.store.count))</code>
               </li>
             </ul>
           </menu>
-        </aside>
-      </section> 
-    </article>
-    <footer>
+      </aside>
+    </section> 
+  </article>
+  <footer>
       <section>
         <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <title>Composi Logo</title>
@@ -242,9 +173,9 @@ autorun(() => counter.update(counter.store.count))</code>
           </g>
         </svg>
         <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a> and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
-        </section>
-      </footer>
-    <script src="../js/prism.min.js"></script>
-    <script src="../js/prism-jsx.js"></script>
+      </section>
+    </footer>
+  <script src="../js/prism.min.js"></script>
+  <script src="../js/prism-jsx.js"></script>
 </body>
 </html>
