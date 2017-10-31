@@ -46,16 +46,15 @@
           <h2>H</h2>
           <p>The <code>h</code> function lets you use hyperscript syntax to designate the HTML you want to create. When working with Composi, you will always be importing the <code>h</code> function into your files to enable Composi's virtual dom. A Composi project is automatically configured to let <a target="__blank" href="http://babeljs.io">Babel</a> know know to use it when dealing with JSX. So, whether you use JSX or <code>h</code>, both will result in the creation of the same virtual node. Take the following for example:</p>
           
-          <pre>
-            <code class="language-javascript">
-function Title(props) {
-  return (
-    &lt;h1 class='title' title={`Hello, ${props.name}!`}>Hello, {props.name}!&lt;/h1>
-  )
-}
+          <p data-height="300" data-theme-id="6688" data-slug-hash="pdJzJa" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/pdJzJa/">Composi Tuts - Hyperx-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p>Now we can create the same result using <code>h</code>:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="VrLZvw" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/VrLZvw/">Composi Tuts - Hyperx-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-render(&lt;Title {...{name: 'Ellen'}} />, 'article')
-
+          <p>Both of these produce the same virtual node. As you can see, the <code>h</code> code looks quite similar to the virtual node that it creates:</p>
+<pre>
+  <code class="language-javascript">
 // The virtual node created is:
 {
   type: "h2", 
@@ -64,67 +63,16 @@ render(&lt;Title {...{name: 'Ellen'}} />, 'article')
     title: "Hello, Ellen!"
   }, 
   children: ["Hello, ", "Ellen", "!"]
-}</code>
-          </pre>
-          <p>Now we can create the same result using <code>h</code>:</p>
-          <pre>
-            <code class="language-javascript">
-function titleMaker(name) {
-  return h(
-    'h1',
-    {
-      class: 'title',
-      title: `Hello, ${name}!`
-    },
-    [
-      `Hello, ${name}!`
-    ]
-  )
 }
-const title = titleMaker('Ellen')
-render(title, 'section')
-// title:
-{
-  type: "h1", 
-  props: {
-    class: "title", 
-    title: "Hello, Ellen!"
-  }, 
-  children: ["Hello, Ellen!"]
-}</code>
-          </pre>
-          <p>As you can see from the <code>titleMaker</code> function, it is basically a functional representation of the virtual node it will create. And its virtual node is basically identical to the one created by the JSX tag. The main difference between the JSX and <code>h</code> versions is line numbers: JSX - 5 lines, <code>h</code> - 12 lines. Of course you can delete white space in an <code>h</code> function definition, but you'll also reduce legibility.</p>
+  </code>
+</pre>
 
+          <p> </p>
           <h2>Subcomponents With H</h2>
           <p>You can also create subcomponents when using <code>h</code>. You write a function that returns the required hyperscript. Then you enclude it as an interpolation in the parent. Because this is hyperscript syntax, you'll need to use <code>${}</code> for interpolation:</p>
 
-          <pre>
-            <code class="language-javascript">
-const fruits = ['Apples', 'Oranges', 'Bananas']
-
-// Define fruit list item:
-function listItem(fruit) {
-  return h(
-    'li',
-    {
-      class: 'list__item--fruit'
-    },
-    [`${fruit}`]
-  )
-}
-
-// Create fruit list:
-const fruitList = h(
-  'ul',
-  {
-    class: 'list--fruits'
-  },
-  // Parse fruits array and create list items:
-  [fruits.map(fruit => listItem(fruit))]
-)
-
-render(fruitList, 'body')</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="ooXvLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ooXvLv/">Composi Tuts - Hyperx-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>If you prefer functional over classes, you will probably likeusing the <code>h</code> funtion.</p>
 
           <h2>Hyperx-ES6</h2>
@@ -154,141 +102,14 @@ const html = hyperx(h)</code>
           </pre>
           <p>With this in your file, you can start using Hyperx. You could make functional components like with JSX, or use it inside of a class component. Below are some functional components with composition. We need to use <code>${}</code> for interpolation. Note that when using Hyperx, you'll be using the tagged template literal <code>html</code> that you designated after importing Hyperx-ES6:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-import {hyperx} from 'hyperx-es6'
-
-// Tell Hyperx to use the Composi h function,
-// by passing it to hyperx:
-const html = hyperx(h)
-
-function tileGreeting(name) {
-  // We use the
-  return html`<h1>Hello, ${name}!</h1>`
-}
-
-function subTitle() {
-  return html`<h2>This is a Subtitle</h2>`
-}
-
-function headerComponent() {
-  return `
-  ${
-    titleGreeting('Wilson') 
-  }
-  ${
-    subTitle()
-  }`
-}
-render(headerComponent(), 'header')
-            </code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="ooXvLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ooXvLv/">Composi Tuts - Hyperx-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Using Hyperx with a Class Component</h2>
           <p>You can also use Hyperx with class-based components. In the example below we have subcomponents using Hyperx, <code>listItem</code> and <code>disclosure</code>. We integrate them into the parent component <code>List</code>, which is an extension of Component. Because the subcomponents are functions, we need to invoke them with interpolation, so they get enclosed with <code>${}</code>. Our <code>List</code> component also implements events. You can click on a list item to get an alert and you can add a new list item as well.</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
-import {hyperx} from 'hyperx-es6'
-
-const html = hyperx(h)
-
-const fruits = [
-  {
-    key: 101,
-    name: 'Apples'
-  },
-  {
-    key: 102,
-    name: 'Oranges'
-  },
-  {
-    key: 103,
-    name: 'Bananas'
-  }
-]
-
-// initial key value to increase for each new item.
-let key = 10000
-function listItem(fruit) { 
-  return html`
-    &lt;div>
-      &lt;h3>${fruit.name}&lt;/h3>
-    &lt;/div>
-    `
-}
-function disclosure() { 
-  return html`
-    &lt;aside>
-      &lt;span class='disclosure'>&lt;/span>
-    &lt;/aside>`
-}
-class List extends Component {
-  constructor(opts) {
-    super(opts)
-    this.state = fruits
-    this.key = 1000
-  }
-  render() {
-    let state = this.state
-    return html`
-      &lt;div class='main-container'>
-        &lt;p class='form-container'>
-          &lt;input id='nameInput' type='text'>
-          &lt;button class='addItem'>Add&lt;/button>
-        &lt;/p>
-        &lt;ul class='list'>
-        ${
-          fruits.map(fruit => html`
-            &lt;li class='list-item'>
-            ${listItem(fruit)}
-            ${disclosure()}
-            &lt;/li>
-          `)
-        }
-      &lt;/ul>
-    &lt;/div>`
-  }
-  handleEvent(e) {
-    if (e.target.nodeName === 'LI') {
-      this.announceItem(e)
-    } else if (e.target.nodeName !== 'LI' && e.target.className !== 'addItem') {
-      this.announceItem(e)
-    } else if (e.target.className === 'addItem') {
-      this.addItem()
-    }
-  }
-  addItem() {
-    const nameInput = this.element.querySelector('#nameInput')
-    const name = nameInput.value
-    if (!name) {
-      alert('Please provide a name!')
-      return
-    }
-    this.setState({name, key: this.key++}, this.state.length)
-    nameInput.value = ''
-    nameInput.focus()
-  }
-  announceItem(e) {
-    if (e.target.nodeName === 'LI') {
-      alert(e.target.textContent.trim())
-    } else {
-      const li = e.target.closest('li')
-      if (li) alert(li.textContent.trim())
-    }
-    
-  }
-  componentWasCreated() {
-    this.element.addEventListener('click', this)
-  }
-}
-const list = new List({
-  container: 'section'
-})
-list.update()</code>
-          </pre>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="gXpYmg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXpYmg/">Composi Tuts - Hyperx-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
 
           <p>&nbsp;</p>
