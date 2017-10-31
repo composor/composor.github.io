@@ -91,7 +91,7 @@ class Hello extends React.Component {
     );
   }
 }
-ReactDOM.render(<Hello />, document.querySelector('#root'))</code>
+ReactDOM.render(&lt;Hello />, document.querySelector('#root'))</code>
 </pre>
 <p>And here's the same example using a Composi class component. Notice that we provide the selector <code>#root</code> directly on the component's constructor as its container. And no need to render. We just create a new instance. That will trigger the render.</p>
 
@@ -101,7 +101,6 @@ class Hello extends Component {
   constructor(props) {
     super(props)
     // Define the container to render the component in:
-    this.container = '#root'
     this.state = {
       name: 'Joe'
     }
@@ -113,7 +112,7 @@ class Hello extends Component {
   }
 }
 // Render the component by creating an instance:
-const hello = new Hello()</code>
+const hello = new Hello({container: '#root'})</code>
           </pre>
 
           <p> </p>
