@@ -79,7 +79,7 @@ h('h1', {title: 'The title'}, 'Hello, world!')
 function FancyBorder(props) {
   console.log(props)
   return (
-    &lt;div class='FancyBorder FancyBorder-blue'>&lt;/div>
+    &lt;div class='FancyBorder FancyBorder-maroon'>&lt;/div>
   )
 }
 // Inject the dialog in the document:
@@ -97,7 +97,7 @@ function FancyBorder(props) {
 }
 // Inject the dialog in the document:
 render(
-  &lt;FancyBorder color="blue" />,
+  &lt;FancyBorder color="maroon" />,
   'body'
 )</code>
           </pre>
@@ -132,7 +132,7 @@ function FancyBorder(props) {
             <code class="language-javascript">
 // Pass DialogMessage as a children prop:
 render(
-  &lt;FancyBorder color="blue" children={DialogMessage()}>&lt;/FancyBorder>,
+  &lt;FancyBorder color="maroon" children={DialogMessage()}>&lt;/FancyBorder>,
   'body'
 )</code>
           </pre>
@@ -175,7 +175,7 @@ class SignUpDialog extends Component {
 
   render(props) {
     return (
-      &lt;FancyBorder color='blue' children={dialogChildren(props, this)} />
+      &lt;FancyBorder color='maroon' children={dialogChildren(props, this)} />
     );
   }
 }</code>
