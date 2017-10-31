@@ -109,7 +109,7 @@ function DialogMessage() {
   return (
     &lt;div>
       &lt;h1 class="Dialog-title">Welcome&lt;/h1>
-      &lt;p class="Dialog-message">Thank you for visiting our spacecraft!&lt;/p>
+      &lt;p class="Dialog-message">Thank you for visiting our time machine!&lt;/p>
     &lt;/div>
   )
 }</code>
@@ -136,7 +136,11 @@ render(
   'body'
 )</code>
           </pre>
-          <p>This now produces the effect we want. Through composition we are able to add child components to other components to build more complex solutions.</p>
+          <p>This now produces the effect we want:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="oGpwVd" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composition" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oGpwVd/">Composition</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          
+          <p>Through composition we are able to add child components to other components to build more complex solutions.</p>
 
           <h2>Composition with Class Components</h2>
           <p>We can use this same technique with class components. We are going to show how to use composition of JSX functional components to create a class component. We are going to start with the same <code>FancyBorder</code> component we made earlier:</p>
@@ -151,7 +155,7 @@ function FancyBorder(props) {
   )
 }</code>
           </pre>
-          <p>We'll use this as the base for our new component. We want to have a dialog where the user can enter a name, and after tapping a button, gets a greeting. By the way, this will be a signup for the Mars Exploration Program.</p>
+          <p>We'll use this as the base for our new component. We want to have a dialog where the user can enter a name, and after tapping a button, gets a greeting. By the way, this will be a signup for the Time Travel Program.</p>
 
           <h2>Issues to Deal With</h2>
           <p>Because we are going to be passing props down from a class component to child components that are function, there will be some wrapping of the props at each level. Kind of annoying, but its what JSX does in this situation. Therefore we will need to use <code>.props</code> to get at values in places where you would expect too.</p>
@@ -164,7 +168,7 @@ class SignUpDialog extends Component {
     this.container = 'section'
     this.state = {
       login: '',
-      title:"Mars Exploration Program",
+      title:"Time Travel Program",
       message:"How should we refer to you?"
     }
   }
@@ -180,118 +184,14 @@ class SignUpDialog extends Component {
 
           <p>We'll need a component to create the default title and greetign for the dialog. We'll call that component <code>Dialog</code>. We'll also need a component to be the form where the user enters there name an taps a button to submit it. We'll call that <code>FormInputs</code>. Then we'll create a function called <code>dialogChildren</code> which will combine these to. We'll pass this function to the <code>FancyBorder</code> component as its <code>children</code> prop. And, we will add some methods and events to make name submission work. Here is the complete solution:</p>
 
-          <pre>
-            <code class="language-javascript">
-function FancyBorder(props) {
-  return (
-    &lt;div className={'FancyBorder FancyBorder-' + props.color}>
-      {props.children}
-    &lt;/div>
-  );
-}
-
-function Dialog(c) {
-  return (
-    &lt;div>
-      &lt;h1 class="Dialog-title">
-        {c.props.title}
-      &lt;/h1>
-      &lt;p class="Dialog-message">
-        {c.props.message}
-      &lt;/p>
-    &lt;/div>
-  )
-}
-function FormInputs(c) {
-  return (
-    &lt;div>
-      &lt;input value={c.props.state.login} onchange={c.props.handleChange} />
-      &lt;button onclick={c.props.handleSignUp}>Sign Me Up!&lt;/button>
-    &lt;/div>
-  )
-}
-
-// Return dialog children inside Fancy Frame component:
-function dialogChildren(props, c) {
-  return (
-    &lt;div>
-      &lt;Dialog props={props}/>
-      &lt;FormInputs props={c}/>
-    &lt;/div>
-  )
-}
-
-class SignUpDialog extends Component {
-  constructor(props) {
-    super(props);
-    this.root = '#root'
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSignUp = this.handleSignUp.bind(this);
-    this.state = {
-      login: '',
-      title:"Mars Exploration Program",
-      message:"How should we refer to you?"
-    }
-  }
-
-  render(props) {
-    return (
-      &lt;FancyBorder color='blue' children={dialogChildren(props, this)} />
-    );
-  }
-
-  handleChange(e) {
-    this.setState({login: e.target.value});
-  }
-
-  handleSignUp() {
-    alert(`Welcome aboard, ${this.state.login}!`);
-  }
-}
-
-const signup = new SignUpDialog()</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="vedgVR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composition 2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/vedgVR/">Composition 2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>As you can see, with some work you can use JSX composition to advantage, even inside a class component.</p>
 
           <h2>Containement</h2>
           <p>Another pattern for JSX development is container, where on component contains another. In our previous example we used props to pass in a function that composed several JSX function components together. We can also pass in custom JSX tags for a similar composition pattern. Take a look at the following example. Notice how we have our custom tags defined: <code>&lt;Contacts /></code> and <code>&lt;Chat /></code>, and that we pass them to the <code>SplitPane</code> tag as its value for left and right:</p>
-          <pre>
-            <code class="language-javascript">
-function Contacts() {
-  return &lt;div class="Contacts" />;
-}
-
-function Chat() {
-  return &lt;div class="Chat" />;
-}
-
-function SplitPane(props) {
-  return (
-    &lt;div class="SplitPane">
-      &lt;div className="SplitPane-left">
-        {props.left}
-      &lt;/div>
-      &lt;div class="SplitPane-right">
-        {props.right}
-      &lt;/div>
-    &lt;/div>
-  );
-}
-
-function App() {
-  return (
-    &lt;SplitPane
-      left={&lt;Contacts />}
-      right={&lt;Chat />} 
-    />
-  );
-}
-
-render(
-  &lt;App />,
-  '#root'
-);</code>
-          </pre>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="yzvVEx" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Containment" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/yzvVEx/">Containment</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p></p>
 
           <p>&nbsp;</p>

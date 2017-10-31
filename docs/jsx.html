@@ -128,30 +128,8 @@ function userList(users) {
         <p>Although JSX makes it easy to create standard HTML elements, it also allows you to create custom tags. These are not the same as [custom element](). There may be a few, higher level similarities between these two. But fundamentaly they are for different purposes.</p>
         <p>A custom tag is really just a function that returns some JSX. When you want to use it in other JSX, you do so as a tag. Functions for custom tags must start with an uppercase letter, with no exception. When your JSX consists of many different parts, it makes sense to break it down into modular pieces.</p>
         <p>Suppose we have a component with a render function like this:</p>
-        <pre>
-          <code class="language-javascript">
-const fruitsList = new Component({
-  container: '#fruit-list',
-  state: fruits,
-  render: (fruits) => (
-    &lt;ul class='list'>
-      {
-        fruits.map(fruit =>
-          &lt;li>
-            &lt;div>
-              &lt;h3>{fruit.title}&lt;/h3>
-              &lt;h4>{fruit.subtitle}&lt;/h4>
-            &lt;/div>
-            &lt;aside>
-              &lt;span class='disclosure'>&lt;/span>
-            &lt;/aside>
-          &lt;/li> 
-        )
-      }
-    &lt;/ul>
-  )
-})</code>
-        </pre>
+<p data-height="350" data-theme-id="6688" data-slug-hash="jaPzGR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Docs-JSX-Custom-Tags-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/jaPzGR/">Composi Docs-JSX-Custom-Tags-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
             
         <p>Looking at the above markup, we could break it up a bit to make it easier to read and reuse. To do this we'll define two functions to return markup. As mentioned earlier functions for custom tags must start with an uppercase letter. Lets break this up into two subcomponents:</p>
 
@@ -230,52 +208,8 @@ const fruitsList = new Component({
         </pre>
 
         <p>And here's the whole example. We've taken it a step further and created a custom tag for the list item as well. Notice how minimal the list is inside the component:</p>
-        <pre>
-          <code class="language-javascript">
-// Define custom tag for fruit:
-function FruitItem({fruit}) {
-  return (
-    &lt;div>
-      &lt;h3>{fruit.title}&lt;/h3>
-      &lt;h4>{fruit.subtitle}&lt;/h4>
-    &lt;/div>
-  )
-}
-
-// Define custom tag for disclosure tag:
-function Disclosure() {
-  return (
-    &lt;aside>
-      &lt;span class='disclosure'>&lt;/span>
-    &lt;/aside>
-  )
-}
-
-// Define custom tag for list item:
-function ListItem({fruit}) {
-  return (
-    &lt;li>
-      &lt;FruitItem {...{fruits}} />
-      &lt;Disclosure />
-    &lt;/li>
-  )
-}
-
-// Use the new custom tags:
-const fruitsList = new Component({
-  container: '#fruit-list',
-  state: fruits,
-  render: (fruits) => (
-    &lt;ul class='list'>
-      {
-        fruits.map(fruit =>
-          &lt;ListItem {...{fruit}} />
-        )
-      }
-    &lt;/ul>
-  )
-})</code>
-        </pre>
+        <p data-height="350" data-theme-id="6688" data-slug-hash="EbjEdN" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Docs-JSX-Custom-Tags-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/EbjEdN/">Composi Docs-JSX-Custom-Tags-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
         <p>As you can see from the above example, custom tags</p>
 
         <h2>Custom Tags Need to be Closed</h2>
@@ -347,7 +281,7 @@ const goodJSX = new Component({
     &lt;/g>
 &lt;/svg></code>
         </pre>
-        <p>This image needs to be loaded into the document so that it is exposed globally. Since we put <code>style="display:none:"</code> on the SVG tag, we don't have to worry about it showing up anywhere. To use this, we can do the following:</p>
+        <p>This image needs to be loaded into the document so that it is exposed globally. Since we put a class <code>hide</code> whose style is <code>display: none</code>, we don't have to worry about it showing up anywhere. To use this, we can do the following:</p>
 
         <pre>
           <code class="language-javascript">
@@ -403,7 +337,10 @@ svg * {
 .shape-twitter-4:hover {
   fill: #0000ff;
 }</code>
-        </pre>
+</pre>
+        <p>And here's the working example:</p>
+        <p data-height="300" data-theme-id="6688" data-slug-hash="LOVdqz" data-default-tab="html,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Docs-JSX-Custom-Tags-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/LOVdqz/">Composi Docs-JSX-Custom-Tags-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
         <p> </p>
 
         <h2>Close Your Tags!</h2>
