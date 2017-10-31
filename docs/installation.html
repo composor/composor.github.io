@@ -143,6 +143,29 @@ npm run build</code>
 &lt;/script></code>
               </pre>
               <p>For more information about how to use <code>h</code>, read its <a href="./h.html">documentation</a>.</p>
+
+              <h2>Load from CDN</h2>
+              <p>If you want, you can skip the whole install and build process and load Composi from a CDN.</p>
+
+              <pre>
+                <code class="language-html">
+&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
+                </code>
+              </pre>
+              <p>Then in your <code>script</code> tag you can access Composi like this:</p>
+              <pre>
+                <code class="language-javascript">
+const { h, render, Component } = composi
+
+const title = h(
+  'h1',
+  {class: 'title'},
+  'Hello, World!'
+)
+render(title, 'section')</code>
+              </pre>
+
+
               <p>&nbsp;</p>
       </div>
       

@@ -111,6 +111,30 @@ const html = hyperx(h)</code>
           <p data-height="450" data-theme-id="6688" data-slug-hash="gXpYmg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXpYmg/">Composi Tuts - Hyperx-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
+          
+
+          <h2>Load From a CDN</h2>
+          <p>You can also load Hyperx-ES6 from a CDN:</p>
+          <pre>
+            <code class="language-html">
+&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
+&lt;script src='https://unpkg.com/hyperx-es6@2.3.2/dist/hyperx-es6.js'>&lt;/script>
+            </code>
+          </pre>
+          <p>When you load Hyperx from a CDN, you can access it like this:</p>
+
+          <pre>
+            <code class="language-javascript">
+const { h, render, Component } = composi
+const {hyperx} = Hyperx
+
+// Tell Hyperx to use the Composi h function,
+// by passing it to hyperx:
+const html = hyperx(h)
+// Start using html`` to define component markup.
+            </code>
+          </pre>
+
 
           <p>&nbsp;</p>
         </div>

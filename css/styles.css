@@ -637,8 +637,8 @@ footer a:hover {
 }
 .docs__article .cp_embed_wrapper,
 .tutorial__article .cp_embed_wrapper {
-    width: 100%;
-  }
+  width: 100%;
+}
 .docs__article section,
 .tutorial__article section {
   padding: 0;
