@@ -116,17 +116,17 @@ npm run build</code>
 
             <p>This will also start a Node server instance and launch the project in your default browser. If you'd like to use a different browser, you can do so by opening your project's <code>gulpfile.js</code>. look for the <code>gulp</code> task called "serve". In the Browsersync configuration you can add a property for <code>browser</code> with the browser you want the project build to use. The naming convention for browsers in the configuration vary by operating system. To learn more about configuring Browsersync, read the <a target='__blank' href='https://www.browsersync.io/docs/options#option-browser'>docs</a>.</p>
             
-            <h2>CDN</h2>
+            <h2>Load from CDN</h2>
             <p>If you want, you can skip the NPM install and load Composi directly from Github. Doing so means you will not be able to use ES6, JSX, etc. on older browsers. However, you can write components using the <code>h</code> function in hyperscript fashion.</p>
             <p>To use it from a CDN, just import Composi with a scritp tag:</p>
             <pre>
               <code class='language-html'>
-&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script></code>
+&lt;script src='https://unpkg.com/composi@1.0.0/dist/composi.js'>&lt;/script></code>
             </pre>
             <p>You can then use Composi using its <code>h</code> function to define markup. Here's a simple Hello World:</p>
             <pre>
                 <code class='language-html'>
-&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
+&lt;script src='https://unpkg.com/composi@1.0.0/dist/composi.js'>&lt;/script>
 &lt;script>
   // get h and Component:
   var h = composi.h
@@ -142,29 +142,7 @@ npm run build</code>
   hello.update('Joe')
 &lt;/script></code>
               </pre>
-              <p>For more information about how to use <code>h</code>, read its <a href="./h.html">documentation</a>.</p>
-
-              <h2>Load from CDN</h2>
-              <p>If you want, you can skip the whole install and build process and load Composi from a CDN.</p>
-
-              <pre>
-                <code class="language-html">
-&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
-                </code>
-              </pre>
-              <p>Then in your <code>script</code> tag you can access Composi like this:</p>
-              <pre>
-                <code class="language-javascript">
-const { h, render, Component } = composi
-
-const title = h(
-  'h1',
-  {class: 'title'},
-  'Hello, World!'
-)
-render(title, 'section')</code>
-</pre>
-            <p>Please read the docs on the <a target='__blank' href='./h.html'>h</a> function and the <a target='__blank' href='../tuts/composi-without-jsx.html'>tutorial</a> on using Composi with JSX.</p>
+              <p>For more information about how to use <code>h</code>, read its <a href="./h.html" target='__blank'>documentation</a>, as well as the <a target='__blank' href='../tuts/composi-without-jsx.html'>tutorial</a> about using Composi without JSX.</p>
 
 
               <p>&nbsp;</p>
