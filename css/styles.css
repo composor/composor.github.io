@@ -402,7 +402,7 @@ nav > svg {
   height: 4rem;
 }
 .main__header {
-  background-color: #333;
+  background-color: #000;
   color: #fff;
   padding: 0 2rem;
   display: flex;
