@@ -76,13 +76,13 @@
           <p>If you prefer functional over classes, you will probably likeusing the <code>h</code> funtion.</p>
 
           <h2>Hyperx-es6</h2>
-          <p>Another alternative to JSX is <a target='__blank' href='https://www.npmjs.com/package/hyperx'>Hyperx</a>. The original version is in CommonJS format and cannot be easily imported into a Composi project. Therefore we've create a clone called <a href="https://www.npmjs.com/package/hyperx-es6">Hyperx-es6</a>. The only difference is that Hyperx-es6 gets exported as an ES6 module. This means you can use normal ES6 module import syntax and Rollup and bundle it properly. Hyperx allows you to ES6 template literal instead of JSX. The results are the same. The biggest difference in use will be in the text editor. JSX with get proper syntax highlighting, whereas Hyperx template literals will be treated as strings.</p>
+          <p>Another alternative to JSX is <a target='__blank' href='https://www.npmjs.com/package/hyperx'>Hyperx</a>. The original version is in CommonJS format and cannot be easily imported into a Composi project. Therefore we've create a clone called <a href="https://www.npmjs.com/package/hyperx-es6">Hyperx-es6</a>. The only difference is that Hyperx-es6 gets exported as an ES6 module. This means you can use normal ES6 module import syntax and Rollup and bundle it properly. Hyperx-es6 allows you to ES6 template literal instead of JSX. The results are the same. The biggest difference in use will be in the text editor. JSX with get proper syntax highlighting, whereas Hyperx-es6 template literals will be treated as strings.</p>
 
-          <h2>Hyperx Converts Template Literals into Hyperscript</h2>
-          <p>Hyperx converts template literals into the same format as JSX and <code>h</code>. In this case, since we tell Hyperx to you the Composi <code>h</code> function, the result will be a virtual node that Composi can use.</p>
+          <h2>Hyperx-es6 Converts Template Literals into Hyperscript</h2>
+          <p>Hyperx-es6 converts template literals into the same format as JSX and <code>h</code>. In this case, since we tell Hyperx-es6 to use the Composi <code>h</code> function, the result will be a virtual node that Composi can use.</p>
 
           <h2>Installation and Use</h2>
-          <p>You'll need to install Hyperx-es6 in your project and import it into any file where you want to use it. You'll have to make an update to your project's <code>gulpfile.js</code> to know to include Hyperx when it bundles all the dependencies. And you'll also need to let Babel know to use Hyperx instead of Composi's <code>h</code> function for create virtual nodes.</p>
+          <p>You'll need to install Hyperx-es6 in your project and import it into any file where you want to use it. You'll have to make an update to your project's <code>gulpfile.js</code> to know to include Hyperx-es6 when it bundles all the dependencies. And you'll also need to let Babel know to use Hyperx-es6 instead of Composi's <code>h</code> function for creating virtual nodes.</p>
 
           <pre>
             <code class="language-bash">
@@ -96,16 +96,16 @@ npm i -D hyperx-es6</code>
 import {h, Component} from 'composi'
 import {hyperx} from 'hyperx-es6'
 
-// Tell Hyperx to use the Composi h function,
-// by passing it to Hyperx:
+// Tell Hyperx-es6 to use the Composi h function,
+// by passing it to Hyperx-es6:
 const html = hyperx(h)</code>
           </pre>
-          <p>With this in your file, you can start using Hyperx. You could make functional components like with JSX, or use it inside of a class component. Below are some functional components with composition. We need to use <code>${}</code> for interpolation. Note that when using Hyperx, you'll be using the tagged template literal <code>html</code> that you designated after importing Hyperx-es6. <strong>Note:</strong> in all the following Codepen examples, we're using the UMD version of Hyperx-es6 that we can load in the browser and access as a global variable.</p>
+          <p>With this in your file, you can start using Hyperx-es6. You could make functional components like with JSX, or use it inside of a class component. Below are some functional components with composition. We need to use <code>${}</code> for interpolation. Note that when using Hyperx, you'll be using the tagged template literal <code>html</code> that you designated after importing Hyperx-es6. <strong>Note:</strong> in all the following Codepen examples, we're using the UMD version of Hyperx-es6 that we can load in the browser and access as a global variable.</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="ooXvLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ooXvLv/">Composi Tuts - Hyperx-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
-          <h2>Using Hyperx with a Class Component</h2>
+          <h2>Using Hyperx-es6 with a Class Component</h2>
           <p>You can also use Hyperx-es6 with class-based components. In the example below we have subcomponents using Hyperx-es6, <code>listItem</code> and <code>disclosure</code>. We integrate them into the parent component <code>List</code>, which is an extension of Component. Because the subcomponents are functions, we need to invoke them with interpolation, so they get enclosed with <code>${}</code>. Our <code>List</code> component also implements events. You can click on a list item to get an alert and you can add a new list item as well.</p>
 
           <p data-height="450" data-theme-id="6688" data-slug-hash="gXpYmg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXpYmg/">Composi Tuts - Hyperx-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
