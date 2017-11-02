@@ -41,7 +41,7 @@
         <div class='tutorial'>
           <h1>Composi Without JSX</h1>
           <p class="tutorial__intro">Although we love JSX because of its brevity and clarity, some people really dislike it.</p>
-          <p>You can use Composi without JSX. You have two options: the Composi <a target='__blank' href='../docs/h.html'>h</a> function or <a href='https://www.npmjs.com/package/hyperx-es6' target='__blank'>Hyperx-ES6</a>.</p>
+          <p>You can use Composi without JSX. You have two options: the Composi <a target='__blank' href='../docs/h.html'>h</a> function or <a href='https://www.npmjs.com/package/hyperx-es6' target='__blank'>Hyperx-es6</a>.</p>
 
           <h2>H</h2>
           <p>The <code>h</code> function lets you use hyperscript syntax to designate the HTML you want to create. When working with Composi, you will always be importing the <code>h</code> function into your files to enable Composi's virtual dom. A Composi project is automatically configured to let <a target="__blank" href="http://babeljs.io">Babel</a> know know to use it when dealing with JSX. So, whether you use JSX or <code>h</code>, both will result in the creation of the same virtual node. Take the following for example:</p>
@@ -75,14 +75,14 @@
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>If you prefer functional over classes, you will probably likeusing the <code>h</code> funtion.</p>
 
-          <h2>Hyperx-ES6</h2>
-          <p>Another alternative to JSX is <a target='__blank' href='https://www.npmjs.com/package/hyperx'>Hyperx</a>. The original version is in CommonJS format and cannot be easily imported into a Composi project. Therefore we've create a clone called Hyperx. The only difference is that Hyperx-ES6 gets exported as an ES6 module. This means you can use normal ES6 module import syntax and Rollup and bundle it properly. Hyperx allows you to ES6 template literal instead of JSX. The results are the same. The biggest difference in use will be in the text editor. JSX with get proper syntax highlighting, whereas Hyperx template literals will be treated as strings.</p>
+          <h2>Hyperx-es6</h2>
+          <p>Another alternative to JSX is <a target='__blank' href='https://www.npmjs.com/package/hyperx'>Hyperx</a>. The original version is in CommonJS format and cannot be easily imported into a Composi project. Therefore we've create a clone called <a href="https://www.npmjs.com/package/hyperx-es6">Hyperx-es6</a>. The only difference is that Hyperx-es6 gets exported as an ES6 module. This means you can use normal ES6 module import syntax and Rollup and bundle it properly. Hyperx allows you to ES6 template literal instead of JSX. The results are the same. The biggest difference in use will be in the text editor. JSX with get proper syntax highlighting, whereas Hyperx template literals will be treated as strings.</p>
 
           <h2>Hyperx Converts Template Literals into Hyperscript</h2>
           <p>Hyperx converts template literals into the same format as JSX and <code>h</code>. In this case, since we tell Hyperx to you the Composi <code>h</code> function, the result will be a virtual node that Composi can use.</p>
 
           <h2>Installation and Use</h2>
-          <p>You'll need to install Hyperx-ES6 in your project and import it into any file where you want to use it. You'll have to make an update to your project's <code>gulpfile.js</code> to know to include Hyperx when it bundles all the dependencies. And you'll also need to let Babel know to use Hyperx instead of Composi's <code>h</code> function for create virtual nodes.</p>
+          <p>You'll need to install Hyperx-es6 in your project and import it into any file where you want to use it. You'll have to make an update to your project's <code>gulpfile.js</code> to know to include Hyperx when it bundles all the dependencies. And you'll also need to let Babel know to use Hyperx instead of Composi's <code>h</code> function for create virtual nodes.</p>
 
           <pre>
             <code class="language-bash">
@@ -100,13 +100,13 @@ import {hyperx} from 'hyperx-es6'
 // by passing it to Hyperx:
 const html = hyperx(h)</code>
           </pre>
-          <p>With this in your file, you can start using Hyperx. You could make functional components like with JSX, or use it inside of a class component. Below are some functional components with composition. We need to use <code>${}</code> for interpolation. Note that when using Hyperx, you'll be using the tagged template literal <code>html</code> that you designated after importing Hyperx-ES6. <strong>Note:</strong> in all the following Codepen examples, we're using the UMD version of Hyperx-ES6 that we can load in the browser and access as a global variable.</p>
+          <p>With this in your file, you can start using Hyperx. You could make functional components like with JSX, or use it inside of a class component. Below are some functional components with composition. We need to use <code>${}</code> for interpolation. Note that when using Hyperx, you'll be using the tagged template literal <code>html</code> that you designated after importing Hyperx-es6. <strong>Note:</strong> in all the following Codepen examples, we're using the UMD version of Hyperx-es6 that we can load in the browser and access as a global variable.</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="ooXvLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ooXvLv/">Composi Tuts - Hyperx-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Using Hyperx with a Class Component</h2>
-          <p>You can also use Hyperx-ES6 with class-based components. In the example below we have subcomponents using Hyperx-ES6, <code>listItem</code> and <code>disclosure</code>. We integrate them into the parent component <code>List</code>, which is an extension of Component. Because the subcomponents are functions, we need to invoke them with interpolation, so they get enclosed with <code>${}</code>. Our <code>List</code> component also implements events. You can click on a list item to get an alert and you can add a new list item as well.</p>
+          <p>You can also use Hyperx-es6 with class-based components. In the example below we have subcomponents using Hyperx-es6, <code>listItem</code> and <code>disclosure</code>. We integrate them into the parent component <code>List</code>, which is an extension of Component. Because the subcomponents are functions, we need to invoke them with interpolation, so they get enclosed with <code>${}</code>. Our <code>List</code> component also implements events. You can click on a list item to get an alert and you can add a new list item as well.</p>
 
           <p data-height="450" data-theme-id="6688" data-slug-hash="gXpYmg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXpYmg/">Composi Tuts - Hyperx-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -114,14 +114,14 @@ const html = hyperx(h)</code>
           
 
           <h2>Load From a CDN</h2>
-          <p>You can also load Hyperx-ES6 from a CDN:</p>
+          <p>You can also load Hyperx-es6 from a CDN:</p>
           <pre>
             <code class="language-html">
 &lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
 &lt;script src='https://unpkg.com/hyperx-es6@2.3.2/dist/hyperx-es6.js'>&lt;/script>
             </code>
           </pre>
-          <p>When you load Hyperx-ES6 from a CDN, you can access it like this:</p>
+          <p>When you load Hyperx-es6 from a CDN, you can access it like this:</p>
 
           <pre>
             <code class="language-javascript">
@@ -130,7 +130,7 @@ const { h, render, Component } = composi
 // ES6 import is lowercase: import {hyper} from 'hyper-es6'
 const {hyperx} = Hyperx
 
-// Tell Hyperx-ES6 to use the Composi h function,
+// Tell Hyperx-es6 to use the Composi h function,
 // by passing it to hyperx:
 const html = hyperx(h)
 // Start using html`` to define component markup.
