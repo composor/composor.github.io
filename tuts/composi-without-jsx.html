@@ -106,7 +106,7 @@ const html = hyperx(h)</code>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Using Hyperx with a Class Component</h2>
-          <p>You can also use Hyperx with class-based components. In the example below we have subcomponents using Hyperx, <code>listItem</code> and <code>disclosure</code>. We integrate them into the parent component <code>List</code>, which is an extension of Component. Because the subcomponents are functions, we need to invoke them with interpolation, so they get enclosed with <code>${}</code>. Our <code>List</code> component also implements events. You can click on a list item to get an alert and you can add a new list item as well.</p>
+          <p>You can also use Hyperx-ES6 with class-based components. In the example below we have subcomponents using Hyperx-ES6, <code>listItem</code> and <code>disclosure</code>. We integrate them into the parent component <code>List</code>, which is an extension of Component. Because the subcomponents are functions, we need to invoke them with interpolation, so they get enclosed with <code>${}</code>. Our <code>List</code> component also implements events. You can click on a list item to get an alert and you can add a new list item as well.</p>
 
           <p data-height="450" data-theme-id="6688" data-slug-hash="gXpYmg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/gXpYmg/">Composi Tuts - Hyperx-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -121,14 +121,14 @@ const html = hyperx(h)</code>
 &lt;script src='https://unpkg.com/hyperx-es6@2.3.2/dist/hyperx-es6.js'>&lt;/script>
             </code>
           </pre>
-          <p>When you load Hyperx from a CDN, you can access it like this:</p>
+          <p>When you load Hyperx-ES6 from a CDN, you can access it like this:</p>
 
           <pre>
             <code class="language-javascript">
 const { h, render, Component } = composi
 const {hyperx} = Hyperx
 
-// Tell Hyperx to use the Composi h function,
+// Tell Hyperx-ES6 to use the Composi h function,
 // by passing it to hyperx:
 const html = hyperx(h)
 // Start using html`` to define component markup.
