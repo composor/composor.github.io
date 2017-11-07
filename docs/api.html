@@ -40,7 +40,28 @@
     <section>
       <div class='docs'>
           <h1>API</h1>
-          <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small.</p>
+          <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small. Composi exposes the two functions (h and render) and one class (Component) with  three properties and nine methods:</p>
+
+          <ul>
+            <li>h {function}</li>
+            <li>render {function}</li>
+            <li>Component {class}
+              <ul>
+                <li>Component - {property} container</li>
+                <li>Component - {method} render</li>
+                <li>Component - {method} update</li>
+                <li>Component - {property} state</li>
+                <li>Component - {method} setState</li>
+                <li>Component - {method} unmount</li>
+                <li>Component - {property} element</li>
+                <li>Component - {method} beforeCreateComponent</li>
+                <li>Component - {method} componentWasCreated</li>
+                <li>Component - {method} componentWillUpdate</li>
+                <li>Component - {method} componentDidUpdate</li>
+                <li>Component - {method} componentWillUnmount</li>
+              </ul>
+            </li>
+          </ul>
 
             <h2>h</h2>
             <p>The <code>h</code> function serves two purposes. Firstly it gets used by Babel during build to convert JSX into a virtual node that Composi can use for diffing and patching the dom. Secondly it provides a way to define component markup without using JSX.</p>
