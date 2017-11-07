@@ -75,20 +75,20 @@ function GuestGreeting(props) {
             <code class="language-javascript">
   // Original with if statement:
   handleEvent(e) {    
-    if (e.target.className === 'login') {
+    if (e.target.class === 'login') {
       this.handleLoginClick(e)
-    } else if (e.target.className === 'logout') {
+    } else if (e.target.class === 'logout') {
       this.handleLogoutClick(e)
     }
   }
   
   // New version using &amp;&amp;
     handleEvent(e) {    
-    e.target.className === 'login' &amp;&amp; this.handleLoginClick(e)
-    e.target.className === 'logout'&amp;&amp; this.handleLogoutClick(e)
+    e.target.class === 'login' &amp;&amp; this.handleLoginClick(e)
+    e.target.class === 'logout'&amp;&amp; this.handleLogoutClick(e)
   }</code>
           </pre>
-          <p>When you see an expression like this, read it like this: When e.target.className equals "login", execute this.handleLoginClick(e)". Basically, the first part is a check, if it is true then the &amp;&amp; will execute whatever follows.</p>
+          <p>When you see an expression like this, read it like this: When e.target.class equals "login", execute this.handleLoginClick(e)". Basically, the first part is a check, if it is true then the &amp;&amp; will execute whatever follows.</p>
 
           <p>We can also use the &amp;&amp; operator to conditionally render an element. If the first statement is true, then return the element to render. In the next example, the element will render only if the number of messages is greater than 0:</p>
 

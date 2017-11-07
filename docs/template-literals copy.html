@@ -39,58 +39,98 @@
   <article class='docs__article'>
     <section>
       <div class='docs'>
-          <h1>Lifecycle Methods</h1>
-          <p class="docs__intro">Composi has the following five lifecycle methods:</p>
+          <h1>API</h1>
+          <p class="docs__intro">Composi is small. That means the API is also small - less to maintain, easier to understand.</p>
 
-          <ol>
-            <li>beforeCreateComponent</li>
-            <li>componentWasCreated</li>
-            <li>componentWillUpdate</li>
-            <li>componentDidUpdate</li>
-            <li>componentWillUnmount</li>
-          </ol>
+          <h2>h</h2>
 
-          <p>Lifecycle methods are hooks that let you implement maintenance, register or remove events, and clean up code based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
-
-          <p><code>beforeCreateComponent</code> is executed before the component is created and inserted into the DOM.</p>
-          <p><code>componentWasCreated</code> is executed after the component is inserted into the DOM.</p>
-          <p><code>componentWillUpdate</code> is executed right before the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
-          <p><code>componentDidUpdate</code> is executed immediately after the component was updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
-          <p><code>componentWillUnmount</code> is executed before a component is unmounted with its <code>unmount</code> method.</p>
-
-          <h2>Lifecycle Methods are Asynchronous</h2>
-          <p>When using lifecycle methods, be aware that they are asynchronous. For example, with `beforeCreateComponent` your component will probably be created and inserted into the DOM before your method can finish. Similarly, when using `componentWillUnmount`, the component will probably be unmounted and destroyed before your code in this method completes. If you want to handle these two in a synchronous manner for tighter control, you have two choices. Use a method that returns a promise, or use the <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/async_function' target='__blank'>ES7 async functions</a>. If your browser target includes IE9, you will need to polyfill promises for either of these to work.</p>
-
-          <h2>Order of Execution</h2>
-          <p>The first time a component is rendered, <code>beforeCreateComponent</code> and <code>componentWasCreated</code> will be executed. <code>componentWillUpdate</code> and <code>componentWillUpdate</code> will not be executed at this time. After the component was created, each render will fire <code>componentWillUpdate</code> and <code>componentWillUpdate</code>. So, if you wanted to do something when the component is initially created and after it updates, you would need to do this:</p>
-
+          <p>The <code>h</code> function lets you define markup with hyperscript syntax. It takes three arguments:</p>
+          <ul>
+            <li>type: the tag name in lowercase</li>
+            <li>properties: an object of properties and values</li>
+            <li>children: a string for text, or array for more than one child element</li>
+          </ul>
+          <p>Simple Example:</p>
           <pre>
             <code class="language-javascript">
-class List extends Component {
-  //... setup here.
-  componentWasCreated() {
-    // Do stuff after component was created.
-  }
-  componentDidUpdate() {
-    // Do stuff every time component is updated.
-  }
+function Hello(name) {
+  return h(
+    // type:
+    'h1',
+    // props:
+    {
+      class: 'main-title',
+      title: 'This is the title.'
+    },
+    // Child:
+    `Hello, ${name}!`
+  )
 }</code>
           </pre>
+          <p>Example with multiple children:</p>
+          <pre>
+            <code class="language-javascript">
+function List(fruits) {
+  return h(
+    'ul',
+    {
+      class: 'list--fruits'
+    },
+    [
+      h(
+        'li',
+        {},
+        'Apples'
+      ),
+      h(
+        'li',
+        {},
+        'Oranges'
+      ),
+      h(
+        'li',
+        {},
+        'Bananas'
+      )
+    ]
+  )
+}</code>
           <p> </p>
-          <h2>Lifecycle Methods with Component Instance</h2>
-          <p>In the following example we use <code>componentWasCreated</code> to start a timer and <code>componentWillUnmount</code> to terminate the timer.</p>
-          <p>In our first example of lifecycle methods, we'll use a Component instance. This poses several problems for the lifecycle methods. They do not have access to the component itself. This forces us to use global variables to pass things around.</p>
 
-          <p data-height="450" data-theme-id="6688" data-slug-hash="MOYKxG" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi lifecycle-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYKxG/">Composi lifecycle-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p> </p>
-          <h2>Lifecycle Methods with Extended Component</h2>
-          <p>When we create a new component by extending the Component class, we can access component properties directly through the `this` keyword. This is so because we define the lifecycle methods as class methods. Notice how we do this in the example below.</p>
+          <h2>render</h2>
 
-          <p data-height="450" data-theme-id="6688" data-slug-hash="OOPMGW" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi lifecycle-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/OOPMGW/">Composi lifecycle-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <h2>Component</h2>
+
+          <h2>Component: new</h2>
+
+          <h2>Component: extend</h2>
+
+          <h2>Component: container</h2>
+
+          <h2>Component: render</h2>
+
+          <h2>Component: state</h2>
+
+          <h2>Component: setState</h2>
+
+          <h2>Component: update</h2>
+
+          <h2>Component: unmount</h2>
+
+          <h2>Component: Lifecyle Hooks</h2>
+
+          <h2>Component: beforeCreateComponent</h2>
+
+          <h2>Component: componentWasCreated</h2>
+
+          <h2>Component: componentWillUpdate</h2>
+
+          <h2>Component: componentDidUpdate</h2>
+
+          <h2>Component: componentWillUnmount</h2>
+
+
           <p>&nbsp;</p>
-          
       </div>
 
       <aside>
@@ -126,7 +166,7 @@ class List extends Component {
             <li class="docs__menu__item">
               <a href='./styles.html'>Styles</a>
             </li>
-            <li class="docs__menu__item selected">
+            <li class="docs__menu__item">
               <a href='./lifecycle-methods.html'>Lifecycle Methods</a>
             </li>
             <li class="docs__menu__item">
@@ -138,7 +178,7 @@ class List extends Component {
             <li class="docs__menu__item">
               <a href='./deployment.html'>Deployment</a>
             </li>
-            <li class="docs__menu__item">
+            <li class="docs__menu__item selected">
               <a href='./api.html'>API</a>
             </li>
             <li class="docs__menu__item">

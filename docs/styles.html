@@ -189,6 +189,65 @@ class List extends Component {
           <h2>When Not to Use</h2>
           <p>Using this technique is a quick and simple way to add styles to a component. However, if the component's styles are complex, the presence of a large style declaration in the component can make it hard to read. In those situations you can either put the style declaration in a separate file and import it into the file where the component is being used, or simply put the styles in your project's stylesheet. You don't want a component's styles to be bigger than the component's code.</p>
 
+          <h2>Inline Styles</h2>
+          <p>
+            You can provide your component elements with inline styles. Only other properies, the style tag expects a JavaScript object defining the style to be created. This means that CSS properties that are hyphenated must be camel cased. Also all values other than pure numbers must be enclosed in quotes. Since the style property's value needs to be interpolated, the style definition needs to be enclosed in curly braces. Notice how we provide objects as styles inside curly braces:
+          </p>
+          <pre>
+            <code class="language-javascript">
+const list = new Component({
+  container: 'section',
+  render: (data) => (
+    &lt;ul style={{
+        listStyle: 'none', 
+        margin: '20px',
+        border: 'solid 1px #ccc',
+        borderBottom: 'none'
+      }}>
+      {
+        data.map(item => &lt;li style={{
+          borderBottom: 'solid 1px #ccc',
+          padding: '5px 10px'
+        }}>{item}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+})</code>
+          </pre>
+          <p>Since the style value is a JavaScript object, you can remove a style from within the markup and store it as a separate value. This is especially easy when you define a component in its own file:</p>
+          <pre>
+            <code class="language-javascript">
+// file: ./components/list.js
+
+// Define inline styles as separate objects:
+const listStyle = {
+  listStyle: 'none', 
+  margin: '20px',
+  border: 'solid 1px #ccc',
+  borderBottom: 'none'
+}
+
+const listItemStyle = {
+  borderBottom: 'solid 1px #ccc',
+  padding: '5px 10px'
+}
+
+// Pass style objects to component:
+const list = new Component({
+  container: 'section',
+  render: (data) => (
+    &lt;ul style={listStyle}>
+      {
+        data.map(item => &lt;li style={listItemStyle}>{item}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+})</code>
+          </pre>
+          <p>
+  Although inline styles result in highly portable styled components, unless you separate out the style definitions into separate objects, they result in markup that is harder to read. Also inline styles have a major defect that they only allow styling the element they are on. You cannot style pseudo-elements or use media queries, etc. If you want a component to have encapsulated style without these limitation, consider  using the <code>stylor</code> module explained next.
+</p>
+
           <h2>Using Stylor</h2>
           <p>You can use the NPM module <a href='https://www.npmjs.com/package/stylor' target='__blank'>stylor</a> to create a virtual stylesheet scoped to your components. You will do this inside the component's <code>componentWasCreated</code> lifecyle method. This requires the styles to be defined as a JavaScript object. Properties must be camel cased and values must be quoted. If you want, you can use hypenated properties by enclosing them in quotes. Simple selectors are fine, but complex properties will need to be enclosed in quotes. You can use hierachical nesting to define parent child relationships, similar to how LESS and SASS do. If the value for a property will be a pixel value, you do not need to provide the <code>px</code>. values of plain numbers will get converted to pixel values.</p>
 
@@ -512,6 +571,9 @@ body {
             </li>
             <li class="docs__menu__item">
               <a href='./deployment.html'>Deployment</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./api.html'>API</a>
             </li>
             <li class="docs__menu__item">
               <a href='./about.html'>About</a>

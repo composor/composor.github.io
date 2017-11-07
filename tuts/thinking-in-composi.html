@@ -275,9 +275,9 @@ updatePrice(e) {
             <code class="language-javascript">
 handleEvent(e) {
   e.target.id === 'addRow' && this.addNewRow(e)
-  e.target.className === 'list__item__button--delete' && this.deleteRow(e)
-  e.target.className === 'quantity' && this.updateQuantity(e)
-  e.target.className === 'price' && this.updatePrice(e)
+  e.target.class === 'list__item__button--delete' && this.deleteRow(e)
+  e.target.class === 'quantity' && this.updateQuantity(e)
+  e.target.class === 'price' && this.updatePrice(e)
 }
 
 componentWasCreated() {
@@ -310,9 +310,9 @@ deleteRow(e) {
             <code class="language-javascript">
 handleEvent(e) {
   e.target.id === 'addRow' && this.addNewRow(e)
-  e.target.className === 'list__item__button--delete' && this.deleteRow(e)
-  e.target.className === 'quantity' && this.updateQuantity(e)
-  e.target.className === 'price' && this.updatePrice(e)
+  e.target.class === 'list__item__button--delete' && this.deleteRow(e)
+  e.target.class === 'quantity' && this.updateQuantity(e)
+  e.target.class === 'price' && this.updatePrice(e)
 }</code>
           </pre>
           <p>With this our spreadsheet is complete. The spreadsheet will render its default data, we can add new items to it, we can update an item's price or quantity and the total and sum will update as well. And we can delete a row from the spreadsheet, causing the total and sum to update:</p>

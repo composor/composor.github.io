@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual dom to make efficient updates to the DOM based on a component's data or state.">
+  <meta name="keywords" content="javascript, framework, performance, small, fast, UI, programming, code, component, composi, chocolatechipui, chocolatechip-ui, reactive, virtual dom">
+  <title>Composi - Docs</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/prism-tomorrow.css">
+</head>
+<body class='documentation-page'>
+  <nav>
+    <ul class='nav--menu'>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../index.html">
+          <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Composi Logo</title>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Composi-Logo-Solid" fill="#fff">
+                <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+              </g>
+            </g>
+          </svg>
+        <span class='logo__link--text'>Composi</span></a>
+      </li>
+      <li class='nav--menu__item selected'>
+        <a class='nav--menu__item__link' href="./installation.html">Docs</a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../tuts/index.html">Tutorials</a>
+      </li>
+    </ul>
+  </nav>
+  <article class='docs__article'>
+    <section>
+      <div class='docs'>
+          <h1>API</h1>
+          <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small.</p>
+
+            <h2>h</h2>
+            <p>The <code>h</code> function serves two purposes. Firstly it gets used by Babel during build to convert JSX into a virtual node that Composi can use for diffing and patching the dom. Secondly it provides a way to define component markup without using JSX.</p>
+            <p><code>h</code> takes three arguments:</p>
+            <ul>
+              <li>type - The type of node to create. This is indicated by providing a lowercase tag name: "ul", "li", "div", etc.</li>
+              <li>props - An object literal of properties and their values: {class: 'list-users'}</li>
+              <li>children - Either a simple string for a text node, or an array of other <code>h</code> definitions: 'Hello' or [h('li')]</li>
+            </ul>
+
+            <p>To create a node you only really have to provide a type. If an element has no properties you can use and empty object: <code>{}</code> or <code>null</code>. Same for children:</p>
+
+            <pre>
+              <code class="language-javascript">
+const list = h(
+  // type:
+  'ul',
+  // props:
+  {},
+  // children:
+  null
+)
+// or:
+const list = h(
+  // type:
+  'ul',
+  // props:
+  null,
+  // children:
+  null
+)
+// or:
+const list = h(
+  // type:
+  'ul'
+)</code>
+            </pre>
+            <p>If you are creating a node that doesn't have properties but does have children, you will need to provide either <code>{}</code> or <code>null</code> or props:</p>
+
+
+            <pre>
+              <code class="language-javascript">
+const list = h(
+  // type:
+  'ul',
+  // props:
+  {},
+  // children:
+  [
+    h(
+      // type:
+      'li',
+      // props:
+      {},
+      // child:
+      'Apple'
+    ),
+    h(
+      // type:
+      'li',
+      // props:
+      {},
+      // child:
+      'Orange'
+    )
+  ]
+)</code>
+            </pre>
+            <p>Of course, you would not be putting those comments in your code. That was just to make it clear how the <code>h</code> call signature works.</p>
+
+            <h2>render</h2>
+            <p>The <code>render</code> function allows you to output functional components to the DOM. It takes to arguments:</p>
+
+            <ul>
+              <li>element - Either a JSX tag, and h function or a virtual node.</li>
+              <li>container - A node or CSS selector into wich the component will be rendered.</li>
+            </ul>
+
+            <p>When you inject a functional component into the DOM with <code>render</code> it also create a virtual dom scoped to where the render function was invoked. This means that invoking the same expression in a different scope with cause the creation of a new virtual dom. This will result in whatever was previously rendered being complete replaced. However, any renders after that will using the virtual dom of the current scope, resulting in efficient DOM patching.</p>
+
+            <pre>
+              <code class="language-javascript">
+import {h, render} from 'composi'
+
+const fruits = ['Apples', 'Oranges', 'Bananas']
+function FruitList({fruits}) {
+  return (
+    &lt;ul class='list-fruits'>
+      {
+        fruits.map(fruit => &lt;li class='list-fruits__item'>{fruit}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+}
+render(<FruitList {...{fruits}} />, '#available-fruits')</code>
+</pre>
+            <p>And here's the same example redone to create a virtual node and pass that in. Since we are not using a JSX tag to render, we do not need to enclose the data parameter in curly braces when we call the function:</p>
+            <pre>
+              <code class="language-javascript">
+const fruits = ['Apples', 'Oranges', 'Bananas']
+// No need for curly braces in the function call:
+function FruitList(fruits) {
+  return (
+    &lt;ul class='list-fruits'>
+      {
+        fruits.map(fruit => &lt;li class='list-fruits__item'>{fruit}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+}
+// Create the virtual node:
+const fruitList = FruitList(fruits)
+render(fruitList, 'section')</code>
+            </pre>
+            <p> </p>
+            <h2>Component</h2>
+            <p>The component class is the main part of Composi that you will be using. This class provides a number of properties and methods for you to use. There are two ways to use this class:</p>
+
+            <ul>
+              <li>Create a new instance.</li>
+              <li>Extend it to create a new class.</li>
+            </ul>
+
+            <p>If your needs are simple, create a new instance of <code>Component</code> is a good choice. However, if you know that this component's needs may increase as you develop your app, it's better to go with exending <code>Component</code>. Extending it lets you add custom properties and methods to the class to make an event more powerful solution. If your component will involve use interactions or ocassional updates, you'll want to extend <code>Component</code>.</p>
+            
+            <h2>Component - new</h2>
+            <p>If you just need to put together a simple component, creatin a new instance of the Component class is the way to go. The class takes an object literal of certain values: container, render, optional state and lifecycle hooks. At the minimal you'll have to provide a container and render function:</p>
+
+            <pre>
+              <code class="language-javascript">
+const title = new Component({
+  container: 'header',
+  render: (message) => <h1>Hello, {message}!</h1>
+})
+// Pass some data to the component to render it:
+title.update('World')
+              </code>
+            </pre>
+            <p><strong>Note:</strong> because a new instance is initialized with an object literal, the methods defined in it do not have the scope of the component. Their scope is the scope of the object literal. This makes it tricky and cumbersome to access properties and methods on the component instance. If you wish to make a component with more complex needs, do extend the <code>Component</code> class</p>
+            <p>You can learn more about all container, render, state and lifecycle hooks down below.</p>
+
+            <h2>Component - extend</h2>
+            <p>You will get the most out of the Component class by extending it. This will let you create custom properties and methods for your component based on what it needs to do. When you extend <code>Component</code>, every class method with have access to the class properties and methods through its <code>this</code> keyword</p>
+
+            <p>In the following example, notice how we added the properties <code>state</code> and <code>key</code> to the class constructor. Because we are adding properties to the contstructor, we all need to include <code>super</code> and pass it <code>props</code>. We also added a <code>render</code> function, inside of which we can easily access the component's <code>state</code> property. We also added a method called </code>handleEvent</code> to implement events. And finally a <code>componentWasCreated</code> hook to set up the main event. And finally, we use are class by instantiating it and passing it a value for the container to render in.</p>
+
+            <pre>
+              <code class="language-javascript">
+class List extends Component {
+  constructor(props) {
+    super(propss)
+    this.state = fruits
+    // key to use for adding new items:
+    this.key = 1000
+  }
+  render() {
+    let state = this.state
+    return (
+      &lt;div>
+        &lt;p>
+          &lt;input id='nameInput' type='text' />
+          &lt;button id='addItem'>Add&lt;/button>
+        &lt;/p>
+        &lt;ul id='fruitList'>
+          {
+            this.state.map(fruit => &lt;li key={fruit.key}>{fruit.name}&lt;/li>)
+          }
+        &lt;/ul>
+      &lt;/div>
+    )
+  }
+  handleEvent(e) {
+    // Handle button click:
+    if (e.target.id === 'addItem') {
+      const nameInput = this.element.querySelector('#nameInput')
+      const name = nameInput.value
+      if (!name) {
+        alert('Please provide a name!')
+        return
+      }
+      this.setState({name, key: this.key++}, this.state.length)
+      nameInput.value = ''
+      nameInput.focus()
+    // Handle list item click:
+    } else if (e.target.nodeName === 'LI') {
+      alert(e.target.textContent.trim())
+    }
+  }
+  componentWasCreated() {
+    this.element.addEventListener('click', this)
+  }
+}
+const list = new List({
+  container: 'section'
+})</code>
+            </pre>
+            <p> </p>
+            
+            <h2>Component - container</h2>
+            <p>This is a property on the component that is the base element of the component. Many components can share the same container, for example, you might have them rendered directly in the body tag. This means that the contain is not the component. When you access the component from its <code>element</code> property, you are one level down from the container.</p>
+
+            <pre>
+              <code class="language-javascript">
+const list = new List({
+  container: 'section'
+})</code>
+            </pre>
+            <p> </p>
+
+            <h2>Component - render</h2>
+            <p>This is a method defined on a component that defines the markup that the component will create. It returns a virtual node when it executes. By default when this is executed it checks for <code>state</code> to use. You can bypass this by passing data through the component's <code>update</code> method.</p>
+            <pre>
+              <code class="language-javascript">
+class List extends Component {
+  render(data) {
+    return (
+      &lt;ul>
+        {
+          data.map(item => &lt;li>{item}&lt;/li>)
+        }
+      &lt;/ul>
+    )
+  }
+}</code>
+            </pre>
+            <p> </p>
+            <h2>Component - update</h2>
+            <p>If you have a component that does not have <code>state</code>, after initializing it you'll ned to execute <code>udpate</code> on it. Doing so will cause it to be rendered in the DOM. You can also optionally pass data to the <code>update</code> method. Doing so allows you to bypass the current <code>state</code> of the component.</p>
+            <pre>
+              <code class="language-javascript">
+class Title extends Component {
+  render(message) {
+    return (
+      <h1>Hello, {message}!</h1>
+    )
+  }
+}
+const title = new Title({
+  container: 'header'
+})
+
+// Update the component:
+title.update('Harry Potter')</code>
+            </pre>
+            
+            <p> </p>
+            <h2>Component - state</h2>
+            <p>Components can be stateless or statefull. You use the <code>state</code> property to set that up. Once you have given your component <code>state</code>, you should use the <code>setState</code> method to update it. When you assign a value to a component's <code>state</code> property, this causes the component to be rendered to the DOM automatically. This is because the Component class has getters and setters for <code>state</code>. Whenever the setter is invoked it also invokes the component's <code>update</code> method, resulting in a render or patching of the component in the DOM.</p>
+
+            <pre>
+              <code class="language-javascript">
+// Define container and state in constructor:
+class Title extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'header'
+    this.state = 'Harry Potter'
+  }
+  render(message) {
+    return (
+      <h1>Hello, {message}!</h1>
+    )
+  }
+}
+const title = new Title()
+
+//or define container and state during initialization:
+class Title extends Component {
+  render(message) {
+    return (
+      <h1>Hello, {message}!</h1>
+    )
+  }
+}
+const title = new Title({
+  container: 'header',
+  state: 'Harry Potter'
+})</code>
+            </pre>
+            
+            <p> </p>
+            <h2>Component - setState</h2>
+            <p>This method lets you update the <code>state</code> of a component. When the compoent's state is an object or array, this lets you perform partial updates on the <code>state</code>, changing a property value of array index value. Internally, <code>setState</code> invokes the <code>state</code> setter, which cause the component to be updated.</p>
+
+            <pre>
+              <code class="language-javascript">
+class Title extends Component {
+  render(message) {
+    return (
+      <h1>Hello, {message}!</h1>
+    )
+  }
+}
+const title = new Title({
+  container: 'header'
+})
+// Set the state with setState:
+title.setState('Harry Potter')</code>
+            </pre>
+            
+            <p> </p>
+            <h2>Component - unmount</h2>
+            <p>If you want to destroy a comonent, removing it from the DOM, you will use this method. It gets executed on the component instance. <code>unmount</code> deletes the component base element from the DOM and nulls out all its properties on its instance for garbage collection. However, it does not keep track of any registered events on the component's elements. If the component has events, it is your responsibility to unbind them before unmounting to prevent memory leaks.</p>
+
+            <pre>
+              <code class="language-javascript">
+// Create component instance:
+const title = new Title({
+  container: 'header',
+  state: 'Harry Potter'
+})
+// Sometime later destory the component:
+title.unmount()</code>
+            </pre>
+            
+            <p> </p>
+            <h2>Component - element</h2>
+            <p>Sometimes you need an easy way to reach child elements in a compnent, either to get a form input value or to register and event. You can do this through the component's <code>element</code> property. <code>element</code> is the base or topmost element of your component's markup. This is not the same as a component's container, which is the element into which a component gets rendered. Many components can exist inside the same container, such as the body tag. </p>
+            
+            <p> </p>
+            <h2>Lifecycle Hooks</h2>
+            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.</p>
+            
+            <h2>Component - beforeCreateComponent</h2>
+            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing.</p>
+            
+            <h2>Component - componentWasCreated</h2>
+            <p>This fires right after the component has been injected into the DOM. You can use this to set up events for the component or start a interval loop for some purpose.</p>
+            
+            <h2>Component - componentWillUpdate</h2>
+            <p>This fires right before the component is updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
+            
+            <h2>Component - componentDidUpdate</h2>
+            <p>This fires right after the component was updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
+            
+            <h2>Component - componentWillUnmount</h2>
+            <p>This fires when the </code>unmount</code> method is invoked on the component instance. Because this is asynchronous, it is highly probable that the component will be full unmounted and destroyed before this hook finishes executing.</p>
+            
+          
+          <p>&nbsp;</p>
+      </div>
+
+      <aside>
+        <menu>
+          <ul class="docs__menu">
+            <li class="docs__menu__item">
+              <a href='./installation.html'>Installation</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./render.html'>Render</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./functional-components.html'>Functional Components</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./component-instance.html'>Component Instance</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./extending-component.html'>Extending Component</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./state.html'>State</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./jsx.html'>JSX</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./h.html'>H for Hyperscript</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./template-literals.html'>Template Literals</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./styles.html'>Styles</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./lifecycle-methods.html'>Lifecycle Methods</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./events.html'>Events</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./hydration.html'>Hydration</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./deployment.html'>Deployment</a>
+            </li>
+            <li class="docs__menu__item selected">
+              <a href='./api.html'>API</a>
+            </li>
+            <li class="docs__menu__item">
+              <a href='./about.html'>About</a>
+            </li>
+          </ul>
+        </menu>
+      </aside>
+    </section> 
+  </article>
+  <footer>
+      <section>
+        <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>Composi Logo</title>
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Composi-Logo-Solid" fill="rgba(255,255,255,0.5)">
+              <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+            </g>
+          </g>
+        </svg>
+        <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a> and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
+      </section>
+    </footer>
+  <script src="../js/prism.min.js"></script>
+  <script src="../js/prism-jsx.js"></script>
+</body>
+</html>
