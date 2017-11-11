@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual dom to make efficient updates to the DOM based on a component's data or state.">
+  <meta name="keywords" content="javascript, framework, performance, small, fast, UI, programming, code, component, composi, chocolatechipui, chocolatechip-ui, reactive, virtual dom">
+  <title>Composi - Tutorials</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/prism-tomorrow.css">
+</head>
+<body class='tutorial-page'>
+    <nav>
+      <ul class='nav--menu'>
+        <li class='nav--menu__item'>
+          <a class='nav--menu__item__link' href="../index.html">
+            <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>Composi Logo</title>
+              <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Composi-Logo-Solid" fill="#fff">
+                  <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+                </g>
+              </g>
+            </svg>
+          <span class='logo__link--text'>Composi</span></a>
+        </li>
+        <li class='nav--menu__item'>
+          <a class='nav--menu__item__link' href="../docs/installation.html">Docs</a>
+        </li>
+        <li class='nav--menu__item selected'>
+          <a class='nav--menu__item__link' href="./index.html">Tutorials</a>
+        </li>
+      </ul>
+    </nav>
+    <article class='tutorial__article'>
+      <section>
+        <div class='tutorial'>
+          <h1>Immutable Data</h1>
+          <p class="tutorial__intro">When creating a complex app, managing state can be complicated. The same state can be shared by many components.</p>
+          <p>It's possible that an interaction with one component can cause a data mutation at the same time that another component is trying to access the data. This can lead bugs that are difficult to diagnose. Keeping your data immutable can prevent this.</p>
+
+          <h2>Accessing State</h2>
+          <p>When you need to update the state of a component, you first need to get it. You do that with a simple assignment:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Method of a component:
+updateName(newName) {
+  const state = this.state
+  state.name = newName
+  this.setState(state)
+}</code>
+          </pre>
+          <p></p>
+          <h2>Primitive Types vs Complex Types</h2>
+          <p>JavaScript types are of two categories: primitive and complex. Primities are boolean, number and string. These are all immutable as well. This means that when you assign one of them to a variable and then assign that to another variable, a new copy is made:</p>
+          <pre>
+            <code class="language-javascript">
+const a1 = 1
+const b1 = one
+a1 = 2
+console.log(a1) // returns 2
+console.log(b1) // returns 1</code>
+          </pre>
+          <p>String, numbers and booleans are passed by value.</p>
+          <h2>Complex Types</h2>
+          <p>The other category of types are objects, arrays and function. These are reference types. That means that when you assign them to one variable, the variable does not hold the value. It holds only a reference to the data. This means when you assign that to another variable, both will point to the same data. Chaning one appears to change the value of the other. Actually, with reference types there is only one, the variables are all point to the same value. Modifying that value from any variable changes the value for all references.</p>
+          <pre>
+            <code class="language-javascript">
+const person1 = {
+  name: 'Joe',
+  age: 26
+}
+const person2 = person1
+person2.name = 'Sam'
+person2.age = 32
+console.log(person2)
+// returns:
+{
+  name: 'Sam',
+  age: 32
+}
+console.log(person1)
+// returns:
+{
+  name: 'Sam',
+  age: 32
+}</code>
+          </pre>
+          <p>This is the behavior for objects, arrays and functions. Most of the time your component data will be either an object or an array of either primitie types or objects.</p>
+          <h2>Immutable Objects</h2>
+          <p>The easiest way to get a new copy of the state's data when it is an object is to use <code>Object.assign</code>:</p>
+          <pre>
+            <code class="language-javascript">
+// Component method:
+updateName(name) {
+  // Make a copy of the state data:
+  const state = Object.assign({}, this.state)
+  state.name = 'Hellen',
+  state.job = 'Project Manager'
+  this.setState(state)
+}</code>
+          </pre>
+          <p> </p>
+          <h2>Immutable Arrays</h2>
+          <p>We can easily clone an array using the native <code>slice</code> method. When no arguments are provided, it returns a copy of the array:</p>
+          <pre>
+            <code class="language-javascript">
+addItem(newItem) {
+  // Make a copy of the state array:
+  const state = this.state.slice()
+  state.push(newItem)
+  this.setState(state)
+}
+//or:
+updateItem(data, position) {
+  // Make a copy of the state array:
+  const state = this.state.slice()
+  state.splice(position,0, data)
+  this.setState(state)
+}
+</code>
+          </pre>
+          <p>When an array holds objects, the above approach will not work. Even though we can clone the array, the objects themselves get copied by reference. To get arround this you can use a special array cloning function to copy their objects:</p>
+          <pre>
+            <code class="language-javascript">
+function immutableCollection(arr) {
+  return arr.map(object => Object.assign({}, object))
+}
+
+class Users extends Component {
+  constructor(props) {
+    super(props)
+    this.state = [
+      {
+        name: 'Joe'
+      },
+      {
+        name: 'Sandra'
+      },
+      {
+        name: 'Bob'
+      }
+    ]
+  }
+  updateUserName(name, position) {
+    const user = immutableCollection(this.state)
+    user[position].name = name
+    this.setState(user)
+  }
+}</code>
+          </pre>
+          <p>Creating a utility function to clone the array's objects lets us preserve the immutability the original state.</p>
+
+          <h2>Why Immutability?</h2>
+          <p>Seems like a lot of work to maintain immutability. It is. But it has its value. As we mentioned, since state is what drives your app, making changes to it directly in a piecemeal manner can cause some partial updates to the UI that result in unexpected behaviors or appearnances. It's always safest to create a clean copy of the state, make all the necessary changes, and then update the state with <code>setState</code>. Immutability also makes it easy to implement features such as undo and time travel.</p>
+
+          <h2>Let's Time Travel</h2>
+          <p>Demo time! Let's build a game of tic-tac-toe with time travel. This will show why immutable state is so eassential for complex apps.</p>
+         
+          <h2>The Board</h2>
+          <p>Tic-Tac-Toe starts with a board--nine squares. We could make a simple function component like this:</p>
+          <pre>
+            <code class="language-jsx">
+function Board() {
+  return (
+    &lt;div>
+      &lt;button>&lt;/button>
+      &lt;button>&lt;/button>
+      &lt;button>&lt;/button>
+    &lt;/div>
+    &lt;div>
+      &lt;button>&lt;/button>
+      &lt;button>&lt;/button>
+      &lt;button>&lt;/button>
+    &lt;/div>
+    &lt;div>
+      &lt;button>&lt;/button>
+      &lt;button>&lt;/button>
+      &lt;button>&lt;/button>
+    &lt;/div>
+  )
+}</code>
+          </pre>
+          <p>That's the general idea, but we want to modularize thing, breaking out into three parts: Game class, board component and square component. Here's the start:</p>
+          <p data-height="350" data-theme-id="6688" data-slug-hash="YEZaVe" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic Tac Toe - 1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEZaVe/">Composi Tic Tac Toe - 1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p> </p>
+          <h2>Parent is in Control</h2>
+          <p>We want the game class to be the part controlling everything--state and events. We'll therefore need to pass data down to the child components. In the next example you can see how we pass data from the board down to the squares through props:</p>
+          <p data-height="350" data-theme-id="6688" data-slug-hash="NwpYvV" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic Tac Toe - 2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/NwpYvV/">Composi Tic Tac Toe - 2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p>We will be using this technique of passing data down in more ways as we develop this game.</p>
+
+          <h2>Interactive Squares</h2>
+          <p>We want the player to be able to tap a square to set its value as an X or O. For this to work we will put an <code>onclick</code> event on each square, and set up the event handler on the Game class. We'll call the Game method <code>handleClick</code>. We pass it from Game to the Board component as the prop <code>onClick</code>. And in the Board component, we will pass it to the Square component as the prop <code>onClick</code>. Then, in the Square component we can assign that <code>onClick</code> prop to an <code>onclick</code> event.</p>
+
+          <h3>Immutable Data</h3>
+          <p>And here we begin with the immutable data approach. Rather than just getting the array from the component's state, we get a copy of it using <code>slice()</code> on the array. Check out the <code>handleClick</code> event to see how we do that. We make a copy of the state array, make changes to the copy and then use <code>setState</code> to update the component's state:</p>
+          <p data-height="350" data-theme-id="6688" data-slug-hash="NwpYaV" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic Tac Toe - 3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/NwpYaV/">Composi Tic Tac Toe - 3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p> </p>
+          <h2>Taking Turns</h2>
+          <p>Next we want to show the moves as they take place, X followed by O. We want to show those choices on the squares and also let the players know whose turn is next. For that we'll add a new property to the state: <code>xIsNext</code>. By setting its initial value to <code>true</code> we indicate that the first move is X.</p>
+          <p data-height="350" data-theme-id="6688" data-slug-hash="WXpLNv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/WXpLNv/">Composi Tic-Tac-Toe 4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+          <p>So, we can show whose turn is next, but the square aren't updating. We'll need to make some more changes to the state. We're going to rename <code>values</code> to squares. This might seem petty now, but later its usage will get more complicated, so we're renaming it to indicate that it represents the squares. Since we renamed it, we need to change the reference in <code>Button</code> and <code>Board</code> as well, no big deal. Now, in the <code>handleClick</code> method we're going to change <code>values[i] = 'X'</code> to <code>squares[i] = this.state.xIsNext ? "X" : "O"</code>. With that are squares are happening:</p>
+          <p data-height="350" data-theme-id="6688" data-slug-hash="GOWaoq" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/GOWaoq/">Composi Tic-Tac-Toe 5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p> </p>
+          <h2>The Winner</h2>
+          <p>Yeah, a small detail. As it is, the plays can play and even when, but you can still keep choosing squares. We need to be able to declare a winner when someone winners.</p>
+          <p>To determine a winner, we need to know what are the moves that determine a winner. And then we need to compare our state of moves to see if there's a match. Here's the function to determine the winner:</p>
+
+          <pre>
+            <code class="language-javascript">
+// Calculate the winner:
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ]
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i]
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a]
+    }
+  }
+  return null
+}</code>
+          </pre>
+          <p>This function needs the squares. We're going to put this calculation into <code>Board</code>. We'll also need to update the status to show a winner instead of whose next:</p>
+          <pre>
+            <code class="language-javascript">
+const winner = calculateWinner(props.state.squares)
+let status
+if (winner) {
+  status = 'Winner: ' + winner
+} else {
+  status = 'Next player: ' + (props.state.xIsNext ? 'X' : 'O')
+}</code>
+          </pre>
+          <p>And here it is working:</p>
+          <p data-height="350" data-theme-id="6688" data-slug-hash="YEZbpw" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEZbpw/">Composi Tic-Tac-Toe 6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+          <p>This is an improvement. The players can take turns and they know when someone wins. However,  They can still take turns. We need to stop that as soon as there's a winner.</p>
+
+          <h2>Lifting State Up</h2>
+
+          <p>At the moment we have <code>Board</code> deterimining who won. Really, <code>Game</code> should own state and state decisions. We are going to move that to <code>Game's</code> <code>render</code> method. To get the status to the board, we'll have to pass it down as a prop. And we'll need to check if there was a winner in the <code>handleClick</code> method. If there was a winner, we want to stop any further action.</p>
+
+          <p data-height="350" data-theme-id="6688" data-slug-hash="bYqPLJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/bYqPLJ/">Composi Tic-Tac-Toe 7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+          <p> </p>
+          <h2>Storing History</h2>
+          <p>So far we are just storing what moves the user made in the squares array. This works for determining a winner, but there is no way to tell who made what move. For that we'll need to take the immutability to the next level. We'll need to store an array of each move. This means we'll have to make some changes to our state structure. We want this:</p>
+<pre>
+  <code class="language-javascript">
+history: [
+    {
+      squares: [null,null,null,null,null,null,null,null,null]
+    },
+    {
+      squares: [X,null,null,null,null,null,null,null,null]
+    },
+    {
+      squares: [X,null,O,null,null,null,null,null,null]
+    }
+]</code>
+</pre>
+          <p>This will enable use to examine all moves, and even time travel through the moves. For this we need to update the <code>Game</code> constructor. Notice how we simplified the creation of the initial array using <code>Array(9).fill(null)</code>:</p>
+          <pre>
+            <code class="language-javascript">
+constructor(props) {
+  super(props)
+  this.state = {
+    history: [{
+      squares: Array(9).fill(null)
+    }],
+    stepNumber: 0,
+    xIsNext: true
+  }
+}</code>
+          </pre>
+          <p>Because of this change, we'll need to update all references to square through our code. We'll especially have to refactor the <code>handleClick</code> method:</p>
+          <pre>
+            <code class="language-javascript">
+  handleClick(i) {
+    const history = this.state.history;
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      history: history.concat([{
+        squares: squares
+      }]),
+      xIsNext: !this.state.xIsNext,
+    });
+  }
+}</code>
+          </pre>
+          <p>And here's the new version. The user interaction hasn't changed. But we now have a history of what the moves were. is you add <code>window.game = game</code>, you can enter <code>game.state.history</code> in the Codepen console to see the history of moves. Of course you'll have to make some moves first ;-)</p>
+
+          <p data-height="350" data-theme-id="6688" data-slug-hash="ece7fe9f08486c2cfc165157c468734d" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ece7fe9f08486c2cfc165157c468734d/">Composi Tic-Tac-Toe 7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p>One note: since the game is now determing moves and the winner, we moved the display of that information from the board to the game info panel to the side of the board. We'll be using this side panel to show user moves and enable time travel further ahead.</p>
+
+          <h2>Stepping into the Past</h2>
+          <p>In order to enable time travel, we'll need a way for the play to set back to previous moves. We'll do that by create a list of buttons for each move. Currently we have a side panel that outputs the game status:</p>
+          <pre>
+            <code class="language-jsx">
+&lt;div class="game-info">
+  &lt;div>{status}&lt;/div>
+  &lt;ol>{/* TODO */}&lt;/ol>
+&lt;/div></code>
+          </pre>
+          <p>That ordered list is where we want to put our steps through history.</p>
+
+          <p>The first thing we'll need is a function to step through the history. For now we just want a shell because we are first going to output the buttons:</p>
+          <pre>
+            <code class="language-javascript">
+jumpTo(step) {
+  return
+}</code>
+          </pre>
+          <p>Now we can create those step buttons. We'll add a new function to the <code>Game</code> render function. It will create the buttons based on the current history. Each button will have a reference to the index of the history array it needs to access, and each button will fire the <code>jumpTo</code> method:</p>
+          <pre>
+            <code class="language-javascript">
+const moves = history.map((step, move) => {
+  const desc = move ?
+    'Go to move #' + move :
+    'Go to game start'
+  return (
+    &lt;li key={move}>
+      &lt;button class='button-moves' onclick={() => this.jumpTo(move)}>{desc}&lt;/button>
+    &lt;/li>
+  )
+})</code>
+          </pre>
+          <p>To output these we just need to put the variable <code>moves</code> into the unordered list:</p>
+          <pre>
+            <code class="language-jsx">
+&lt;div class="game-info">
+  &lt;div>{status}&lt;/div>
+  &lt;ol>{moves}&lt;/ol>
+&lt;/div></code>
+          </pre>
+          <p>With these in places, as a user makes moves, buttons for those moves will appear in side list. Try it out:</p>
+          <p data-height="400" data-theme-id="6688" data-slug-hash="a65c58b41e022f91ceacd0d5115f732f" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 9" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/a65c58b41e022f91ceacd0d5115f732f/">Composi Tic-Tac-Toe 9</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+          <p> </p>
+          <h2>Time Travel</h2>
+          <p>Now that we have the buttons for moves, we can add the ability to travel through the game history by tapping those buttons. For that we need to update the <code>jumpTo</code> method:</p>
+          <pre>
+            <code class="language-javascript">
+jumpTo(step) {
+  this.setState({
+    stepNumber: step,
+    xIsNext: (step % 2) === 0
+  })
+}</code>
+          </pre>
+          <p>We also need to update the <code>handleClick</code> method to set state with a new property, <code>stepNumber</code> and refactor how we get history from state:</p>
+          <pre>
+            <code class="language-javascript">
+handleClick(i) {
+  const history = this.state.history.slice(0, this.state.stepNumber + 1)
+  const current = history[history.length - 1]
+  const squares = current.squares.slice()
+  if (calculateWinner(squares) || squares[i]) {
+    return
+  }
+  squares[i] = this.state.xIsNext ? "X" : "O"
+  this.setState({
+    history: history.concat([{
+      squares: squares
+    }]),
+    stepNumber: history.length,
+    xIsNext: !this.state.xIsNext
+  })
+}</code>
+          </pre>
+          <p>We'll also need to udpate the render function to use the <code>stepNumber</code> for the current slice of history:</p>
+          <pre>
+            <code class="language-javascript">
+const current = history[this.state.stepNumber]</code>
+          </pre>
+          <p>With this we now have time travel:</p>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="e8bfb2a6ca519898da5d6567f3b19bcd" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 10" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/e8bfb2a6ca519898da5d6567f3b19bcd/">Composi Tic-Tac-Toe 10</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p> </p>
+          <h2>Summary</h2>
+          <p>This has been a long journey. Hopefully you were able to follow along. Examine all the Codepen examples carefully. We started off with a simple board and slowly added more functionality. As we advanced, we had to make sure that the Game component owned state and interaction and that data was immutable. The Board and the Square became dumb components. They do not know about state and they do not own the interactions that affect state. That's all owned by the Game parent, which passes these down to them. </p>
+          <p>Now about that immutability, if we had not implemented that, a change to one index of the history array would update all the others. In effect we would not have any history. If we were not aware about how arrays are copied by reference, we would have been banging our heads on the wall wondering what was going on.</p>
+          <p>And for a final treat, we've updated the game to show the winning moves on the board. For this we had to change what <code>calculateWinner</code> was returning. We want to return the winner and the lines. Then in the Board, we'll add a <code>won</code> class to the appropriate squares.</p>
+          <pre>
+            <code class="language-javascript">
+return {
+  who: squares[a],
+  line: lines[i]
+}
+            </code>
+          </pre>
+          <p>Since we're no longer returning the winner as a letter but as an object property <code>who</code>, we need to update how we render that in status:</p>
+          <pre>
+            <code class="language-javascript">
+status = "Winner: " + winner.who
+            </code>
+          </pre>
+          <p>And here it is complete:</p>
+          <p data-height="450" data-theme-id="6688" data-slug-hash="ee0a8377722a8ae74b12e8c3bf17ae71" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 11" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ee0a8377722a8ae74b12e8c3bf17ae71/">Composi Tic-Tac-Toe 11</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+          <p> </p>
+          <h2>ImmutableJS</h2>
+          <p>So, there is a framework called <a target='__blank' href="http://facebook.github.io/immutable-js/">ImmutableJS</a> that makes sure your data is always immutable. It was created and is maintained by Facebook. There is only one problem about using it with Composi. By default they use CommonJS format for the module. Unfortunately in its current state it can't be imported as an ES6 modules for use in a Composi project. There is a work around. You can down load the source code from Github and build it. Inside the resulting <code>dist</code> folder you will find: <code>immutable.es.js</code>. You can manually copy this to your Composi project and then import it like any other ES6 module. Yeah, it's annoying, but it does work. Currently they do not expose the ES6 version in the default install from NPM.</p>
+          <p>&nbsp;</p>
+        </div>
+        <aside>
+          <menu>
+            <ul class="tutorials__menu">
+              <li class="tutorials__menu__item">
+                <a href='./index.html'>Hello World</a>
+              </li>
+              <li class="tutorials__menu__item">
+                  <a href='./introducing-jsx.html'>Introducing JSX</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./rendering-elements.html'>Rendering Elements</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./components-n-props.html'>Components and Props</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./state-n-lifecycle.html'>State and Lifecycle</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./conditional-rendering.html'>Conditional Rendering</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./handling-events.html'>Handling Events</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./lists-n-keys.html'>Lists and Keys</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./forms.html'>Forms</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./lifting-state-up.html'>Lifting State Up</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./thinking-in-composi.html'>Thinking in Composi</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./jsx-in-depth.html'>JSX In Depth</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./advanced-state-management.html'>Advanced State Management</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./integrating-other-libs.html'>Integrating with Other Libraries</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./composi-without-jsx.html'>Composi Without JSX</a>
+              </li> 
+              <li class="tutorials__menu__item selected">
+                <a href='./immutable-data.html'>Immutable Data</a>
+              </li> 
+            </ul>
+          </menu>
+        </aside>
+      </section> 
+    </article>
+    <footer>
+      <section>
+        <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>Composi Logo</title>
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Composi-Logo-Solid" fill="rgba(255,255,255,0.5)">
+              <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></path>
+            </g>
+          </g>
+        </svg>
+        <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a> and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
+        </section>
+      </footer>
+    <script src="../js/prism.min.js"></script>
+    <script src="../js/prism-jsx.js"></script>
+</body>
+</html>
