@@ -59,6 +59,7 @@
                 <li>Component - {method} componentWillUpdate</li>
                 <li>Component - {method} componentDidUpdate</li>
                 <li>Component - {method} componentWillUnmount</li>
+                <li>Component - {property} componentShouldUpdate</li>
               </ul>
             </li>
           </ul>
@@ -399,6 +400,11 @@ title.unmount()</code>
             
             <h2>Component - componentWillUnmount</h2>
             <p>This fires when the </code>unmount</code> method is invoked on the component instance. Because this is asynchronous, it is highly probable that the component will be full unmounted and destroyed before this hook finishes executing.</p>
+
+
+            <h2>Component - componentShouldUpdate</h2>
+            <p>This property determines whether Composi should re-render a component when its state changes or its <code>update</code> method is invoked. By default it is set to true. Setting it to false will allow the component to render initially but ignore any other updates. As soon as the property is set back to true, the component will begin updating again.</p>
+            <p>This is useful for situations whether you need to pause the update of a component why you perform some complex operations.</p>
             
           
           <p>&nbsp;</p>
