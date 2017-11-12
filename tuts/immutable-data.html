@@ -407,9 +407,14 @@ const current = history[this.state.stepNumber]</code>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Summary</h2>
-          <p>This has been a long journey. Hopefully you were able to follow along. Examine all the Codepen examples carefully. We started off with a simple board and slowly added more functionality. As we advanced, we had to make sure that the Game component owned state and interaction and that data was immutable. The Board and the Square became dumb components. They do not know about state and they do not own the interactions that affect state. That's all owned by the Game parent, which passes these down to them. </p>
+          <p>This has been a long journey. Hopefully you were able to follow along. Examine all the Codepen examples carefully. We started off with a simple board and slowly added more functionality. As we advanced, we had to make sure that the Game component owned state and interaction and that data was immutable. The Board and the Square became dumb components. They do not know about state and they do not own the interactions that affect state. That's all owned by the Game parent, which passes these down to them.</p>
+
           <p>Now about that immutability, if we had not implemented that, a change to one index of the history array would update all the others. In effect we would not have any history. If we were not aware about how arrays are copied by reference, we would have been banging our heads on the wall wondering what was going on.</p>
-          <p>And for a final treat, we've updated the game to show the winning moves on the board. For this we had to change what <code>calculateWinner</code> was returning. We want to return the winner and the lines. Then in the Board, we'll add a <code>won</code> class to the appropriate squares.</p>
+
+          <p>Using the techniques we used in this game, you can also implement time travel for other situations where it would be appropriate. This is especially useful if you need to enable the user to undo an action or two. For this game, there are only 9 possible steps for travel. If you intend on using time travel, limit it to the bare minimum. Otherwise, excessive use will eat up valuable memory, especially for mobile users.</p>
+
+          <h2>Show the Winning Moves</h2>
+          <p>For a final treat, we've updated the game to show the winning moves on the board. For this we had to change what <code>calculateWinner</code> was returning. We want to return the winner and the lines. Then in the Board, we'll add a <code>won</code> class to the appropriate squares.</p>
           <pre>
             <code class="language-javascript">
 return {
