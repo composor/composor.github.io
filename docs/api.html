@@ -406,6 +406,34 @@ title.unmount()</code>
             <p>This property determines whether Composi should re-render a component when its state changes or its <code>update</code> method is invoked. By default it is set to true. Setting it to false will allow the component to render initially but ignore any other updates. As soon as the property is set back to true, the component will begin updating again.</p>
             <p>This is useful for situations whether you need to pause the update of a component why you perform some complex operations.</p>
             
+          <pre>
+            <code class="language-javascript">
+class Hello extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'header',
+    this.state = 'World'
+    this.componentShouldUpdate = false
+  }
+  render: (data) => {
+    return (
+      &lt;h1>Hello, {data ? `: ${data}`: ''}!&lt;/h1>
+    )
+  }
+}
+// Create instance of Hello:
+const hello = new Hello()
+
+// Some time later update the component's state:
+hello.setState('Joe')
+// Because componentShouldUpdate is false, the component will not update.
+
+// Some time later set componentShouldUpdate to true:
+hello.componentShouldUpdate = true
+hello.setState('Joe')
+// Now the component updates.
+</code>
+          </pre>
           
           <p>&nbsp;</p>
       </div>
