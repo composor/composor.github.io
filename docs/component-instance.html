@@ -196,7 +196,36 @@ const person = new Component({
 
           <p>To learn more about lifecycle events, consult their <a href="./lifecycle-methods.html" target='__blank'>docs</a>.</p>
 
+          
+          <h2>componentShouldUpdate</h2>
+          <p>Sometimes you need to do some complex operations on data and you don't want the component to update constantly due to changes. Or you want to render a component with some external DOM plugin, possibly jQuery. For these situations you can use the <code>comonentShouldUpdate</code> property. By default it is set to true. Setting it to false causes a component to render only once. Even though the <code>update</code> function is invoked on it, or its state changes, it will not update.</p>
+          <p>You can make the component react to updates again by setting this property back to true on the component instance.</p>
+          <p>Because <code>componentShouldUpdate</code> is a truthy property, you can't set it to false inside the component initializer. Instead you'll need to set it on the instance itself:</p>
 
+          <pre>
+            <code class="language-javascript">
+const hello = new Component({
+  container: 'header',
+  state: 'World',
+  render: (data) => {
+    return (
+      &lt;h1>Hello, {data ? `: ${data}`: ''}!&lt;/h1>
+    )
+  }
+})
+hello.componentShouldUpdate = false
+hello.update()
+
+// Some time later update the component's state:
+hello.setState('Joe')
+// Because componentShouldUpdate is false, the component will not update.
+
+// Some time later set componentShouldUpdate to true:
+hello.componentShouldUpdate = true
+hello.setState('Joe')
+// Now the component updates.
+</code>
+          </pre>
           <p>&nbsp;</p>
           
           

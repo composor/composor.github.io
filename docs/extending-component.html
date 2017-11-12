@@ -54,6 +54,40 @@
           <p data-height="600" data-theme-id="6688" data-slug-hash="KywpKR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi extending component-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/KywpKR/">Composi extending component-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
+          <p> </p>
+          <h2>componentShouldUpdate</h2>
+          <p>Sometimes you need to do some complex operations on data and you don't want the component to update constantly due to changes. Or you want to render a component with some external DOM plugin, possibly jQuery. For these situations you can use the <code>comonentShouldUpdate</code> property inside the class constructor. By default it is set to true. Setting it to false causes a component to render only once. Even though the <code>update</code> function is invoked on it, or its state changes, it will not update.</p>
+          <p>You can make the component react to updates again by setting this property back to true on the component instance.</p>
+
+          <pre>
+            <code class="language-javascript">
+class Hello extends Component {
+  constructor(props) {
+    super(props)
+    this.container = 'header',
+    this.state = 'World'
+    this.componentShouldUpdate = false
+  }
+  render: (data) => {
+    return (
+      &lt;h1>Hello, {data ? `: ${data}`: ''}!&lt;/h1>
+    )
+  }
+}
+// Create instance of Hello:
+const hello = new Hello()
+
+// Some time later update the component's state:
+hello.setState('Joe')
+// Because componentShouldUpdate is false, the component will not update.
+
+// Some time later set componentShouldUpdate to true:
+hello.componentShouldUpdate = true
+hello.setState('Joe')
+// Now the component updates.
+</code>
+          </pre>
+
 
           <p>&nbsp;</p>
           
