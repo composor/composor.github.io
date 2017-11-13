@@ -43,23 +43,24 @@
           <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small. Composi exposes the two functions (h and render) and one class (Component) with  four properties and nine methods:</p>
 
           <ul>
-            <li>h {function}</li>
-            <li>render {function}</li>
-            <li>Component {class}
+            <li><a href="#h">h</a> {function}</li>
+            <li><a href="#render">render</a> {function}</li>
+            <li><a href="#Component">Component</a> {class}
               <ul>
-                <li>Component - {property} container</li>
-                <li>Component - {method} render</li>
-                <li>Component - {method} update</li>
-                <li>Component - {property} state</li>
-                <li>Component - {method} setState</li>
-                <li>Component - {method} unmount</li>
-                <li>Component - {property} element</li>
-                <li>Component - {method} beforeCreateComponent</li>
-                <li>Component - {method} componentWasCreated</li>
-                <li>Component - {method} componentWillUpdate</li>
-                <li>Component - {method} componentDidUpdate</li>
-                <li>Component - {method} componentWillUnmount</li>
-                <li>Component - {property} componentShouldUpdate</li>
+                <li>Component - {property} <a href="#container">container</a></li>
+                <li>Component - {method} <a href="#render2">render</a></li>
+                <li>Component - {method} <a href="#update">update</a></li>
+                <li>Component - {property} <a href="#state">state</a></li>
+                <li>Component - {method} <a href="#setState">setState</a></li>
+                <li>Component - {method} <a href="#unmount">unmount</a></li>
+                <li>Component - {property} <a href="#element">element</a></li>
+                <a name='h'></a>
+                <li>Component - {method} <a href="#beforeCreateComponent">beforeCreateComponent</a></li>
+                <li>Component - {method} <a href="#componentWasCreated">componentWasCreated</a></li>
+                <li>Component - {method} <a href="#componentWillUpdate">componentWillUpdate</a></li>
+                <li>Component - {method} <a href="#componentDidUpdate">componentDidUpdate</a></li>
+                <li>Component - {method} <a href="#componentWillUnmount">componentWillUnmount</a></li>
+                <li>Component - {property} <a href="#componentShouldUpdate">componentShouldUpdate</a></li>
               </ul>
             </li>
           </ul>
@@ -129,7 +130,7 @@ const list = h(
       'Orange'
     )
   ]
-)</code>
+)</code><a name='render'></a>
             </pre>
             <p>Of course, you would not be putting those comments in your code. That was just to make it clear how the <code>h</code> call signature works.</p>
 
@@ -176,7 +177,7 @@ function FruitList(fruits) {
 // Create the virtual node:
 const fruitList = FruitList(fruits)
 render(fruitList, 'section')</code>
-            </pre>
+            </pre><a name='Component'></a>
             <p> </p>
             <h2>Component</h2>
             <p>The component class is the main part of Composi that you will be using. This class provides a number of properties and methods for you to use. There are two ways to use this class:</p>
@@ -257,9 +258,10 @@ class List extends Component {
 }
 const list = new List({
   container: 'section'
-})</code>
+})</code><a name='container'></a>
             </pre>
-            <p> </p>
+            
+            <p>&nbsp;</p>
             
             <h2>Component - container</h2>
             <p>This is a property on the component that is the base element of the component. Many components can share the same container, for example, you might have them rendered directly in the body tag. This means that the contain is not the component. When you access the component from its <code>element</code> property, you are one level down from the container.</p>
@@ -268,7 +270,7 @@ const list = new List({
               <code class="language-javascript">
 const list = new List({
   container: 'section'
-})</code>
+})</code><a name='render2'></a>
             </pre>
             <p> </p>
 
@@ -286,7 +288,7 @@ class List extends Component {
       &lt;/ul>
     )
   }
-}</code>
+}</code><a name='update'></a>
             </pre>
             <p> </p>
             <h2>Component - update</h2>
@@ -305,7 +307,7 @@ const title = new Title({
 })
 
 // Update the component:
-title.update('Harry Potter')</code>
+title.update('Harry Potter')</code><a name='state'></a>
             </pre>
             
             <p> </p>
@@ -340,7 +342,7 @@ class Title extends Component {
 const title = new Title({
   container: 'header',
   state: 'Harry Potter'
-})</code>
+})</code><a name='setState'></a>
             </pre>
             
             <p> </p>
@@ -360,7 +362,7 @@ const title = new Title({
   container: 'header'
 })
 // Set the state with setState:
-title.setState('Harry Potter')</code>
+title.setState('Harry Potter')</code><a name='unmount'></a>
             </pre>
             
             <p> </p>
@@ -375,7 +377,7 @@ const title = new Title({
   state: 'Harry Potter'
 })
 // Sometime later destory the component:
-title.unmount()</code>
+title.unmount()</code><a name='element'></a>
             </pre>
             
             <p> </p>
@@ -384,20 +386,25 @@ title.unmount()</code>
             
             <p> </p>
             <h2>Lifecycle Hooks</h2>
-            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.</p>
+            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.<a name='beforeCreateComponent'></a></p>
             
+            <a name='componentWasCreated'></a>
             <h2>Component - beforeCreateComponent</h2>
             <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing.</p>
             
+            <a name='componentWillUpdate'></a>
             <h2>Component - componentWasCreated</h2>
             <p>This fires right after the component has been injected into the DOM. You can use this to set up events for the component or start a interval loop for some purpose.</p>
             
+            <a name='componentDidUpdate'></a>
             <h2>Component - componentWillUpdate</h2>
             <p>This fires right before the component is updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
             
+            <a name='componentWillUnmount'></a>
             <h2>Component - componentDidUpdate</h2>
             <p>This fires right after the component was updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
             
+            <a name='componentShouldUpdate'></a>
             <h2>Component - componentWillUnmount</h2>
             <p>This fires when the </code>unmount</code> method is invoked on the component instance. Because this is asynchronous, it is highly probable that the component will be full unmounted and destroyed before this hook finishes executing.</p>
 
