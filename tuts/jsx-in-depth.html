@@ -114,29 +114,20 @@ function DialogMessage() {
   )
 }</code>
           </pre>
-          <p>Now, the question is, how can we get the child component into the dialog box? As you saw above, we passed the color to the dialog box as a prop. We can do the same with our child component. Since <code>FancyBorder</code> is already set up to receive props, we just need to provide one for the child component. We'll call that prop <code>children</code>:</p>
+          <p>Now, the question is, how can we get the child component into the dialog box? As you saw above, we passed the color to the dialog box as a prop. We can do the same with our child component. We'll make a slight modification to FancyBorder so that it can received arbitrary child nodes. We'll do that by passing a second parameter to the function, which we'll call <code>children</code>:</p>
 
           <pre>
             <code class="language-javascript">
-function FancyBorder(props) {
+function FancyBorder(props, children) {
   console.log(props)
   return (
     &lt;div class={'FancyBorder FancyBorder-' + props.color}>
-      {props.children}
+      {children}
     &lt;/div>
   )
 }</code>
           </pre>
           <p>With the <code>FancyBorder</code> component set to capture a <code>children</code> prop, we can pass in our <code>DialogMessage</code> component when we render <code>FancyBorder</code>:</p>
-          <pre>
-            <code class="language-javascript">
-// Pass DialogMessage as a children prop:
-render(
-  &lt;FancyBorder color="maroon" children={DialogMessage()}>&lt;/FancyBorder>,
-  'body'
-)</code>
-          </pre>
-          <p>This now produces the effect we want:</p>
           <p data-height="300" data-theme-id="6688" data-slug-hash="oGpwVd" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composition" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oGpwVd/">Composition</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           
