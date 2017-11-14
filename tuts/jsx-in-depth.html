@@ -137,11 +137,11 @@ function FancyBorder(props, children) {
           <p>We can use this same technique with class components. We are going to show how to use composition of JSX functional components to create a class component. We are going to start with the same <code>FancyBorder</code> component we made earlier:</p>
           <pre>
             <code class="language-javascript">
-function FancyBorder(props) {
+function FancyBorder(props, children) {
   console.log(props)
   return (
     &lt;div class={'FancyBorder FancyBorder-' + props.color}>
-      {props.children}
+      {children}
     &lt;/div>
   )
 }</code>
@@ -166,7 +166,10 @@ class SignUpDialog extends Component {
 
   render(props) {
     return (
-      &lt;FancyBorder color='maroon' children={dialogChildren(props, this)} />
+        return (
+      <FancyBorder color='maroon'>
+       <DialogChildren {...{title: props.title, message: props.message, component: this}}/>
+      </FancyBorder>
     );
   }
 }</code>
