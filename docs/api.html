@@ -54,13 +54,13 @@
                 <li>Component - {method} <a href="#setState">setState</a></li>
                 <li>Component - {method} <a href="#unmount">unmount</a></li>
                 <li>Component - {property} <a href="#element">element</a></li>
+                <li>Component - {property} <a href="#componentShouldUpdate">componentShouldUpdate</a></li>
                 <a name='h'></a>
                 <li>Component - {method} <a href="#beforeCreateComponent">beforeCreateComponent</a></li>
                 <li>Component - {method} <a href="#componentWasCreated">componentWasCreated</a></li>
                 <li>Component - {method} <a href="#componentWillUpdate">componentWillUpdate</a></li>
                 <li>Component - {method} <a href="#componentDidUpdate">componentDidUpdate</a></li>
                 <li>Component - {method} <a href="#componentWillUnmount">componentWillUnmount</a></li>
-                <li>Component - {property} <a href="#componentShouldUpdate">componentShouldUpdate</a></li>
               </ul>
             </li>
           </ul>
@@ -382,32 +382,7 @@ title.unmount()</code><a name='element'></a>
             
             <p> </p>
             <h2>Component - element</h2>
-            <p>Sometimes you need an easy way to reach child elements in a compnent, either to get a form input value or to register and event. You can do this through the component's <code>element</code> property. <code>element</code> is the base or topmost element of your component's markup. This is not the same as a component's container, which is the element into which a component gets rendered. Many components can exist inside the same container, such as the body tag. </p>
-            
-            <p> </p>
-            <h2>Lifecycle Hooks</h2>
-            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.<a name='beforeCreateComponent'></a></p>
-            
-            <a name='componentWasCreated'></a>
-            <h2>Component - beforeCreateComponent</h2>
-            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing.</p>
-            
-            <a name='componentWillUpdate'></a>
-            <h2>Component - componentWasCreated</h2>
-            <p>This fires right after the component has been injected into the DOM. You can use this to set up events for the component or start a interval loop for some purpose.</p>
-            
-            <a name='componentDidUpdate'></a>
-            <h2>Component - componentWillUpdate</h2>
-            <p>This fires right before the component is updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
-            
-            <a name='componentWillUnmount'></a>
-            <h2>Component - componentDidUpdate</h2>
-            <p>This fires right after the component was updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
-            
-            <a name='componentShouldUpdate'></a>
-            <h2>Component - componentWillUnmount</h2>
-            <p>This fires when the </code>unmount</code> method is invoked on the component instance. Because this is asynchronous, it is highly probable that the component will be full unmounted and destroyed before this hook finishes executing.</p>
-
+            <p><a name='componentShouldUpdate'></a>sSometimes you need an easy way to reach child elements in a compnent, either to get a form input value or to register and event. You can do this through the component's <code>element</code> property. <code>element</code> is the base or topmost element of your component's markup. This is not the same as a component's container, which is the element into which a component gets rendered. Many components can exist inside the same container, such as the body tag.</p>
 
             <h2>Component - componentShouldUpdate</h2>
             <p>This property determines whether Composi should re-render a component when its state changes or its <code>update</code> method is invoked. By default it is set to true. Setting it to false will allow the component to render initially but ignore any other updates. As soon as the property is set back to true, the component will begin updating again.</p>
@@ -441,6 +416,29 @@ hello.setState('Joe')
 // Now the component updates.
 </code>
           </pre>
+            
+            <p> </p>
+            <h2>Lifecycle Hooks</h2>
+            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.<a name='beforeCreateComponent'></a></p>
+            
+            <a name='componentWasCreated'></a>
+            <h2>Component - beforeCreateComponent</h2>
+            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing.</p>
+            
+            <a name='componentWillUpdate'></a>
+            <h2>Component - componentWasCreated</h2>
+            <p>This fires right after the component has been injected into the DOM. You can use this to set up events for the component or start a interval loop for some purpose.</p>
+            
+            <a name='componentDidUpdate'></a>
+            <h2>Component - componentWillUpdate</h2>
+            <p>This fires right before the component is updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
+            
+            <a name='componentWillUnmount'></a>
+            <h2>Component - componentDidUpdate</h2>
+            <p>This fires right after the component was updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
+            
+            <h2>Component - componentWillUnmount</h2>
+            <p>This fires when the </code>unmount</code> method is invoked on the component instance. Because this is asynchronous, it is highly probable that the component will be full unmounted and destroyed before this hook finishes executing.</p>
           
           <p>&nbsp;</p>
       </div>
