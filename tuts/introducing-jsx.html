@@ -72,14 +72,14 @@ function Title() {
 
             <pre>
               <code class="language-javascript">
-const element = &lt;div title="This is a DIV!" tabIndex="0">&lt;/div>;</code>
+const element = &lt;div title="This is a DIV!" tabIndex="0">&lt;/div></code>
             </pre>
             <p>You can also embed a JavaScript expression between curly braces to create a value for an attribute. When you do so, remember not to use quotes around the JavaScript expression. Otherwise, the expression will get converted to a string and used as the attribute's value:</p>
 
             <pre>
               <code class="language-javascript">
 // Use a JavaScript expression for the image src value:
-const element = &lt;img src={user.avatarUrl} />;</code>
+const element = &lt;img src={user.avatarUrl} /></code>
             </pre>
             <p>Unlike React, Preact and Inferno, which require attribute names to use camel case, with Composi you can use their normal HTML versions. In the following example, notice that all the attributes in the JSX resemble normal HTML attributes:</p>
 
