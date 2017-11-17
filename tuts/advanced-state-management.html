@@ -61,7 +61,7 @@ function count(state=0, action) {
       return state + 1
     case 'DECREMENT':
       if (state < 1) return 0
-      return state - 1;
+      return state - 1
     default:
       return state
   }
@@ -71,8 +71,8 @@ function count(state=0, action) {
 const increment = () => {
   return {
     type: 'INCREMENT'
-  };
-};
+  }
+}
 
 const decrement = () => {
   return {

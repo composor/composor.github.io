@@ -48,11 +48,11 @@
           <pre>
             <code class="language-javascript">
 function UserGreeting(props) {
-  return &lt;h1>Welcome back!&lt;/h1>;
+  return &lt;h1>Welcome back!&lt;/h1>
 }
 
 function GuestGreeting(props) {
-  return &lt;h1>Please sign in.&lt;/h1>;
+  return &lt;h1>Please sign in.&lt;/h1>
 }</code>
           </pre>
           <p>Now lets create a component that returns these two sub-components and based on the loggedon condition, returns one or the other. Try opening the Codepen and changing the value of <code>isLoggedIn</code> to false.</p>
@@ -103,12 +103,12 @@ function GuestGreeting(props) {
           <pre>
             <code class="language-javascript">
 render() {
-  const isLoggedIn = this.state.isLoggedIn;
+  const isLoggedIn = this.state.isLoggedIn
   return (
     &lt;div>
       The user is &lt;b>{isLoggedIn ? 'currently' : 'not'}&lt;/b> logged in.
     &lt;/div>
-  );
+  )
 }</code>
           </pre>
           <p>As you can see, using the ternary operator makes the test clean and easy to reason about.</p>
@@ -117,12 +117,12 @@ render() {
           <pre>
             <code class="language-javascript">
 render() {
-  const isLoggedIn = this.state.isLoggedIn;
+  const isLoggedIn = this.state.isLoggedIn
 
   if (isLoggedIn) {
-    button = &lt;LogoutButton />;
+    button = &lt;LogoutButton />
   } else {
-    button = &lt;LoginButton />;
+    button = &lt;LoginButton />
   }
 
   return (
@@ -130,7 +130,7 @@ render() {
       &lt;Greeting isLoggedIn={isLoggedIn} />
       {button}
     &lt;/div>
-  );
+  )
 }</code>
           </pre>
           <p>Using the ternary operator, we can simplify the logic to this:</p>

@@ -80,7 +80,7 @@ function Avatar(props) {
       src={props.user.avatarUrl}
       alt={props.user.name}
     />
-  );
+  )
 }</code>
           </pre>
           <p>When breaking a component down, consider renaming the props to what makes sense at the component level. Since the above component knows nothing of the author, we changed its prop to user. With the above sub-component, we can simplify our main component a bit:</p>
@@ -93,7 +93,7 @@ function Avatar(props) {
       src={props.user.avatarUrl}
       alt={props.user.name}
     />
-  );
+  )
 }
 
 function Comment(props) {
@@ -127,7 +127,7 @@ function UserInfo(props) {
         {props.user.name}
       &lt;/div>
     &lt;/div>
-  );
+  )
 }</code>
           </pre>
           <p>With this change, we can simplify the component setup ever more:</p>
@@ -140,7 +140,7 @@ function Avatar(props) {
       src={props.user.avatarUrl}
       alt={props.user.name}
     />
-  );
+  )
 }
 
 function UserInfo(props) {
@@ -151,7 +151,7 @@ function UserInfo(props) {
         {props.user.name}
       &lt;/div>
     &lt;/div>
-  );
+  )
 }
 
 function Comment(props) {
@@ -165,7 +165,7 @@ function Comment(props) {
         {formatDate(props.date)}
       &lt;/div>
     &lt;/div>
-  );
+  )
 }</code>
 </pre>
 
@@ -181,7 +181,7 @@ function Comment(props) {
           <pre>
             <code class="language-javascript">
 function sum(a, b) {
-  return a + b;
+  return a + b
 }</code>
           </pre>
           <p>Given the same data, this function will always return the same result. This is a pure function because it does not change what its inputs are. In contrast, the following function is impure because it changes its inputs:</p>
@@ -189,7 +189,7 @@ function sum(a, b) {
           <pre>
             <code class="language-javascript">
 function withdraw(account, amount) {
-  account.total -= amount;
+  account.total -= amount
 }</code>
           </pre>
           <p>You should strive to make components act like pure functions with respect to their props. Of course, UI applications are dynamic and have user interactions. To handle these you can create stateful components. State allows components to change their output over time or due to user interaction without violating the pinciple of purity.</p>
