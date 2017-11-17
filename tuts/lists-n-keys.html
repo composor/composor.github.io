@@ -98,7 +98,7 @@ class List extends Component {
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="vWEedg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - list-keys-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/vWEedg/">Composi Tuts - list-keys-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>When you give list items a key property, this does not get rendered to the DOM. It only gets create on the virtual dom elements. The diff and patch algorythm can use those key values to determine what changed in the list and update it efficiently.</p>
+          <p>When you give list items a key property, this does not get rendered to the DOM. It only gets create on the virtual dom elements. The diff and patch algorithm can use those key values to determine what changed in the list and update it efficiently.</p>
 
           <h2>Bad Practices</h2>
           <p>As we already mentioned, it is a bad practice to use the array indeces as keys. These are useless when trying to determine a list whose item order has changed. Another bad practice is creating a key value directly on the list item. In our case, we could use our <code>uid</code> function on each list item:</p>
@@ -114,7 +114,7 @@ return (
   &lt;/ul>
 )</code>
           </pre>
-          <p>The problem with the above approach is each time the <code>render</code> function gets called, new key values get produced. This means the new virtual dom for the list will not match the previous version. This will for the patch algorythm to completely re-render the list. Very wasteful. It is simple better to have the key values exist on the data.</p>
+          <p>The problem with the above approach is, each time the <code>render</code> function gets called, new key values get produced. This means the new virtual dom for the list will not match the previous version. This will cause the patch algorithm to completely re-render the list. Very wasteful. It is simple better to have the key values exist on the data.</p>
 
 
           <p>&nbsp;</p>
