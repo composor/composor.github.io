@@ -469,7 +469,7 @@ article > section {
   display: inline-block;
   position: relative;
 }
-.nav--menu__item.selected::after {
+.nav--menu__item + .nav--menu__item.selected::after {
   content: "";
   display: block;
   border-bottom: solid 4px #fff;
@@ -478,7 +478,7 @@ article > section {
   left: 0;
   bottom: -8px;
 }
-.nav--menu__item.selected:last-of-type::after {
+.nav--menu__item + .nav--menu__item + .nav--menu__item.selected::after {
   width: 80%;
 }
 .nav--menu__item__link {
