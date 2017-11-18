@@ -487,15 +487,21 @@ article > section {
   font-size: 1.8rem;
   transition: all .25s ease-out;
 }
+.external svg {
+  margin: 0 0 -1px 5px;
+}
 .logo__link--text {
   display: inline-block;
   margin-left: 5px;
 }
+
 .nav--menu__item.selected:hover::after,
-.nav--menu__item__link:hover {
+.nav--menu__item__link:hover,
+.nav--menu__item__link:hover path {
   color: rgb(21, 159, 255);
   border-color: rgb(21, 159, 255);
   text-decoration: none;
+  fill: rgb(21, 159, 255);
 }
 
 .main__example--column {
