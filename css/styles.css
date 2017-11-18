@@ -488,6 +488,7 @@ article > section {
   transition: all .25s ease-out;
 }
 .external svg {
+  display: inline-block;
   margin: 0 0 -1px 5px;
 }
 .logo__link--text {
@@ -497,11 +498,11 @@ article > section {
 
 .nav--menu__item.selected:hover::after,
 .nav--menu__item__link:hover,
-.nav--menu__item__link:hover path {
+.nav--menu__item__link:hover svg path {
   color: rgb(21, 159, 255);
   border-color: rgb(21, 159, 255);
   text-decoration: none;
-  fill: rgb(21, 159, 255);
+  fill: rgb(21, 159, 255) !important;
 }
 
 .main__example--column {
