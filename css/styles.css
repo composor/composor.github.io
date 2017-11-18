@@ -489,7 +489,7 @@ article > section {
 }
 .external svg {
   display: inline-block;
-  margin: 0 0 -1px 5px;
+  margin: 0 0 -1px 1px;
 }
 .logo__link--text {
   display: inline-block;
