@@ -79,7 +79,7 @@ function BoilingVerdict(props) {
 
           <h2>A Second Temperature Input</h2>
           <p>Now we want to add a second input for Fahrenheit. And we want them both synched, so that a change in the value of one will update the value of the other. In our previous component we had it own state. Now that we are going to have two components this gets complicated. We would wind up with race conditions over whose state wins out when changes are made. To resolve this we make both of them stateless and move the state up to their parent component.</p>
-          <p>In order for the two inputs to show the correct values, we'll start off by creating a funcional component to create them. This is very basic, both will receiver their data as props:</p>
+          <p>In order for the two inputs to show the correct values, we'll use a funcional component to create them. This is very basic, both will receiver their data as props:</p>
 
           <pre>
             <code class="language-javascript">
