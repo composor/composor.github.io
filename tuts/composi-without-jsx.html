@@ -95,6 +95,82 @@
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>If you prefer functional over classes, you will probably likeusing the <code>h</code> funtion.</p>
 
+          <h2>h-html</h2>
+          <p>Typing out tags with the <code>h</code> function can get verbose. We have created a hyperscript compatible NPM module called <code>h-html</code>. What this does is provide a more compact function named after each tag you want to create. You therefore only need to provide props and children.</p>
+
+          <h3>Installing:</h3>
+          <p> </p>
+          <pre>
+            <code class="language-bash">
+npm i -D h-html</code>
+          </pre>
+
+          <p>After installing, you can import it into your project. There are two ways you can do so, importing indidual tags, or importing them all on a alias.</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, render} from 'composi'
+import {nav, h1} from 'h-html'
+
+// Define tags:
+function title(message) {
+  return nav(
+    {}, 
+    h1(
+      {}, 
+      'Hello, ${message}!'
+    )
+  )
+}
+// Render tags:
+render(title('World'), 'header')</code>
+          </pre>
+
+          <p>And here's a Codepen example:</p>
+          <p data-height="400" data-theme-id="6688" data-slug-hash="xPJmoz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi with h-html-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xPJmoz/">Composi with h-html-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+          <p>Here's an example importing all tags as an alias:</p>
+
+          <pre>
+            <code class="language-javascript">
+import {h, render} from 'composi'
+import * as t from 'h-html'
+
+// Define tags:
+function title(message) {
+  return t.nav(
+    {}, 
+    t.h1(
+      {}, 
+      'Hello, ${message}!'
+    )
+  )
+}
+// Render tags:
+render(title('World'), 'header')
+
+// Define list:
+function list(data) {
+  // Define list Item:
+  function listItems(data) {
+    return data.map(item => t.li({}, `Item ${item}`))
+  }
+  return t.ul(
+    {class: 'list'},
+    listItems(data)
+  )
+}
+// Render list:
+render(list(['One', 'Two', 'Three']), 'section')</code>
+          </pre>
+          <p>It's totally up to you which way you want to import <code>h-html</code>. However, if you know you are going to use a lot of tags, it makes sense to import them on an alias.</p>
+
+          <p>And here's a Codepen example of tags being aliased:</p>
+          <p data-height="400" data-theme-id="6688" data-slug-hash="NwBoGr" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi with h-html-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/NwBoGr/">Composi with h-html-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p> </p>
+
           <h2>Hyperx-es6</h2>
           <p>Another alternative to JSX is <a target='__blank' href='https://www.npmjs.com/package/hyperx'>Hyperx</a>. The original version is in CommonJS format and cannot be easily imported into a Composi project. Therefore we've create a clone called <a href="https://www.npmjs.com/package/hyperx-es6">Hyperx-es6</a>. The only difference is that Hyperx-es6 gets exported as an ES6 module. This means you can use normal ES6 module import syntax and Rollup and bundle it properly. Hyperx-es6 allows you to ES6 template literal instead of JSX. The results are the same. The biggest difference in use will be in the text editor. JSX with get proper syntax highlighting, whereas Hyperx-es6 template literals will be treated as strings.</p>
 
