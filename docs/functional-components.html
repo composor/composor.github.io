@@ -282,9 +282,15 @@ export const events = {
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>And that's it. With that we now have an interactive functional component that updates in real time with a virtual dom.</p>
 
+          <h2>Inline Events</h2>
+          <p>We could also create a functional component with inline events. We're going to take our interactive list from above and take it to the next level. We'll let the user also delete items. We'll considate all the sub-components into one. We'll also add in private event handlers for the inline events. We've bundled this all up as a Codepen example:</p>
+          <p data-height="400" data-theme-id="6688" data-slug-hash="LOJmam" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Functional Inline Events" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/LOJmam/">Composi Functional Inline Events</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+          <p> </p>
+
           <h2>Component Class Advantages</h2>
 
-          <p>Although you can build a complex app using nothing but functional components, there are certain conveniences when using the Component class. First and foremost is the fact that classes allow you to encapsulate functionality using properties and methods defined directly on the component. The second is the component itself enables more efficient use of the virtual dom because it keeps track of that internally.</p>
+          <p>Although you can build a complex app using nothing but functional components, there are certain conveniences when using the Component class. First and foremost is the fact that classes allow you to encapsulate functionality using properties and methods defined directly on the component. The second is the component itself enables more efficient use of the virtual dom because it keeps track of that internally. Because of this, you can have multiple class components in the same container. With functional components, because the virtual dom is created and handle by the <code>render</code> function, there can only be one functional component in each container.</p>
           <p>&nbsp;</p>
           
       </div>
