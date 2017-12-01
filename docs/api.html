@@ -76,8 +76,8 @@
                 <li>Component - (<code>property</code>) <a href="#element">element</a></li>
                 <li>Component - (<code>property</code>) <a href="#componentShouldUpdate">componentShouldUpdate</a></li>
                 <a name='h'></a>
-                <li>Component - (<code>method</code>) <a href="#beforeCreateComponent">beforeCreateComponent</a></li>
-                <li>Component - (<code>method</code>) <a href="#componentWasCreated">componentWasCreated</a></li>
+                <li>Component - (<code>method</code>) <a href="#beforeCreateComponent">beforeCreateComponent</a> (You can also use: <code>componentWillMount</code></li>
+                <li>Component - (<code>method</code>) <a href="#componentWasCreated">componentWasCreated</a> (You can also use: <code>componentDidMount</code></li>
                 <li>Component - (<code>method</code>) <a href="#componentWillUpdate">componentWillUpdate</a></li>
                 <li>Component - (<code>method</code>) <a href="#componentDidUpdate">componentDidUpdate</a></li>
                 <li>Component - (<code>method</code>) <a href="#componentWillUnmount">componentWillUnmount</a></li>
@@ -387,7 +387,26 @@ title.setState('Harry Potter')</code><a name='unmount'></a>
             
             <p> </p>
             <h2>Component - unmount</h2>
-            <p>If you want to destroy a comonent, removing it from the DOM, you will use this method. It gets executed on the component instance. <code>unmount</code> deletes the component base element from the DOM and nulls out all its properties on its instance for garbage collection. However, it does not keep track of any registered events on the component's elements. If the component has events, it is your responsibility to unbind them before unmounting to prevent memory leaks.</p>
+            <p>If you want to destroy a comonent, removing it from the DOM, you will use this method. It gets executed on the component instance. <code>unmount</code> deletes the component base element from the DOM and nulls out all its properties on its instance for garbage collection. As of version 1.2.0, when Composi unmounts a component, it will attempt to unbind a white list of events, passing the component reference to it. This will unbind the events if you used the <code>handleEvent</code> interface. If you used callbacks for events, then you will need to unbind them by passing a refernce to the callback to prevent memory leaks. For earlier versions of Composi it is your responsibility to unbind any events before unmounting to prevent memory leaks.</p>
+            <p>Here is the white list of events that get removed automatically:</p>
+            <ul>
+              <li>click</li>
+              <li>dblclick</li>
+              <li>mousedown</li>
+              <li>mouseup</li>
+              <li>mouseover</li>
+              <li>mouseout</li>
+              <li>mouseover</li>
+              <li>mouseleave</li>
+              <li>select</li>
+              <li>input</li>
+              <li>change</li>
+              <li>keydown</li>
+              <li>keypress</li>
+              <li>keyup</li>
+              <li>submit</li>
+            </ul>
+            <p>If you've used other events not in this list, you will need to manually unbind them before unmounting a component.</p>
 
             <pre>
               <code class="language-javascript">
@@ -439,11 +458,11 @@ hello.setState('Joe')
             
             <p> </p>
             <h2>Lifecycle Hooks</h2>
-            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.<a name='beforeCreateComponent'></a></p>
+            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.<a name='beforeCreateComponent'></a> As of version 1.2.0, you can also use the React name for this hook: <code>componentWillMount</code>.</p>
             
             <a name='componentWasCreated'></a>
             <h2>Component - beforeCreateComponent</h2>
-            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing.</p>
+            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing. As of version 1.2.0, you can also use the React name for this hook: <code>componentDidMount</code>.</p>
             
             <a name='componentWillUpdate'></a>
             <h2>Component - componentWasCreated</h2>

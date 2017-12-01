@@ -63,12 +63,14 @@
           <p class="docs__intro">Composi has the following five lifecycle methods:</p>
 
           <ol>
-            <li>beforeCreateComponent</li>
-            <li>componentWasCreated</li>
+            <li>beforeCreateComponent *</li>
+            <li>componentWasCreated *</li>
             <li>componentWillUpdate</li>
             <li>componentDidUpdate</li>
             <li>componentWillUnmount</li>
           </ol>
+
+          <p>* As of version 1.2.0, Composi allows using the React names for these: <code>componentWillMount</code> for <code>beforeCreateComponent</code> and <code>componentDidMount</code> for <code>componentWasCreated</code>. These get aliased to the Composi equivalents.</p>
 
           <p>Lifecycle methods are hooks that let you implement maintenance, register or remove events, and clean up code based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
 
