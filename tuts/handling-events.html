@@ -136,7 +136,8 @@ announce() {
             <li>No memory leaks caused by callback closure.</li>
             <li>One centralized place to handle all of the component's events</li>
             <li>Easy to remove or modify events.</li>
-            <li>No binding issues with "this". The scope will be the class.</li>
+            <li>No binding issues with <code>this</code>. The scope will be the class itself.</li>
+            <li>If you accidentally bind the same event more than once, because it is the same <code>handleEvent</code> object, the browser will only fire it once.</li>
           </ol>
 
           <h2>What the Heck is handleEvent?</h2>

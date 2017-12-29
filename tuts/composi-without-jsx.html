@@ -95,8 +95,46 @@
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>If you prefer functional over classes, you will probably likeusing the <code>h</code> funtion.</p>
 
-          <h2>h-html</h2>
+          <h2>taggers</h2>
           <p>Typing out tags with the <code>h</code> function can get verbose. We have created a hyperscript compatible NPM module called <code>h-html</code>. What this does is provide a more compact function named after each tag you want to create. You therefore only need to provide props and children.</p>
+
+          <h3>Installing:</h3>
+          <p> </p>
+          <pre>
+            <code class="language-bash">
+npm i -D taggers</code>
+          </pre>
+
+          <p> </p>
+          <p>Example usage:</p>
+<pre>
+            <code class="language-javascript">
+import {h, render} from 'composi'
+import {taggers} from 'taggers'
+
+const {nav, h1} = taggers(h)
+
+// Define tags:
+function title(message) {
+  return nav(
+    {}, 
+    h1(
+      {}, 
+      'Hello, ${message}!'
+    )
+  )
+}
+// Render tags:
+render(title('World'), 'header')</code>
+          </pre>
+
+          <p>And here's a Codepen example:</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="opWjZQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi with taggers-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/opWjZQ/">Composi with taggers-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+          <p> </p>
+          <h2>h-html</h2>
+          <p>Like Taggers, there is also <code>h-html</code>, a module that allows you to use tag shortcuts. It's nearly double the size of <code>taggers</code>, but easier to use. No need to pass in the <code>h</code>, function, etc.</p>
 
           <h3>Installing:</h3>
           <p> </p>
