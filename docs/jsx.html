@@ -253,7 +253,7 @@ const badJSX = new Component({
 })</code>
         </pre>
 
-        <p>To fix the above code, you need to create the entire list like this and insert it in some higher element as the container. You could also use the <code>Fragment</code> tag to enclose the siblings. <a href="#fragment">See below for details</a>.</p>
+        <p>To fix the above code, you need to create the entire list like this and insert it in some higher element as the container</p>
 
         <pre>
           <code class="language-javascript">
@@ -267,33 +267,8 @@ const goodJSX = new Component({
       &lt;li>Three&lt;/li>
     &lt;/ul>
   )
-})</code><a name="fragment"></a>
-        </pre>
-
-        <p> </p>
-        <h2>Fragment Tag</h2>
-        <p>As of version 1.4.0, you can use a <code>Fragment</code> tag to insert siblings into a target element. This will take the provided children and return them as the children of a document fragment. The TL;DR is that when this is inserted in the DOM, the document frament vanishes and its content becomes children of the target element.</p>
-        <p>We can use the <code>Fragment</code> tag to redo the above list. But first we need to import it:</p>
-
-        <pre>
-          <code class="language-javascript">
-// Import h, Fragment and Component:
-import {h, Fragment, Component} from 'composi'
-// Pass list items as children of Fragment tag
-// to insert them in list tag:
-const goodJSX = new Component({
-  // The component can now render
-  // directly into a list element:
-  container: 'ul',
-  render: () => (
-    &lt;Fragment>
-      &lt;li>One&lt;/li>
-      &lt;li>Two&lt;/li>
-      &lt;li>Three&lt;/li>
-    &lt;/Fragment>
-  )
 })</code>
-        </pre>
+    </pre>
         <p> </p>
         <h2>Components with Same Container</h2>
         <p>Components do not have to have unique container elements. Multiple components can be rendered in the same container element. Their order in the DOM will be dependent on their order in execution.</p>
