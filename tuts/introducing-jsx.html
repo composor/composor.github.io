@@ -172,11 +172,61 @@ const result = header()
   }, 
   children: ["This is the Header!"]
 }</code>
+<a name='dangerouslySetInnerHTML2'></a>
 </pre>
         <p> </p>
         <h2>dangerouslySetInnerHTML</h2>
-        <p>React has a property, <code>dangerouslySetInnerHTML</code> that allows you to inject unescaped markup into the DOM. This is highly risky since it does enable malicious script injection. Composi does not support this type of code injection.</p>
-        <p>If you really, really wanted to inject unescaped markup, you could use the oldest trick in the web developer world: innerHTML. Use it at your own risk.</p>
+        <p>By default any markup in data is escaped as a security precaution to help prevent cross-site scripting attacks. As of version 1.4.0 you can use the property <code>dangerouslySetInnerHTML</code> to inject data with markup into the document. This is highly risky. Use it only if you are absolutely sure you can trust the source of the data.</p>
+
+        <pre>
+          <code class="language-javascript">
+function List({data}) {
+  return (
+    ul class="list">
+      {
+        data.map(item => &lt;li dangerouslySetInnerHTML={item}>&lt;/li>)
+      }
+    &lt;/ul>
+  )
+}
+const items = [
+'&lt;div>&lt;strong>Whatever&lt;/strong>&lt;/div>'
+'&lt;div>&lt;em>Something else&lt;/em>&lt;/div>']
+
+render(&lt;List data={items} />, 'section')</code>
+        </pre>
+        <p>Because we are passing the data with markup directly to the list items through the property <code>dangerouslySetInnerHTML</code>, the markup will get converted into true DOM nodes. The result will look like this:</p>
+<ul>
+    <li><div><strong>Whatever</strong></div></li>
+    <li><div><em>Something else</em></div></li>
+</ul>
+
+      <p>In contrast, if we had just passed the data as normal, the markup would have been escaped:</p>
+      <pre>
+          <code class="language-javascript">
+function List({data}) {
+  return (
+    ul class="list">
+      {
+        data.map(item => &lt;li>{item}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+}
+const items = [
+'&lt;div>&lt;strong>Whatever&lt;/strong>&lt;/div>'
+'&lt;div>&lt;em>Something else&lt;/em>&lt;/div>']
+
+render(&lt;List data={items} />, 'section')</code>
+        </pre>
+        <p>This would result in the following:</p>
+<ul>
+  <li>&lt;div>&lt;strong>Whatever&lt;/strong>&lt;/div></li>
+  <li>&lt;div>&lt;em>Something else&lt;/em>&lt;/div></li>
+</ul>
+        <p><strong>Note:</strong> When using <code>dangerouslySetInnerHTML</code> on an element, it's best to always have that element not contain any other content. Otherwise, the content will get prepended to any other content already in the element.</p>
+
+
 
 
 

@@ -60,7 +60,7 @@
     <section>
       <div class='docs'>
           <h1>API</h1>
-          <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small. Composi exposes the two functions (h and render) and one class (Component) with  four properties and nine methods:</p>
+          <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small. Composi exposes the two functions (h and render) and one class (Component) with  four properties and nine methods. It also provides an attribute for tags to set innerHTML and a special Fragment tag to insert siblings into an element.</p>
 
           <ul>
             <li><a href="#h">h</a> {function}</li>
@@ -76,12 +76,14 @@
                 <li>Component - (<code>property</code>) <a href="#element">element</a></li>
                 <li>Component - (<code>property</code>) <a href="#componentShouldUpdate">componentShouldUpdate</a></li>
                 <a name='h'></a>
-                <li>Component - (<code>method</code>) <a href="#beforeCreateComponent">beforeCreateComponent</a> (You can also use: <code>componentWillMount</code></li>
-                <li>Component - (<code>method</code>) <a href="#componentWasCreated">componentWasCreated</a> (You can also use: <code>componentDidMount</code></li>
+                <li>Component - (<code>method</code>) <a href="#componentWillMount">componentWillMount</a> (Before version 1.2.0: <code>beforeCreateComponent</code></li>
+                <li>Component - (<code>method</code>) <a href="#componentDidMount">componentDidMount</a> (Before version 1.2.0: <code>componentWasCreated</code></li>
                 <li>Component - (<code>method</code>) <a href="#componentWillUpdate">componentWillUpdate</a></li>
                 <li>Component - (<code>method</code>) <a href="#componentDidUpdate">componentDidUpdate</a></li>
                 <li>Component - (<code>method</code>) <a href="#componentWillUnmount">componentWillUnmount</a></li>
               </ul>
+              <li> <a href="#dangerouslySetInnerHTML">dangerouslySetInnerHTML</a> - (<code>A property</code>)</li>
+              <li> <a href="#fragment">Fragment</a> - (<code>A special tag for inserting siblings</code>)</li>
             </li>
           </ul>
 
@@ -458,14 +460,14 @@ hello.setState('Joe')
             
             <p> </p>
             <h2>Lifecycle Hooks</h2>
-            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentWasCreated</code> and <code>componentDidUpdate</code>.<a name='beforeCreateComponent'></a> As of version 1.2.0, you can also use the React name for this hook: <code>componentWillMount</code>.</p>
+            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentDidMount</code> and <code>componentDidUpdate</code>.<a name='componentWillMount'></a> Before version 1.2.0, we used: <code>beforeCreateComponent</code>. This is now deprecated, so use <code>componentWillMount</code></p>
             
-            <a name='componentWasCreated'></a>
-            <h2>Component - beforeCreateComponent</h2>
-            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing. As of version 1.2.0, you can also use the React name for this hook: <code>componentDidMount</code>.</p>
+            <a name='componentDidMount'></a>
+            <h2>Component - componentWillMount</h2>
+            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing. Before version 1.2.0, this was named: <code>componentWasCreated</code>. This is now deprecated, so use <code>componentDidMount</code>.</p>
             
             <a name='componentWillUpdate'></a>
-            <h2>Component - componentWasCreated</h2>
+            <h2>Component - componentDidMount</h2>
             <p>This fires right after the component has been injected into the DOM. You can use this to set up events for the component or start a interval loop for some purpose.</p>
             
             <a name='componentDidUpdate'></a>
@@ -475,11 +477,21 @@ hello.setState('Joe')
             <a name='componentWillUnmount'></a>
             <h2>Component - componentDidUpdate</h2>
             <p>This fires right after the component was updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
-            
             <h2>Component - componentWillUnmount</h2>
             <p>This fires when the </code>unmount</code> method is invoked on the component instance. Because this is asynchronous, it is highly probable that the component will be full unmounted and destroyed before this hook finishes executing.</p>
+
+            <a name='dangerouslySetInnerHTML'></a>
           
+            <h2>dangerouslySetInnerHTML</h2>
+            <p>This is a property which you can set on any JSX tag. Its purpose is to allow adding data with markup to be rendered unescaped using innerHTML. You put the property on the element into with you wish to insert the data. Then pass the data to the property inside curly braces like any other dynamic property. You can learn more about how to use it <a target='_blank' href='../tuts/introducing-jsx.html#dangerouslySetInnerHTML2'>here</a></p>
+
+            <a name="fragment"></a>
+            <h2>Fragment</h2>
+            <p>The <code>Fragment</code> tag allows you to define siblings to inject into a common container element. The enclosing <code>Fragement</code> tag gets converted into a document fragment. When this is inserted into the DOM, it vanishes, leaving its children as children of the node into which it was converted. Although the document fragment vanishes after insertion in the DOM, its virtual dom equivalent lives on for diffing and patching.</p>
+
           <p>&nbsp;</p>
+
+
       </div>
 
       <aside>

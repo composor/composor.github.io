@@ -198,7 +198,7 @@ const fruitData = [
 
           <h2>Add New Row</h2>
           <p>Next let's make it so the user can add a new item. We need to be able to capture the item name, as well as its price and quantity. We'll need to provide a defalt value of 0 in case the user doesn't bother providing a price or quantity. When we add the new item, we want the spreadsheet to show it. We also want the sum to reflex the new row's values. That means we need to add the new item to the spreadsheet's state.</p>
-          <p>Adding a new item will require a user interaction. For that we will need an event on the button to submit the new values. We'll use the <code>handleEvent</code> interface and the <code>componentWasCreated</code> hook to set that up. We'll call the new method, <code>addNewRow</code>:</p>
+          <p>Adding a new item will require a user interaction. For that we will need an event on the button to submit the new values. We'll use the <code>handleEvent</code> interface and the <code>componentDidMount</code> hook to set that up. We'll call the new method, <code>addNewRow</code>:</p>
 
           <pre>
             <code class="language-javascript">
@@ -228,7 +228,7 @@ addNewRow(e) {
   }
 }
 // And set up an event to capture button click:
-componentWasCreated() {
+componentDidMount() {
   this.element.addEventListener('click', this)
 }</code>
 </pre>
@@ -237,7 +237,7 @@ componentWasCreated() {
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Updating Price and Quantity</h2>
-          <p>Next we want to be able to update the price or quantity of a row item. Since those are input tags, we'll also need to add another event listener for type <code>input</code> in our <code>componentWasCreated</code> hook. We'll also need two more methods: <code>updatePrice</code> and <code>updateQuantity</code>.</p>
+          <p>Next we want to be able to update the price or quantity of a row item. Since those are input tags, we'll also need to add another event listener for type <code>input</code> in our <code>componentDidMount</code> hook. We'll also need two more methods: <code>updatePrice</code> and <code>updateQuantity</code>.</p>
 
           <p>In order to make the rows editable, we need a way to associate each row with the corresponding index of the state array. We can do that by printing the array index on the interactive elements. We'll use the <code>data-index</code> attribute on those elements. Here's our updated code for the table cells. Notice the new attribute <code>data-index</code> on the price input, quantity input and button:</p>
 
@@ -290,7 +290,7 @@ updatePrice(e) {
   this.state = state
 }</code>
           </pre>
-          <p>Then we need to update the <code>componentWasCreated</code> hook and the <code>handleUpdate</code> method:</p>
+          <p>Then we need to update the <code>componentDidMount</code> hook and the <code>handleUpdate</code> method:</p>
           <pre>
             <code class="language-javascript">
 handleEvent(e) {
@@ -300,7 +300,7 @@ handleEvent(e) {
   e.target.class === 'price' && this.updatePrice(e)
 }
 
-componentWasCreated() {
+componentDidMount() {
   this.element.addEventListener('click', this)
   this.element.addEventListener('input', this)
 }</code>

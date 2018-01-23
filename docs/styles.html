@@ -211,7 +211,27 @@ class List extends Component {
 
           <h2>Inline Styles</h2>
           <p>
-            You can provide your component elements with inline styles. Only other properies, the style tag expects a JavaScript object defining the style to be created. This means that CSS properties that are hyphenated must be camel cased. Also all values other than pure numbers must be enclosed in quotes. Since the style property's value needs to be interpolated, the style definition needs to be enclosed in curly braces. Notice how we provide objects as styles inside curly braces:
+            You can provide your component elements with inline styles as well. You do this just like you always would, with a property followed by a string of valid CSS:</p> 
+          <pre>
+            <code class="language-javascript">
+const list = new Component({
+  container: 'section',
+  render: (data) => (
+    &lt;ul style="list-style: none; margin: 20px; border: solid 1px #ccc; border-bottom: none;">
+      {
+        data.map(item => &lt;li style={{
+          borderBottom: 'solid 1px #ccc',
+          padding: '5px 10px'
+        }}>{item}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+})</code>
+                        </pre>
+
+            <p> </p>
+            <h2>Defining inline styles with JavaScript</h2>
+            <p>You can also choose to define the inline style using JavaScript object notation. You would do this when you want to be able to use dynamic values created by your JavaScript. When defining your styles with JavaScript, the CSS properties that are hyphenated must be camel cased and all values other than pure numbers must be enclosed in quotes. Since the style property's value needs to be interpolated, the style definition needs to be enclosed in curly braces. Since this is an object, you need to make sure that there are double curly braces. The following is the same component as above, but with the styles define using JavaScript notation:
           </p>
           <pre>
             <code class="language-javascript">
@@ -269,7 +289,7 @@ const list = new Component({
 </p>
 
           <h2>Using Stylor</h2>
-          <p>You can use the NPM module <a href='https://www.npmjs.com/package/stylor' target='__blank'>stylor</a> to create a virtual stylesheet scoped to your components. You will do this inside the component's <code>componentWasCreated</code> lifecyle method. This requires the styles to be defined as a JavaScript object. Properties must be camel cased and values must be quoted. If you want, you can use hypenated properties by enclosing them in quotes. Simple selectors are fine, but complex properties will need to be enclosed in quotes. You can use hierachical nesting to define parent child relationships, similar to how LESS and SASS do. If the value for a property will be a pixel value, you do not need to provide the <code>px</code>. values of plain numbers will get converted to pixel values.</p>
+          <p>You can use the NPM module <a href='https://www.npmjs.com/package/stylor' target='__blank'>stylor</a> to create a virtual stylesheet scoped to your components. You will do this inside the component's <code>componentDidMount</code> lifecyle method. This requires the styles to be defined as a JavaScript object. Properties must be camel cased and values must be quoted. If you want, you can use hypenated properties by enclosing them in quotes. Simple selectors are fine, but complex properties will need to be enclosed in quotes. You can use hierachical nesting to define parent child relationships, similar to how LESS and SASS do. If the value for a property will be a pixel value, you do not need to provide the <code>px</code>. values of plain numbers will get converted to pixel values.</p>
 
           <h2>Installing Stylor</h2>
           <p>Use NPM:</p>
@@ -301,7 +321,7 @@ npm i -D stylor</code>
       &lt;p>Age: {person.age}&lt;/p>
     &lt;/div>
   ),
-  componentWasCreated: () => {
+  componentDidMount: () => {
     // Define conponent-scoped styles:
     createStylesheet({
       base: '#person',
@@ -340,7 +360,7 @@ class Person extends Component {
       &lt;p>Age: {person.age}&lt;/p>
     &lt;/div>
   )
-  componentWasCreated() {
+  componentDidMount() {
     // Define conponent-scoped styles:
     createStylesheet({
       base: '#person',

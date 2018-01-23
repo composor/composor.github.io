@@ -82,14 +82,14 @@
           </ul>
           <p>In contrast, Composi has only the following:</p>
           <ul>
-            <li>beforeCreateComponent()</li>
-            <li>componentWasCreated()</li>
+            <li>componentWillMout()</li>
+            <li>componentDidMount()</li>
             <li>componentWillUpdate()</li>
             <li>componentDidUpdate()</li>
             <li>componentWillUnmount()</li>
           </ul>
 
-          <p>Composi's <code>beforeCreateComponent</code> is like React's <code>componentWillMount</code>. Composi's <code>componentWasCreated</code> is like React's <code>componentDidMount</code>. Composi's <code>componentWillUpdate</code> is the same as React's <code>componentWillUpdate</code>. Composi's <code>componentDidUpdate</code> is the same as React's <code>componentDidUpdate</code>. Composi's <code>componentWillUnmount</code> is the same as React's <code>componentWillUnmount</code>.</p>
+          <p>Composi's <code>componentWillMount</code> is the same as React's <code>componentWillMount</code>. Composi's <code>componentDidMount</code> is like React's <code>componentDidMount</code>. Composi's <code>componentWillUpdate</code> is the same as React's <code>componentWillUpdate</code>. Composi's <code>componentDidUpdate</code> is the same as React's <code>componentDidUpdate</code>. Composi's <code>componentWillUnmount</code> is the same as React's <code>componentWillUnmount</code>.</p>
           
           <p>React has <code>ReactDOM.render</code>. Preact has <code>render</code>. Inferno has <code>Inferno.render</code>. And Composi has <code>render</code>. Although all of these use the same name, Composi's implementation is different. All of them can take JSX tags, functional components, and use them to patch the DOM. However, the React family expects you to pass class components into this as well in order to render them. This is not necessary with Composi components since they encapsulate the container they should render in and state assign automatically triggers rending of a component in the DOM.</p>
 

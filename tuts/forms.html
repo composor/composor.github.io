@@ -94,14 +94,14 @@
 
           <pre>
             <code class="language-javascript">
-componentWasCreated() {
+componentDidMount() {
   // Set the value of the component's select tag, 
   // after the component was created:
   this.element.querySelector('select').value = this.state.value
 }
             </code>
           </pre>
-          <p>When we add the above method to the component, the select tag renders showing the default value of "Coconut". Setting the select tag's state in the <code>componentWasCreated</code> hook causes the <code>selectedIndex</code> value to also be set. Problem solved:</p>
+          <p>When we add the above method to the component, the select tag renders showing the default value of "Coconut". Setting the select tag's state in the <code>componentDidMount</code> hook causes the <code>selectedIndex</code> value to also be set. Problem solved:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="VrYMGP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Forms-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/VrYMGP/">Composi Tuts - Forms-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
