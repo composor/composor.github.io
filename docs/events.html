@@ -355,7 +355,7 @@ class List extends Component {
           </pre>
           <p> </p>
           <h2>Element.closest</h2>
-          <p>In the above example the solution works and it's not hard to implement. However, you may have an interactive element with even more deeply nested children that could be event targets. In such a case, adding more parentNode tree climbing becomes unmanagable. To solve this you can use the <code>Element.closest</code> method. This is available in modern browsers. Composi includes a polyfill for older browsers, so you can use it now to handle these types of situations where you need event delegation. Here's the previous example redone with <code>closest</code>. No matter how complex the list item's children become, we'll always be able to capture the event on the list item itself:</p>
+          <p>In the above example the solution works and it's not hard to implement. However, you may have an interactive element with even more deeply nested children that could be event targets. In such a case, adding more parentNode tree climbing becomes unmanagable. To solve this you can use the <code>Element.closest</code> method. This is available in modern browsers. If you wish to use <code>Element.closest</code> and need to support IE 9, 10 or 11, you can <a target="_blank" href="https://www.npmjs.com/package/element-closest">use the polyfill</a>. Here's the previous example redone with <code>Element.closest</code>. No matter how complex the list item's children become, we'll always be able to capture the event on the list item itself:</p>
 
           <pre>
             <code class="language-javascript">

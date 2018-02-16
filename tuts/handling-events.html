@@ -198,33 +198,32 @@ announce(e) {
           <pre>
             <code class="language-javascript">
 handleEvent(e) {
+  // The user clicked on the list item itself:
   e.target.nodeName === 'LI' && this.announce(e)
+  // The user clicked on an H4:
   e.target.nodeName === 'H4' && this.announce(e)
+  // The user clicked on an H5:
   e.target.nodeName === 'H5' && this.announce(e)
-}
-announce(e) {
-  alert(e.target.textContent)
 }</code>
           </pre>
           <p>With this change, you can now click anywhere on the list item and you will get the announcement. However, this is ugly, and not necessary. There is an easier way.</p>
 
           <h2>Use Closest for Event Delegation</h2>
-          <p>Modern browsers have an Element method called <code>closest</code>. If you've used jQuery in the past, this works exactly the same as the jQuery function <code>closest</code>. You execute it on an element and pass it a selector to find the closest match. As we mentioned, this is available in modern browsers. For older browsers that lack it, Composi includes a polyfill to provide this. The polyfill is quite small, so it doesn't effect the overall size of Composi. We included it because it makes event delegation so much easier. Let's use <code>closest</code> to clean up our last example:</p>
+          <p>Modern browsers have an Element method called <code>closest</code>. If you've used jQuery in the past, this works exactly the same as the jQuery function <code>closest</code>. You execute it on an element and pass it a selector to find the closest match. As we mentioned, this is available in modern browsers, including Microsoft Edge.  However, if you need to support IE 9, 10 or 11, you can <a target="_blank" href="https://www.npmjs.com/package/element-closest">use the polyfill</a>. Here's the previous example redone with <code>Element.closest</code> to clean up our last example:</p>
 
           <pre>
             <code class="language-javascript">
 handleEvent(e) {
+  // The user clicked on the list item:
   e.target.nodeName === 'LI' && this.announce(e)
+  // The user clicked on some child element, so use closest:
   e.target.closest('li') && this.announce(e)
-}
-announce(e) {
-  alert(e.target.textContent)
 }</code>
           </pre>
           <p>Now this list item can have as many child element as needed without complicating handling the event target.</p>
 
           <h2>Removing the Event for handleEvent</h2>
-          <p>If you plan on deleting a component from the DOM, you need to unbind its eventListener. This is really easy when you use <code>handleEvent</code>. Just provide the event and <code>this. Composi provides a method to remove a component: <code>unmount</code>. To remove the event and unmount the component, we could do this:</code></p>
+          <p>If you plan on deleting a component from the DOM, you need to unbind its eventListener. This is really easy when you use <code>handleEvent</code>. Just provide the event and <code>this</code>. Composi provides a method to remove a component: <code>unmount</code>. To remove the event and unmount the component, we could do this:</code></p>
           <pre>
             <code class="language-javascript">
 // Remove the event listener from the component component.

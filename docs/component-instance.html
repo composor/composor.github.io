@@ -200,16 +200,16 @@ const person = new Component({
           <p>You can give a component instance a lifecycle method as well. There are four:</p>
 
           <ol>
-            <li>componentWasCreated</li>
+            <li>componentDidMount</li>
             <li>componentWillUpdate</li>
             <li>componentDidUpdate</li>
             <li>componentWillUnmount</li>
           </ol>
 
-          <p>Of the four, the ones you will use most often will be <code>componentWasCreated</code> and <code>componentDidUpdate</code>.</p>
+          <p>Of the four, the ones you will use most often will be <code>componentDidMount</code> and <code>componentDidUpdate</code>.</p>
 
-          <p>You would use a lifecycle method when you want to be able to run some code at a particular time in the component's life. For example, you would use <code>componentWasCreate</code> to attach an event listener to the component. Or you could use <code>componentWasUpdate</code> to trigger some other action.</p>
-          <p>In the following example we use <code>componentWasCreate</code> to launch a setInterval loop. Because this component has state assigned, as soon as we run <code>update</code> on it, the loop kicks in.</p>
+          <p>You would use a lifecycle method when you want to be able to run some code at a particular time in the component's life. For example, you would use <code>componentDidMount</code> to attach an event listener to the component. Or you could use <code>componentDidUpdate</code> to trigger some other action.</p>
+          <p>In the following example we use <code>componentDidMount</code> to launch a setInterval loop. Because this component has state assigned, as soon as we run <code>update</code> on it, the loop kicks in.</p>
 
           <p data-height="450" data-theme-id="6688" data-slug-hash="ZaYYgM" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi component-instance-7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ZaYYgM/">Composi component-instance-7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
