@@ -66,6 +66,7 @@
             <li><a href="#h">h</a> {function}</li>
             <li><a href="#render">render</a> {function}</li>
             <li><a href="#createElement">createElement</a> {function}</li>
+            <li><a href="#fragment">Fragment</a> {function}</li>
             <li><a href="#Component">Component</a> {class}
               <ul>
                 <li>Component - (<code>property</code>) <a href="#container">container</a></li>
@@ -230,9 +231,41 @@ function Title(data) {
 const title = createElement(Title('Hello World!'))
 document.body.appendChild(title)
 </code></pre>
-<a name='Component'></a>
-            <p>Although <code>createElement</code> might seem useful for some edge cases, before using it think about instead using the render function. Render allows you to update the result if you ever need to, where as appending the result of <code>createElement</code> is a one time operation.</p>
+            <p>Although <code>createElement</code><a name="fragment"></a></pre> might seem useful for some edge cases, before using it think about instead using the render function. Render allows you to update the result if you ever need to, where as appending the result of <code>createElement</code> is a one time operation.</p>
+
+
+            <h2>Fragment</h2>
+            <p>Composi provides a <code>Fragment</code> tag to let you return multiple siblings without a wrapper tag. When <code>Fragement</code> is parsed by Composi, only the children are returned. This is useful for creating lists and tables.</p>
             
+          <pre>
+<code class="language-javascript">import {h, Component, Fragment} from 'composi'
+
+function ListItems({data}) {
+  return (
+    &lt;Fragment>
+      {
+        data.map(item => &lt;li>{item}&lt;/li>)
+      }
+    &lt;/Fragment>
+  )
+}
+
+class List extends Component {
+  render(data) {
+    return (
+      &lt;ul class="list">
+        &lt;Fragment data={data}/>
+      &lt;/ul>
+    )
+  }
+}
+
+new List({
+  container: 'section',
+  state: todos
+})
+</code><a name='Component'></a></pre>
+            <p>Please note that <code>Fragment</code> tags cannot be inserted directly into the DOM. The <code>Fragment</code> tag does not create a document fragment. It is simply a function component that returns its children for inclusion in another virtual node.</p>
             <p> </p>
             <h2>Component</h2>
             <p>The component class is the main part of Composi that you will be using. This class provides a number of properties and methods for you to use. There are two ways to use this class:</p>
