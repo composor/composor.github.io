@@ -269,6 +269,91 @@ const goodJSX = new Component({
   )
 })</code>
     </pre>
+
+        <p> </p>
+        <h2>Fragment Tag</h2>
+        <p>As of version 1.5.0, Composi also supports a special Fragment tag. This allows you to group a number a siblings together instead of needing to enclose them in an html tag. The Fragment tag will be the parent, however it will not be converted into a tag in the DOM. Instead its children will become the children of whatever the Fragment gets inserted into. This is similar to how document fragments work. However, this is not an actual document fragment. The Fragment tag must always start with a capital F:</p>
+
+        <pre>
+<code class="language-javascript">function Title() {
+  return (
+    &lt;Fragment>
+      &lt;h1>Main Title&lt;/h1>
+      &lt;h2>Secondary Title&lt;/h2>
+    &lt;/Fragment>
+  )
+}</code></pre>
+
+        <p>Let's look at the previous list example to see how we can use Fragments to make it more manageable. Before we can use the Fragment tag, we need to import it into our project:</p>
+
+        <pre>
+<code class="language-javascript">import {h, Fragment, Component} from 'composi'
+
+class List extends Component {
+  container = '#listDiv'
+  state = ['Apples', 'Oranges', 'Bananas']
+  render(items) {
+    function ListItems({items}) {
+      return (
+        &lt;Fragment>
+          {
+            items.map(item => &lt;li>{item}&lt;/li>)
+          }
+        &lt;/Fragment>
+      )
+    }
+    return (
+      &lt;ul>
+        &lt;ListItems items={this.state}>
+        &lt;ListItems>
+      &lt;/ul>
+    )
+  }
+}
+// Instantiate a new List:
+new List()</code>
+        </pre>
+
+        <p>Because Fragment just returns their children, if you nest them, when you return them their children will be flattens. Notice what the following exaple returns:/p>
+
+
+        <pre>
+<code class="language-javascript">import {h, render, Fragment} from 'composi'
+
+const letters = ['A', 'B', 'C', 'D', 'E', 'F']
+function Items({letters}) {
+  return (
+    &lt;main>
+      &lt;Fragment>
+        &lt;span>{letters[0]}&lt;/span>
+        &lt;span>{letters[1]}&lt;/span>
+        &lt;Fragment>
+          &lt;span>{letters[2]}&lt;/span>
+          &lt;span>{letters[3]}&lt;/span>
+          &lt;Fragment>
+            &lt;span>{letters[4]}&lt;/span>
+            &lt;span>{letters[5]}&lt;/span>
+          &lt;/Fragment>
+        &lt;/Fragment>
+      &lt;/Fragment>
+    &lt;/main>
+  )
+}
+
+render(&lt;Items letters={letters}/>, document.body)
+// This will create the following:
+&lt;main>
+  &lt;span>A&lt;/span>
+  &lt;span>B&lt;/span>
+  &lt;span>C&lt;/span>
+  &lt;span>D&lt;/span>
+  &lt;span>E&lt;/span>
+  &lt;span>F&lt;/span>
+&lt;/main>
+</code></pre>
+
+        <p>Fragment tags cannot be inserted directly into the DOM. They do need to be enclosed in an HTML tag.</p>
+
         <p> </p>
         <h2>Components with Same Container</h2>
         <p>Components do not have to have unique container elements. Multiple components can be rendered in the same container element. Their order in the DOM will be dependent on their order in execution.</p>

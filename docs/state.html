@@ -110,10 +110,11 @@ helloWorld.state = 'everybody'
 // or:
 helloWorld.setState('everybody')</code>
               </pre>
+              <p>Please note that although you can set state by assigning the data to the component's <code>state</code> property, it's always preferable and safer to use <code>setState</code> to do so.</p>
 
               <p> </p>
               <h2>Setting State for Complex Types - setState</h2>
-              <p>The purpose of <code>setState</code> is to enable making a patch to state that is an object or array. Because state is controlled by its getters and setters, you cannot directly manipulate the data it contains. With component state you can either get it, or set it. Period.</p>
+              <p>The purpose of <code>setState</code> is to enable making a patch to state that is an object or array. Because state is controlled by its getters and setters, you cannot directly manipulate the data it contains. With component state you can either get it, or set it.</p>
               <p>First lets look at a component that prints out a person object:</p>
               
               <p data-height="400" data-theme-id="6688" data-slug-hash="qVEdNE" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi state-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/qVEdNE/">Composi state-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>

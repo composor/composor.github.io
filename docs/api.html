@@ -60,11 +60,12 @@
     <section>
       <div class='docs'>
           <h1>API</h1>
-          <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small. Composi exposes the two functions (h and render) and one class (Component) with  four properties and nine methods.</p>
+          <p class="docs__intro">Composi is only 3KB. That means the API surface is fairly small. Composi exposes the three functions (h, render and createElement) and one class (Component) with  four properties and four methods and five life cycle hooks.</p>
 
           <ul>
             <li><a href="#h">h</a> {function}</li>
             <li><a href="#render">render</a> {function}</li>
+            <li><a href="#createElement">createElement</a> {function}</li>
             <li><a href="#Component">Component</a> {class}
               <ul>
                 <li>Component - (<code>property</code>) <a href="#container">container</a></li>
@@ -76,6 +77,7 @@
                 <li>Component - (<code>property</code>) <a href="#element">element</a></li>
                 <li>Component - (<code>property</code>) <a href="#componentShouldUpdate">componentShouldUpdate</a></li>
                 <a name='h'></a>
+                <h4><code>Life Cycle Hooks:</code></h4>
                 <li>Component - (<code>method</code>) <a href="#componentWillMount">componentWillMount</a> (Before version 1.2.0: <code>beforeCreateComponent</code></li>
                 <li>Component - (<code>method</code>) <a href="#componentDidMount">componentDidMount</a> (Before version 1.2.0: <code>componentWasCreated</code></li>
                 <li>Component - (<code>method</code>) <a href="#componentWillUpdate">componentWillUpdate</a></li>
@@ -197,8 +199,40 @@ function FruitList(fruits) {
 }
 // Create the virtual node:
 const fruitList = FruitList(fruits)
-render(fruitList, 'section')</code>
-            </pre><a name='Component'></a>
+render(fruitList, 'section')</code><a name="createElement"></a>
+</pre>
+<br><br>
+            
+            <p> </p>
+            <h2>createElement</h2>
+            <p>This is not the same as the React function of the same name. This function creates a DOM node from a virtual node. If the virtual node has children, those will also be created. <code>createElement</code> lets you create nodes from JSX or from the <code>h</code> function which you can then insert directly into the DOM with <code>Element.appendChild</code> or any other DOM method that suits your purpose.</p>
+
+          <pre>
+<code class="language-javascript">import {h, createElement} from 'composi'
+
+function Title({data}) {
+  return (
+    &lt;nav>
+      &lt;h1>{data}&lt;/h1>
+    &lt;/nav>
+  )
+}
+
+const title = createElement(&lt;Title data='Hello World!'/>)
+document.body.appendChild(title)
+
+// Or:
+function Title(data) {
+  return h('nav', {}, [
+    h('h1', {}, data)
+  ])
+}
+const title = createElement(Title('Hello World!'))
+document.body.appendChild(title)
+</code></pre>
+<a name='Component'></a>
+            <p>Although <code>createElement</code> might seem useful for some edge cases, before using it think about instead using the render function. Render allows you to update the result if you ever need to, where as appending the result of <code>createElement</code> is a one time operation.</p>
+            
             <p> </p>
             <h2>Component</h2>
             <p>The component class is the main part of Composi that you will be using. This class provides a number of properties and methods for you to use. There are two ways to use this class:</p>
@@ -211,7 +245,7 @@ render(fruitList, 'section')</code>
             <p>If your needs are simple, create a new instance of <code>Component</code> is a good choice. However, if you know that this component's needs may increase as you develop your app, it's better to go with exending <code>Component</code>. Extending it lets you add custom properties and methods to the class to make an event more powerful solution. If your component will involve use interactions or ocassional updates, you'll want to extend <code>Component</code>.</p>
             
             <h2>Component - new</h2>
-            <p>If you just need to put together a simple component, creatin a new instance of the Component class is the way to go. The class takes an object literal of certain values: container, render, optional state and lifecycle hooks. At the minimal you'll have to provide a container and render function:</p>
+            <p>If you just need to put together a simple component, creating a new instance of the Component class is the way to go. The class takes an object literal of certain values: container, render, optional state and lifecycle hooks. At the minimal you'll have to provide a container and render function:</p>
 
             <pre>
               <code class="language-javascript">
@@ -293,6 +327,10 @@ const list = new List({
   container: 'section'
 })</code><a name='render2'></a>
             </pre>
+            
+            <p> </p>
+            <h3>Notice:</h3> 
+            <p>Once you instantiate a component, you cannot change its container. You can change the value of the component's selector or even its container value, but these changes will not affect the container currently used by the component when rendering. During initialization the component tries to get the selector provided. If the selector cannot be found in the DOM, <code>document.body</code> will be used as the container. Whatever container the component gets during intialization will remain in effective for the duration of the current session. This can only be changed by a page reload.</p>
             <p> </p>
 
             <h2>Component - render</h2>

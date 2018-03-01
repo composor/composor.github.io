@@ -74,11 +74,11 @@
 
           <p>Lifecycle methods are hooks that let you implement maintenance, register or remove events, and clean up code based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
 
-          <p><code>componentWillMount</code> is executed before the component is created and inserted into the DOM.</p>
-          <p><code>componentDidMount</code> is executed after the component is inserted into the DOM.</p>
+          <p><code>componentWillMount</code> is executed before the component is created and inserted into the DOM. If you need to access the DOM, set up an event, or make a network request for remote resources, use the <code>componentDidMount</code> hook.</p>
+          <p><code>componentDidMount</code> is executed after the component is inserted into the DOM. This is the place to set up events, access the child nodes of the component, or make a request for remote resources over the network.</p>
           <p><code>componentWillUpdate</code> is executed right before the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
           <p><code>componentDidUpdate</code> is executed immediately after the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
-          <p><code>componentWillUnmount</code> is executed before a component is unmounted with its <code>unmount</code> method.</p>
+          <p><code>componentWillUnmount</code> is executed before a component is unmounted with its <a href='file:///Users/rbiggs/Git/composor.github.io/docs/api.html#unmount' target='__blank'>unmounted</a> method. Remember that this is asynchronous. If you have a number of things to do before unmounting a component, it is best to do those first in a separate routine and then unmount the component. If you need to do some clean up that does not directly involve the component itself, then you can use this lifecycle hook.</p>
 
           <h2>Lifecycle Methods are Asynchronous</h2>
           <p>When using lifecycle methods, be aware that they are asynchronous. For example, with `componentWillMount` your component will probably be created and inserted into the DOM before your method can finish. Similarly, when using `componentWillUnmount`, the component will probably be unmounted and destroyed before your code in this method completes. If you want to handle these two in a synchronous manner for tighter control, you have two choices. Use a method that returns a promise, or use the <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/async_function' target='__blank'>ES7 async functions</a>. If your browser target includes IE9, you will need to polyfill promises for either of these to work.</p>
