@@ -97,6 +97,9 @@ list.state = ['Stawberries', 'Peaches', 'Blueberries']</code>
           </pre>
           <p>With the above code, even though the server sent a static list to the browser, at laod time Composi will replace it with the dynamic component of the same id in the same container element.</p>
           <p><strong>Note:</strong> When implementing serve-side rendering and component hydration, it's best to use ids for the parts you want to hydrate. That way it's easier for Composi to identify unique parts of the static HTML to take over.</p>
+
+          <h2>Hydrating with Function Components</h2>
+          <p>If you wish to hydrate server-rendered content with functional components, you will need to use the <code>render</code> function and pass it a reference to the server-rendered element to update. Please read the docs for <a href="./render.html">Mount/Render</a> for more details.</p>
           
       </div>
 
@@ -107,7 +110,7 @@ list.state = ['Stawberries', 'Peaches', 'Blueberries']</code>
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Render</a>
+              <a href='./render.html'>Mount/Render</a>
             </li>
             <li class="docs__menu__item">
               <a href='./functional-components.html'>Functional Components</a>

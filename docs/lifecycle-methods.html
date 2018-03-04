@@ -69,8 +69,8 @@
             <li>componentDidUpdate</li>
             <li>componentWillUnmount</li>
           </ol>
-
-          <p>* Before version 1.2.0, Composi was using <code>beforeCreateComponent</code> and <code>componentWasCreated</code> for <code>componentWillMount</code> and <code>componentDidMount</code>. These still work, but are deprecated. Use <code>componentWillMount</code> and <code>componentDidMount</code> instead.</p>
+          
+          <p>* As of version 2.0.0, <code>beforeCreateComponent</code> and <code>componentWasCreated</code> are no longer supported. Instead, use <code>componentWillMount</code> and <code>componentDidMount</code>.</p>
 
           <p>Lifecycle methods are hooks that let you implement maintenance, register or remove events, and clean up code based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
 
@@ -122,7 +122,7 @@ class List extends Component {
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Render</a>
+              <a href='./render.html'>Mount/Render</a>
             </li>
             <li class="docs__menu__item">
               <a href='./functional-components.html'>Functional Components</a>

@@ -59,42 +59,120 @@
   <article class='docs__article'>
     <section>
       <div class='docs'>
-          <h1>Render</h1>
-          <p class="docs__intro">Components provide a powerful and convenient way for you to create modular chunks of UI. However, sometimes they are overkill. If you just need to output some static markup, a component is not necessary. Instead you can define a function that returns the markup. This is sometimes called a <code>functional component</code>. Once you've created a function to do that, you can render it into the document with the <code>render</code> function. To use it, you will need to import it into your code:</p>
+          <h1>Mount</h1>
+          <p class="docs__intro">Class-based components provide a powerful and convenient way for you to create modular chunks of UI. However, sometimes they are overkill. If you just need to output some static markup, a component is not necessary. Instead you can define a function that returns the markup. This is sometimes called a <code>functional component</code>. You can read the <a href="./functional-components.html">docs</a> for functional components to learn more about how to create and use them. Once you've created a function component, you can inject it into the document with this <code>mount</code> function. To use it, you will need to import it into your code:</p>
           <pre>
-            <code class='language-jsx'>
-import {h, render} from 'composi'</code>
+            <code class='language-javascript'>
+import {h, mount} from 'composi'</code>
+          </pre>
+
+          <p><code>mount</code> takes two parameters: tag and container. Tag is either a JSX tag or an <code>h</code> function. container is the DOM node or a valid CSS selector to query that node. If no container is provided or the DOM query finds no match, it will append the tag to the document body.</p>
+          <p>The <code>mount</code> function always returns an element which you can use as a reference to the DOM tree that needs to be updated by the <code>render</code> function. We show how to do this below when we go into details about the <code>render</code> function.</p>
+          <p>Here is an example of how to mount a functional component:</p>
+          <pre>
+            <code class='language-javascript'>
+import {h, mount} from 'composi'
+
+// Define functional component:
+function Title({message}) {
+  return(
+    &lt;nav>
+      &lt;h1>{message}&lt;/h1>
+    &lt;/nav>
+  )
+}
+
+// Mount the functional component:
+mount(&lt;Title message='This is the Title!'/>, 'header')</code>
+          </pre>
+
+
+          <h1>Render</h1>
+          <p class="docs__intro">The <code>render</code> function is used to update a mounted functional component. This is done with a reference to the mounted component that you saved, as illustrated in the first <code>mount</code> example above. To use it, you will need to import it into your code:</p>
+          <pre>
+            <code class='language-javascript'>
+import {h, mount, render} from 'composi'</code>
           </pre>
           <p><code>render</code> takes two parameters:</p>
 
           <ol>
-            <li>tag - the element to create and insert into the DOM</li>
-            <li>container - the element in the DOM in which to insert the new element</li>
+            <li>tag - a virtual node that you want to use to update a mounted component</li>
+            <li>element - the element in the DOM of a mounted functional component that you want to update</li>
           </ol>
 
-          <h2>Define a Function That Retuns JSX</h2>
+          <p>In the example below we are going to mount a component and then update it with the <code>render</code> function using <code>setTimeout</code>. Notice how we assign the mounted functional component to the <code>title</code> variable:</p>
+          <pre>
+            <code class='language-javascript'>
+import {h, mount} from 'composi'
+
+// Define functional component:
+function Title({message}) {
+  return(
+    &lt;nav>
+      &lt;h1>{message}&lt;/h1>
+    &lt;/nav>
+  )
+}
+
+// Store the mounted element in a variable:
+const title = mount(&lt;Title message='This is the Title!'/>, 'header')
+
+// Update mounted component.
+// Pass in `title` from above as second argument:
+setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, title), 5000)</code>
+          </pre>
+          <p>Using <code>render</code> and passing a reference to the DOM tree lets us update the DOM tree in place.</p>
+          <p></p>
+
+          <h2>Rendering Functional Components</h2>
           <p>Codepen Example:</p>
 <p data-height="450" data-theme-id="6688" data-slug-hash="YEzmBX" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi render-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEzmBX/">Composi render-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>We could use the <code>createList</code> function above to make several lists. To do that, we're going to use what's called a custom tag. This is a feature of JSX where when you define a functional component that begins with an uppercase letter, you can use it as a tag. Notice how we pass the <code>CreateList</code> function to <code>render</code> as a JSX tag, <code>&lt;CreateList data={fruits} /></code>. At build time, Babel will convert that into a function that returns the virtual node for the render function to insert in the DOM.</p>
+          <p>We could use the <code>createList</code> function above to make several lists. To do that, we're going to use what's called a custom tag. This is a feature of JSX where when you define a functional component that begins with an uppercase letter, you can use it as a tag. Notice how we pass the <code>CreateList</code> function to <code>mount</code> as a JSX tag, <code>&lt;CreateList data={fruits} /></code>. At build time, Babel will convert that into a function that returns the virtual node for the render function to insert in the DOM.</p>
           <p>Since we are using a custom JSX tag, the data that would normally be passed as a parameter to the functional component instead gets passed as a prop. That's the reason we inclosed the parameter <code>data</code> in curly braces when we defined <code>CreateList</code>. We used the term <code>data</code> because the data is generic. Use whatever term makes sense for what you are using.</p>
 
           <p>Codepen Example:</p>
           <p data-height="450" data-theme-id="6688" data-slug-hash="xPxveN" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi render-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xPxveN/">Composi render-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>In the above example, each subsequent call of the <code>render</code> function in the same container will patch and update whatever was previously rendered there. Be aware that the inital invocation of <code>render</code> will not replace any static content already in the container. Please read <a href='#gotchas'>Gotchas</a> and <a href='#scope'>Scope</a> below to better understand how <code>render</code> patches the DOM.</p>
+          <p>In the above example, each subsequent call of the <code>render</code> function will patch and update whatever was previously rendered. Be aware that the inital invocation of <code>mount</code> will not replace any static content already in the container.</p>
 
           <a name="gotchas"></a>
           <h2>Gotchas</h2>
-          <p>The first time <code>render</code> is executed, it does not check to see what is in the container. It just appends to it. If you want to have server-side rendered content and replace it with new content using <code>render</code>, you'll need to remove the nodes yourself before invoking <code>render</code>. After the inital execution, <code>render</code> will patch whatever a previous invocation appended to the container. This means that if you render a completely different functional component with the <code>render</code> function to the same container, whatever the was previously rendered will be patched with the new functional component. In contrast, when you use the Component class, you can hydrate content rendered on the server. Read the documentation for <a href="./hydration.html">Hydration</a> to learn how to do it.</p>
+          <p><code>mount</code> always appends to the provided container. If you want to have server-side rendered content and replace it with new content, you'll need to use <code>render</code> and pass it a reference to the server-rendered element. Notice in the following example how we query the DOM for the element and then pass it as the second argument of <code>render</code>:</p>
+
+          <pre>
+            <code class='language-javascript'>
+// In the index.html:
+&lt;nav class='header'>
+  &lt;h1>Server-Rendered Content&lt;/h1>
+&lt;/nav>
+
+// JavaScript:
+import {h, mount} from 'composi'
+
+// Define functional component:
+function Title({message}) {
+  return(
+    &lt;nav class='header'>
+      &lt;h1>{message}&lt;/h1>
+    &lt;/nav>
+  )
+}
+
+// Get reference to server-rendered nav at load time:
+const header = document.querySelector('.header')
+
+// Update server-rendered component.
+// Pass in `header` from above as second argument:
+setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, header), 5000)</code>
+          </pre>
+            
+          <p>When you use the Component class, you can also hydrate content rendered on the server. Read the documentation for <a href="./hydration.html">Hydration</a> to learn how to do it.</p>
           <p>If you want to be able to create multiple instances of the same component, then you will want to use the Component class to do so. Please read the docs about <a href='./extending-component.html'>how to extend</a> the Component class</a>.</p>
 
-          <a name="scope"></a>
-          <h2>Scope</h2>
-          <p>When <code>render</code> patches the DOM, it keeps track of changes scoped to the current call scope. So, if you used <code>render</code> to output some JSX in your <code>app.js</code> and then invoked the same function again in another file, because the scope is different, it would result in two versions of the same content being rendered in the container. When using <code>render</code>, understanding scope is very important to avoid duplication bugs.</p>
-
           <h2>Summary</h2>
-          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>. It has its use in very limited circumstances. Otherwise, components offer more functionality and versitility.</p>
+          <p>Use <code>mount</code> to inject a functional component into the DOM.</p>
+          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>. <code>mount</code> and <code>render</code> makes it easy to use functional components. However, class-based components offer more functionality and versitility.</p>
           <p>&nbsp;</p>
           
       </div>
@@ -106,7 +184,7 @@ import {h, render} from 'composi'</code>
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item selected">
-              <a href='./render.html'>Render</a>
+              <a href='./render.html'>Mount/Render</a>
             </li>
             <li class="docs__menu__item">
               <a href='./functional-components.html'>Functional Components</a>
