@@ -64,27 +64,27 @@
           <p>As was explained in the introduction to JSX, a JSX tag describes a piece of markup to be converted into DOM nodes.</p>
           <pre>
             <code class="language-javascript">
-import {h, render} from 'composi'
+import {h, mount, render} from 'composi'
 
 const element = &lt;h1>A Title&lt;/h1></code>
           </pre>
           <p>Elements are merely a piece of markup. Notice there is no function and no functionality. Components on the other hand consist of functions or classes and can container many possible features. Elements are not components, but components are made up of elements.</p>
 
           <h2>Rendering an Element into the DOM</h2>
-          <p>Composi provides the <code>render</code> function to enable injecting a JSX element into the DOM. The <code>render</code> function takes two arguments: an element to create, and a container in the DOM in which to inject the element:</p>
+          <p>Composi provides the <code>mount</code> function to enable injecting a JSX element into the DOM. The <code>mount</code> function takes two arguments: an element to create, and a container in the DOM in which to inject the element:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="MOYyRN" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYyRN/">Composi Tuts - JSX-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>The render function takes an element and inserts it into the container you indicated.</p>
 
           <h2>Virtual Dom</h2>
-          <p>When you inject an element into the DOM with the <code>render</code> function, it also creates a virtual dom of the element. That means that if your element had dynamic content that could change, the render function would diff and patch the element if its data changed.</p>
+          <p>When you inject an element into the DOM with the <code>mount</code> function, it also a reference to the element. You can pass this to the <code>render</code> function along with the updated tag to patch the DOM:</p>
 
-          <p data-height="300" data-theme-id="6688" data-slug-hash="JOoXqR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/JOoXqR/">Composi Tuts - JSX-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <p data-height="400" data-theme-id="6688" data-slug-hash="JOoXqR" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/JOoXqR/">Composi Tuts - JSX-6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
           <h2>Composi Only Updates What is Necessary</h2>
-          <p>Because of its virtual dom, Composi will only update the parts of the DOM that needs to. In many cases this will only be text nodes, so there is minimal layout thrashing. In the above example, only the text node for the time will be updated, even though we are passing in the complete element at each tick.</p>
+          <p>Because of its virtual dom, Composi will only update the parts of the DOM that need to. In many cases this will only be text nodes, so there is minimal layout thrashing. In the above example, only the text node for the time will be updated, even though we are passing in the complete element at each tick.</p>
 
 
           <p>&nbsp;</p>
