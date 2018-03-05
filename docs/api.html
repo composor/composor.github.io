@@ -66,7 +66,6 @@
             <li><a href="#h">h</a> {function}</li>
             <li><a href="#mount">mount</a> {function}</li>
             <li><a href="#render">render</a> {function}</li>
-            <li><a href="#createElement">createElement</a> {function}</li>
             <li><a href="#fragment">Fragment</a> {function}</li>
             <li><a href="#Component">Component</a> {class}
               <ul>
@@ -243,38 +242,10 @@ const events = {
 
 const list = mount(&lt;List {...{items}}/>, 'section')
 
-document.querySelector('.container-list').addEventListener('click', events)</code>
+document.querySelector('.container-list').addEventListener('click', events)</code><a name="fragment"></a>
 </pre>
 <br><br>
-            
-            <p> </p>
-            <h2>createElement</h2>
-            <p>This is not the same as the React function of the same name. This function creates a DOM node from a virtual node. If the virtual node has children, those will also be created. <code>createElement</code> lets you create nodes from JSX or from the <code>h</code> function which you can then insert directly into the DOM with <code>Element.appendChild</code> or any other DOM method that suits your purpose.</p>
 
-          <pre>
-<code class="language-javascript">import {h, createElement} from 'composi'
-
-function Title({data}) {
-  return (
-    &lt;nav>
-      &lt;h1>{data}&lt;/h1>
-    &lt;/nav>
-  )
-}
-
-const title = createElement(&lt;Title data='Hello World!'/>)
-document.body.appendChild(title)
-
-// Or:
-function Title(data) {
-  return h('nav', {}, [
-    h('h1', {}, data)
-  ])
-}
-const title = createElement(Title('Hello World!'))
-document.body.appendChild(title)
-</code></pre>
-            <p>Although <code>createElement</code><a name="fragment"></a></pre> might seem useful for some edge cases, before using it think about instead using the render function. Render allows you to update the result if you ever need to, where as appending the result of <code>createElement</code> is a one time operation.</p>
 
 
             <h2>Fragment</h2>
