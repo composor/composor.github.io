@@ -64,6 +64,7 @@
 
           <ul>
             <li><a href="#h">h</a> {function}</li>
+            <li><a href="#mount">mount</a> {function}</li>
             <li><a href="#render">render</a> {function}</li>
             <li><a href="#createElement">createElement</a> {function}</li>
             <li><a href="#fragment">Fragment</a> {function}</li>
@@ -154,53 +155,95 @@ const list = h(
       'Orange'
     )
   ]
-)</code><a name='render'></a>
-            </pre>
+)</code><a name='mount'></a></pre>
             <p>Of course, you would not be putting those comments in your code. That was just to make it clear how the <code>h</code> call signature works.</p>
 
+            <br><br>
+            <h2>Mount</h2>
+            <p>When using functional components you use the <code>mount</code> function to inject the component into the DOM for the first time. After that, if you need to update it, you would use the <code>render</code> function described next.</p>
+            <p>The <code>mount</code> function always returns the base element of the mounted component. If you intend to update the component with the render function, you need to capture that reference in a variable so you can pass it to the <code>render</code> function.</p>
+            <p>The <code>render</code> function takes two arguments: the tag to create and the container in which to insert the component. Notice how we do this:</p>
+            <pre>
+<code class="language-javascript">
+    import {h, mount} from 'composi'
+
+    function Title({message}) {
+      return (
+        &lt;nav>
+          &lt;h1>{message}&lt;/h1>
+        &lt;/nav>
+      )
+    }
+    
+    // Mount the component in the header tag:
+    mount(&lt;Title message='Hello World!'/>, 'header')
+</code><a name='render'></a>
+<br></pre>
+<p> </p>
+<p> </p>
+            
             <h2>render</h2>
-            <p>The <code>render</code> function allows you to output functional components to the DOM. It takes to arguments:</p>
+            <p>The <code>render</code> function allows you to update functional components already mounte in the DOM. It takes two arguments:</p>
 
             <ul>
-              <li>element - Either a JSX tag, and h function or a virtual node.</li>
-              <li>container - A node or CSS selector into wich the component will be rendered.</li>
+              <li>tag - Either a JSX tag, and h function or a virtual node.</li>
+              <li>element - The element returned by the initial <code>mount</code> function.</li>
             </ul>
 
-            <p>When you inject a functional component into the DOM with <code>render</code> it also create a virtual dom scoped to where the render function was invoked. This means that invoking the same expression in a different scope with cause the creation of a new virtual dom. This will result in whatever was previously rendered being complete replaced. However, any renders after that will using the virtual dom of the current scope, resulting in efficient DOM patching.</p>
+            <p> </p>
 
             <pre>
               <code class="language-javascript">
-import {h, render} from 'composi'
+import {h, mount, render} from 'composi'
 
-const fruits = ['Apples', 'Oranges', 'Bananas']
-function FruitList({fruits}) {
+function ListForm() {
   return (
-    &lt;ul class='list-fruits'>
-      {
-        fruits.map(fruit => &lt;li class='list-fruits__item'>{fruit}&lt;/li>)
-      }
-    &lt;/ul>
+    &lt;p>
+      &lt;input class='list-fruits__input-add' placeholder='Enter Item...' type="text"/>
+      &lt;button class='list-fruits__button-add'>Add Item&lt;/button>
+    &lt;/p>
   )
 }
-render(<FruitList {...{fruits}} />, '#available-fruits')</code>
-</pre>
-            <p>And here's the same example redone to create a virtual node and pass that in. Since we are not using a JSX tag to render, we do not need to enclose the data parameter in curly braces when we call the function:</p>
-            <pre>
-              <code class="language-javascript">
-const fruits = ['Apples', 'Oranges', 'Bananas']
-// No need for curly braces in the function call:
-function FruitList(fruits) {
+function ListItem(props) {
   return (
-    &lt;ul class='list-fruits'>
-      {
-        fruits.map(fruit => &lt;li class='list-fruits__item'>{fruit}&lt;/li>)
-      }
-    &lt;/ul>
+    &lt;li class='list-fruit__item'>{props.item}&lt;/li>
   )
 }
-// Create the virtual node:
-const fruitList = FruitList(fruits)
-render(fruitList, 'section')</code><a name="createElement"></a>
+
+function List(props) {
+  return (
+    &lt;div class='container-list'>
+      &lt;ListForm />
+      &lt;ul class='list-fruit'>
+        {props.items.map(item => &lt;ListItem {...{item}}/>)}
+      &lt;/ul> 
+    &lt;/div>
+  )
+}
+
+const items = ['Apples', 'Cats', 'Hats']
+
+const events = {
+  addItem(e) {
+    const input = document.querySelector('.list-fruits__input-add')
+    const value = input.value
+    if (value) {
+      items.push(value)
+      // Pass in "list" variable from mounting:
+      render(&lt;List {...{items}}/>, list)
+      input.value = ''
+    } else {
+      alert('Please provide an item before submitting!')
+    }
+  },
+  handleEvent(e) {
+    e.target.className === 'list-fruits__button-add' && this.addItem(e)
+  }
+}
+
+const list = mount(&lt;List {...{items}}/>, 'section')
+
+document.querySelector('.container-list').addEventListener('click', events)</code>
 </pre>
 <br><br>
             

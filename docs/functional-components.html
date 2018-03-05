@@ -103,29 +103,29 @@ export function Title(name) {
 }</code>
         </pre>
 
-        <p>Both examples above create virtual nodes, so we will need a way to get them into the DOM. Composi provides the <code>render</code> function for that purpose. It works similar to React's <code>ReactDOM.render</code> function. It takes two arguments: a tag/vnode and a selector/element in which to insert the markup.</p>
+        <p>Both examples above create virtual nodes, so we will need a way to get them into the DOM. Composi provides the <code>mount</code> function for that purpose. It works similar to React's <code>ReactDOM.render</code> function. It takes two arguments: a tag/vnode and a selector/element in which to insert the markup.</p>
 
-        <p>In our <code>app.js</code> file we import <code>h</code> and <code>render</code> and then the <code>Title</code> functional component and render it to the DOM:</p>
+        <p>In our <code>app.js</code> file we import <code>h</code> and <code>mount</code> and then the <code>Title</code> functional component and insert it into the DOM:</p>
 
         <pre>
           <code class="language-javascript">
 // app.js:
-import {h, render} from 'composi'
+import {h, mount} from 'composi'
 import {Title} from './components/title'
 
 // Define data for component:
 const name = 'World'
 
-// Render the component into header tag.
+// Inject the component into header tag.
 // We pass the name variable in as a property in curly braces:
-render(&lt;Title {...{name}}/>, 'header')</code>
+mount(&lt;Title {...{name}}/>, 'header')</code>
 </pre>
 
         <p>Codepen Example:</p>
         <p data-height="300" data-theme-id="6688" data-slug-hash="MOWNMB" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOWNMB/">Composi functional-components-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-        <p>This will convert the functional component into a virtual node (vnode) and then convert that into actual nodes inside the header tag. Because a virtual node was created, we can re-render this later with new data and Composi will patch the DOM efficiently for us. In this case that would involve patching the text node of the <code>h1</code> tag.</p>
+        <p>This will convert the functional component into a virtual node (vnode) and then convert that into actual nodes inside the header tag. Because a virtual node was created, we can re-render this later using the <code>render</code> function with new data and Composi will patch the DOM efficiently for us. In this case that would involve patching the text node of the <code>h1</code> tag.</p>
 
         <h2>List with Map</h2>
         <p>Now lets create a functional component that takes an array and outputs a list of items. Notice that we are using <a href='https://css-tricks.com/bem-101/' target='__blank'>BEM</a> notation for class names to make styling easier.</p>
@@ -156,7 +156,7 @@ export const items = ['Apples', 'Oranges', 'Bananas']</code>
           <pre>
             <code class="language-javascript">
 // app.js:
-import {h, render} from 'composi'
+import {h, mount} from 'composi'
 import {Title} from './components/title'
 import {List} from './components/list'
 import {items} from './items'
@@ -164,11 +164,11 @@ import {items} from './items'
 // Define data for Title component:
 const name = 'World'
 
-// Render component into header:
-render(&lt;Title {...{name}}/>, 'header')
+// Insert component into header:
+mount(&lt;Title {...{name}}/>, 'header')
 
-// Render list component into section with items data:
-render(&lt;List {...{items}}/>, 'section')</code>
+// Insert list component into section with items data:
+mount(&lt;List {...{items}}/>, 'section')</code>
 </pre>
 
           <p>Codepen Example:</p>
@@ -246,29 +246,59 @@ export function List(props) {
           <h2>handleEvent Interface</h2>
 
           <p>We are going to use the handleEvent</code> interface to wire up events for the component. We'll do this in a separate file and import it into our <code>app.js</code> file. To use <code>handleEvent</code> with a functional component we'll need to create an object with the <code>handleEvent</code> function on it. Then we'll use a standar event listener and pass the that object instead of a callback.</p>
-          <p>Since we want to be able to add a new fruit to the list, we need to have access to the data and also the function component that renders the list. Therefore we import them into the <code>events.js</code> file.</p>
+          <p>Since we want to be able to add a new fruit to the list, we need to have access to the data and also the function component that renders the list. Therefore we add <code>events</code> object to handle that.</p>
+          <p>Notice how we assign the result of mounting the functional component to the variable <code>list</code> and use that as the secton argument of the <code>render</code> function to update the list in the <code>addItem</code> function in the <code>events</code> object:</p>
 
           <pre>
-            <code class="language-javascript">
-// events.js:
-import {h, render} from 'composi'
-import {items} from './items'
-import {List} from './components/list'
+<code class="language-javascript">import {h, mount, render} from 'composi'
+function ListForm() {
+  return (
+    &lt;p>
+      &lt;input class='list-fruits__input-add' placeholder='Enter Item...' type="text"/>
+      &lt;button class='list-fruits__button-add'>Add Item&lt;/button>
+    &lt;/p>
+  )
+}
+function ListItem(props) {
+  return (
+    &lt;li class='list-fruit__item'>{props.item}&lt;/li>
+  )
+}
 
-export const events = {
+function List(props) {
+  return (
+    &lt;div class='container-list'>
+      &lt;ListForm />
+      &lt;ul class='list-fruit'>
+        {props.items.map(item => &lt;ListItem {...{item}}/>)}
+      &lt;/ul> 
+    &lt;/div>
+  )
+}
+
+const items = ['Apples', 'Cats', 'Hats']
+
+const events = {
   addItem(e) {
-    const input = document.querySelector('.list__input--add')
+    const input = document.querySelector('.list-fruits__input-add')
     const value = input.value
     if (value) {
       items.push(value)
-      render(&lt;List {...{items}}/>, 'section')
+      // Pass in "list" variable from mounting:
+      render(&lt;List {...{items}}/>, list)
       input.value = ''
+    } else {
+      alert('Please provide an item before submitting!')
     }
   },
   handleEvent(e) {
-    e.target.className === 'list__button--add' && this.addItem(e)
+    e.target.className === 'list-fruits__button-add' && this.addItem(e)
   }
-}</code>
+}
+
+const list = mount(&lt;List {...{items}}/>, 'section')
+
+document.querySelector('.container-list').addEventListener('click', events)</code>
           </pre>
 
           <p>As you can see above, we need to get the value of the input. If the value is truthy, we push it to the items array. Then we re-render the functional component list. Because this is a different scope than <code>app.js</code> where we initially rendered the list, the first time we add an item, the list will be created a new, replacing what was there. That's because this is a different scope than <code>app.js</code>. However, with every new addition, the render function will use the new virtual dom in this scope to patch the DOM efficiently.</p>
