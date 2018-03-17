@@ -168,11 +168,12 @@ setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, header), 
           </pre>
             
           <p>When you use the Component class, you can also hydrate content rendered on the server. Read the documentation for <a href="./hydration.html">Hydration</a> to learn how to do it.</p>
-          <p>If you want to be able to create multiple instances of the same component, then you will want to use the Component class to do so. Please read the docs about <a href='./extending-component.html'>how to extend</a> the Component class</a>.</p>
+
+          <p>If you want to be able to create multiple instances of the same component, you can use <code>mount</code> to inject the functional component into different containers while providing different data for each component, and then use the mount reference to update the functional components later with <code>render</code>.</p>
 
           <h2>Summary</h2>
           <p>Use <code>mount</code> to inject a functional component into the DOM.</p>
-          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>. <code>mount</code> and <code>render</code> makes it easy to use functional components. However, class-based components offer more functionality and versitility.</p>
+          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>. <code>mount</code> and <code>render</code> make it easy to use functional components. However, class-based components offer more functionality and versitility. If you find you are having a hard time making a functional component do what you want, you should look at using a class component instead. You can learn more about them by reading the docs about <a href='./extending-component.html'>how to extend</a> the Component class</a>.</p>
           <p>&nbsp;</p>
           
       </div>
