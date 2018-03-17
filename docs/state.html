@@ -66,7 +66,7 @@
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="VrYLLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi state-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/VrYLLv/">Composi state-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>Or we can add state when extending the Component class:</p>
+          <p>Or we can add state in the component's constructor when extending the Component class:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="MOYwwq" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi state-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYwwq/">Composi state-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -77,6 +77,8 @@
 
           <h2>How State Gets Passed</h2>
           <p>When you give a component state, at render time the value of state gets passed to the <code>render</code> function as its data. No need to directly reference state inside the <code>render</code> function. So, in the above example, the value of the <code>render</code> parameter <code>message</code> will be the value of the component's state property.</p>
+
+          <p>In the case were no state is provided, the <code>render</code> function's parameter will reference any data pass to the component's <code>update</code> function.</p>
 
           <h2>Strings and Numbers as State</h2>
           <p>In our previous example we used as string as the component's state. You could also use a number. In that case you could perform Math operations with the value of the state and then reassign it back to the state to update the component.</p>
@@ -200,17 +202,17 @@ fruitsList.setState(state)</code>
               </pre>
               <p> </p>
               <h2>setState with a Callback</h2>
-              <p>One option for handling the need for complex operations when setting state is to pass a callback to the <code>setState</code> method. When you do so, the first argument of the callback will be the component's state. In the example below, notice how we get the state and manipulate it in the <code>handleClick</code> method. After doing what you need to with state, remember to return it. Otherwise the component's state will not get updated.</p>
-              <p>Notice how we use a callback in the <code>setState</code> method inside the <code>handleClick method to test what the current value of state is:</code></p>
+              <p>One option for handling the need for complex operations when setting state is to pass a callback to the <code>setState</code> method. When you do so, the first argument of the callback will be the component's state. In the example below, we get the state and manipulate it in the <code>handleClick</code> method. After doing what you need to with state, remember to return it. Otherwise the component's state will not get updated.</p>
+              <p>Notice how we use a callback in the <code>setState</code> method inside the <code>handleClick</code> method to test what the current value of state is:</p>
 
               <p>Codepen Example:</p>
               <p data-height="550" data-theme-id="6688" data-slug-hash="XzJbjQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi state-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/XzJbjQ/">Composi state-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-              <p>Be aware that whatever the callback returns will be set as the component's new state. Therefore you will need to make whatever changes to the component's whole state before returning it.</p>
+              <p>Be aware that whatever the callback returns will be set as the component's new state. Therefore you will need to make all changes to the component's whole state before returning it.</p>
 
                         <h2>componentShouldUpdate</h2>
           <p>Sometimes you need to do some complex operations on data and you don't want the component to update constantly due to changes. Or you want to render a component with some external DOM plugin, possibly jQuery. For these situations you can use the <code>comonentShouldUpdate</code> property inside the class constructor. By default it is set to true. Setting it to false causes a component to render only once. Even though the <code>update</code> function is invoked on it, or its state changes, it will not update.</p>
-          <p>You can make the component react to updates again by setting this property back to true on the component instance.</p>
+          <p>You can make the component react to updates again by setting this property back to true on the component instance. However, if you changed state before setting <code>comonentShouldUpdate</code> back to <code>true</code> and want the component to then update, you will need to do so by invoking the <code>update()</code> function on the component instance. This will use the current state.</p>
 
           <pre>
             <code class="language-javascript">
