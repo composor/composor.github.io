@@ -177,6 +177,7 @@ const result = header()
         <p> </p>
         <h2>dangerouslySetInnerHTML</h2>
         <p>By default any markup in data is escaped as a security precaution to help prevent cross-site scripting attacks. As of version 1.4.0 you can use the property <code>dangerouslySetInnerHTML</code> to inject data with markup into the document. This is highly risky. Use it only if you are absolutely sure you can trust the source of the data.</p>
+        <p>To use <code>dangerouslySetInnerHTML</code> just provide the data with the markup as the value for it. You could also use a function that returns the markup you want. There is not need to use <code>__html</code> as a property on an object like React, Inferno and Preact do. Below is an example of how to use it:</p>
 
         <pre>
           <code class="language-javascript">
