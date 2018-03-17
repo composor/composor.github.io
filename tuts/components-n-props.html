@@ -89,7 +89,7 @@
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="MOYyNg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYyNg/">Composi Tuts - Components and Props-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>This component is too complicate, so we are going to see how to break it down into smaller pieces. This is tricky because we need to pass data down to the child elements.</p>
+          <p>This component is too complicated, so we are going to see how to break it down into smaller pieces. This is tricky because we need to pass data down to the child elements.</p>
 
           <p>The first thing we'll do is extract the avatar part:</p>
           <pre>
@@ -215,7 +215,7 @@ function withdraw(account, amount) {
           <p>You should strive to make components act like pure functions with respect to their props. Of course, UI applications are dynamic and have user interactions. To handle these you can create stateful components. State allows components to change their output over time or due to user interaction without violating the pinciple of purity.</p>
 
           <h2>The Component Class</h2>
-          <p>The Component class provides a useful API for makig more complex components than possible with functional components. There are two ways to use the Component class: using it straight away by creating an instance of it, or by extending it.</p>
+          <p>The Component class provides a useful API for makig more complex components than is possible with functional components. There are two ways to use the Component class: by creating an instance of it, or by extending it.</p>
 
           <pre>
             <code class="language-javascript">
@@ -229,7 +229,7 @@ class Title extends Component {
   }
 }</code>
           </pre>
-          <p>Right now we're going to look at extending Component. To learn about the component instance, refer to the <a href='../docs/component-instance.html' target="__blank">docs</a>.</p>
+          <p>Next we're going to look at extending Component. To learn about the component instance, refer to the <a href='../docs/component-instance.html' target="__blank">docs</a>.</p>
           <p>As you can see above, to extend the Component class we usually need to include a constructor. This needs to have props passed all the way down to the Class <code>super</code>.</p>
           <p>After that we need to tell the component where it should render. For that we use the <code>container</code> property. We also need to define a <code>render</code> funtion. Its purpose is to return the markup for the comonent.</p>
 
