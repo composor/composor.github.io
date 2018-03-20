@@ -69,8 +69,8 @@
 
          <p data-height="300" data-theme-id="6688" data-slug-hash="qVEXxL" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/qVEXxL/">Composi Tuts - events-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>In our above example we did two things. We create a method to handle the event, <code>announce</code>. And we put an online event handler directingly on the element we expect the user to click, in this case, the <code>h1</code>. Notice that we use the <code>this</code> keyword to access the component method inside the event handler. Now whenever the user clicks, they'll get an alert of the text of the <code>h1</code>. The above example was very simple, we just used the event target to get the text content. If we need to access over parts of the component, it get's more complicate.</p>
-          <h2>Binding "This"</h2>
+          <p>In our above example we did two things. We create a method to handle the event, <code>announce</code>. And we put an online event handler directingly on the element we expect the user to click, in this case, the <code>h1</code>. Notice that we use the <code>this</code> keyword to access the component method inside the event handler. Now whenever the user clicks, they'll get an alert of the text of the <code>h1</code>. The above example was very simple, we just used the event target to get the text content. If we need to access over parts of the component, it get's more complicated.</p>
+          <h2>Binding "this"</h2>
           <p>We're going to change our Hello example so that the user can enter a different name. For that we'll need to add an input and a button to submit:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="WXbEJp" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - events-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/WXbEJp/">Composi Tuts - events-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -220,7 +220,7 @@ handleEvent(e) {
   e.target.closest('li') && this.announce(e)
 }</code>
           </pre>
-          <p>Now this list item can have as many child element as needed without complicating handling the event target.</p>
+          <p>Now this list item can have as many child elements as needed without making it complicated to capture the event target.</p>
 
           <h2>Removing the Event for handleEvent</h2>
           <p>If you plan on deleting a component from the DOM, you need to unbind its eventListener. This is really easy when you use <code>handleEvent</code>. Just provide the event and <code>this</code>. Composi provides a method to remove a component: <code>unmount</code>. To remove the event and unmount the component, we could do this:</code></p>
