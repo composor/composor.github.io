@@ -113,7 +113,7 @@ class List extends Component {
           <p>The above works. If you don't like create the list items outside the class, you could move it inside the <code>render</code> function but before the <code>return</code> statement.</p>
 
           <h2>Keys</h2>
-          <p>When you have a list created by a component, you may need to re-order them. When Composi deals with lists, it uses its virtual dom to see how to path the DOM. The nature of lists makes it very difficult to actually identify what needs to be changed in an efficient manner, resulting in whole scale re-rendering of a list. You can eliminate this problem by using keys on your lists. Keys are just unique values for each item in the list. <strong>Note:</strong> You should never use the array index as keys. This is because if you change the order of the array items, the index values remain the same. This makes the keys useless for discerning what has changed. Key values only need to be unique to the array being parsed.</p>
+          <p>When you have a list created by a component, you may need to re-order them. When Composi deals with lists, it uses its virtual dom to see how to path the DOM. The nature of lists makes it very difficult to actually identify what needs to be changed in an efficient manner, resulting in whole scale re-rendering of a list. You can eliminate this problem by using keys on your lists. Keys are just unique values for each item in the list. <strong>Note:</strong> You should never use the array index as keys. This is because if you change the order of the array items, the index values remain the same. This would make the keys using the array index useless for discerning what changed. Key values need to be unique, but only to the array being parsed. You can reuse keys in other arrays. Keys are never output to the DOM, they are stored in the virtual dom.</p>
           <p>You use keys by having a key value exist in the array you are using. And then you output that key value on each list item. You could import a uuid module from NPM, or you could come up with your own function to create a unique id. We'll do that with our list example from above:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="vWEedg" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - list-keys-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/vWEedg/">Composi Tuts - list-keys-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -125,6 +125,8 @@ class List extends Component {
 
           <pre>
             <code class="language-javascript">
+import {uuid} from 'uuid'
+
 // Bad practice - creating key on list item when it is created:
 return (
   &lt;ul class='list'>
