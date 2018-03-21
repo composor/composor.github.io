@@ -131,11 +131,8 @@ npm i</code>
 
             <pre>
               <code class="language-bash">
-// For Composi version 1.3.0 or later
-npm start
-
-// For older versions:
-npm run build</code>
+// Build and run app in browsers:
+npm start</code>
             </pre>
 
             <p>This will also start a Node server instance and launch the project in your default browser. If you'd like to use a different browser, you can do so by opening your project's <code>gulpfile.js</code>. look for the <code>gulp</code> task called "serve". In the Browsersync configuration you can add a property for <code>browser</code> with the browser you want the project build to use. The naming convention for browsers in the configuration vary by operating system. To learn more about configuring Browsersync, read the <a target='__blank' href='https://www.browsersync.io/docs/options#option-browser'>docs</a>.</p>
@@ -145,7 +142,7 @@ npm run build</code>
             <p>To use it from a CDN, just import Composi with a scritp tag:</p>
             <pre>
               <code class='language-html'>
-&lt;script src='https://unpkg.com/composi@1.0.0/dist/composi.js'>&lt;/script></code>
+&lt;script src='https://unpkg.com/composi@latest/dist/composi.js'>&lt;/script></code>
             </pre>
             <p>You can then use Composi using its <code>h</code> function to define markup. Here's a simple Hello World:</p>
             <pre>
