@@ -215,13 +215,10 @@ addNewRow(e) {
   productInput.value = ''
   priceInput.value = ''
   quantityInput.value = ''
-  // Get the component state:
-  const state = this.state
   // Check if user entered a product name:
   if (product) {
     // Update component state with new product:
-    state.push({product, price, quantity})
-    this.state = state
+    this.setState(prevState => prevState.push({product, price, quantity}))
   } else {
     // User hit Add button without entering product:
     alert('Please provide a product name before trying to add a row.')
@@ -275,9 +272,7 @@ updateQuantity(e) {
   // With that we can update the state.
   const index = e.target.dataset.index
   const value = Number(e.target.value)
-  const state = this.state
-  state[index].quantity = value
-  this.state = state
+  this.setState(prevState => prevState[index].quantity = value)
 }
 
 updatePrice(e) {
@@ -285,9 +280,7 @@ updatePrice(e) {
   // With that we can update the state.
   const index = e.target.dataset.index
   const value = Number(e.target.value)
-  const state = this.state
-  state[index].price = value
-  this.state = state
+  this.setState(prevState => prevState[index].price = value)
 }</code>
           </pre>
           <p>Then we need to update the <code>componentDidMount</code> hook and the <code>handleUpdate</code> method:</p>
@@ -317,10 +310,7 @@ componentDidMount() {
             <code class="language-javascript">
 deleteRow(e) {
   const index = e.target.dataset.index
-  console.log(index)
-  const state = this.state
-  state.splice(index, 1)
-  this.state = state
+  this.setState(prevState => prevState.splice(index, 1))
 }
             </code>
           </pre>
