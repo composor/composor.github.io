@@ -318,6 +318,50 @@ document.querySelector('.container-list').addEventListener('click', events)</cod
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p> </p>
 
+          <h2>Lifecycle Hooks</h2>
+          <p>Functional components have three lifecycle hooks: <code>onComponentDidMount</code>, <code>onComponentDidUpdate</code> and <code>onComponentDidUnmount</code>. These are just like the lifecycle hooks of the same name available on class components. Lifecycle hooks are useful for setting up events when a component mounts, fetching data, or dealing with the environment after a component is updated or deleted. In class components these are methods, but on fuctional components these are <code>props</code> and follow the same pattern for setting up inline events.</p>
+
+          <h3>Using Lifecycle Hooks</strong></h3>
+          <p>To use lifecycle hooks on a functional component you need to set them up as a property on the component with a function for the action to be executed when the hook is called. Notice how we do this below:</p>
+
+<pre><code class="language-javascript">// Define event handler for list:
+const listEvent = {
+  handleEvent(e) {
+    e.target.nodeName === 'LI' && alertItem(e)
+  },
+  alertItem(e) {
+    alert(`You chose: ${e.target.textContent.trim()}.`)
+  }
+}
+
+// Function to attach event after mounting:
+function setupListEvent(element) {
+  // Use event handler object:
+  element.addEventListener('click', listEvent)
+}
+
+// Functional component to create list:
+function List({items}) {
+  return (
+    // Attach onComponentDidMount lifecycle hook:
+    &lt;ul class="list" onComponentDidMount={(element) => setupListEvent(element)}</ul>}>
+      {
+        data.map(item => &lt;li>{item}&lt;/li>)
+      }
+    &lt;/ul>
+  )
+}
+</code></pre>
+          <a name="lifecyle"></a>
+          <p> </p>
+          <h3>Lifecycle Hook Arguments</h3>
+          <p><code>onComponentDidMount</code> exposes the base element of the container. This is the same as <code>Component.element</code> in a class-based component. You can use this to attach events, or query the component DOM tree.</p>
+          <p><code>onComponentDidUpdate</code> exposes the old props, the new props and the functional component's base element. You can compare the old and new props to find out what changed.</p>
+          <p><code>onComponentDidUnmount</code> fires after the component has been removed from the DOM. It gets passed its parent as its argument. You can use this lifecycle hook to do some environmental cleanup after the component is deleted. You can use this lifecycle hook on a functional component's children, such a list items of a list.</p>
+
+
+
+          <p> </p>
           <h2>Component Class Advantages</h2>
 
           <p>Although you can build a complex app using nothing but functional components, there are certain conveniences when using the Component class. First and foremost is the fact that classes allow you to encapsulate functionality using properties and methods defined directly on the component. The second is the component itself enables more efficient use of the virtual dom because it keeps track of that internally. Because of this, you can have multiple class components in the same container. With functional components, because the virtual dom is created and handle by the <code>render</code> function, there can only be one functional component in each container.</p>

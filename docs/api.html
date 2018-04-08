@@ -473,8 +473,8 @@ title.setState('Harry Potter')</code><a name='unmount'></a>
             
             <p> </p>
             <h2>Component - unmount</h2>
-            <p>If you want to destroy a comonent, removing it from the DOM, you will use this method. It gets executed on the component instance. <code>unmount</code> deletes the component base element from the DOM and nulls out all its properties on its instance for garbage collection. As of version 1.2.0, when Composi unmounts a component, it will attempt to unbind a white list of events, passing the component reference to it. This will unbind the events if you used the <code>handleEvent</code> interface. If you used callbacks for events, then you will need to unbind them by passing a refernce to the callback to prevent memory leaks. For earlier versions of Composi it is your responsibility to unbind any events before unmounting to prevent memory leaks.</p>
-            <p>Here is the white list of events that get removed automatically:</p>
+            <p>If you want to destroy a comonent, removing it from the DOM, you will use this method. It gets executed on the component instance. <code>unmount</code> deletes the component base element from the DOM and nulls out all its properties on its instance for garbage collection. As of version 1.2.0, when Composi unmounts a component, it will attempt to unbind a whitelist of events, passing the component reference to it. This will unbind the events if you used the <code>handleEvent</code> interface. If you used callbacks for events, then you will need to unbind them by passing a reference to the callback to prevent memory leaks.</p>
+            <p>Here are the events that get removed automatically:</p>
             <ul>
               <li>click</li>
               <li>dblclick</li>
@@ -484,6 +484,10 @@ title.setState('Harry Potter')</code><a name='unmount'></a>
               <li>mouseout</li>
               <li>mouseover</li>
               <li>mouseleave</li>
+              <li>pointercancel</li>
+              <li>pointerdown</li>
+              <li>pointermove</li>
+              <li>pointerup</li>
               <li>select</li>
               <li>input</li>
               <li>change</li>
