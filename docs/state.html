@@ -178,13 +178,13 @@ userList.setState({job: 'Rock Star'}, 0)</code>
               <code class="language-javascript">
 // Proper way to update an object in an array.
 // Get the Joe Bodoni user from state:
-const state = userList.state[0]
+const newState = userList.state[0]
 
 // Set job to new value:
-state.job = 'Rock Star'
+newState.job = 'Rock Star'
 
 // Update component's state:
-userList.setState(state)</code>
+userList.setState(newState)</code>
 </pre>
               <p> </p>
               <h2>Complex State Operations</h2>
@@ -192,13 +192,13 @@ userList.setState(state)</code>
               <pre>
                 <code class="language-javascript">
 // Get the component's state:
-const state = fruitsList.state
+const newState = fruitsList.state
 
 // Reverse the array:
-state.reverse()
+newState.reverse()
 
 // Set the component's state with the new state:
-fruitsList.setState(state)</code>
+fruitsList.setState(newState)</code>
               </pre>
               <p> </p>
               <h2>setState with a Callback</h2>
