@@ -99,7 +99,9 @@ list.state = ['Stawberries', 'Peaches', 'Blueberries']</code>
           <p><strong>Note:</strong> When implementing serve-side rendering and component hydration, it's best to use ids for the parts you want to hydrate. That way it's easier for Composi to identify unique parts of the static HTML to take over.</p>
 
           <h2>Hydrating with Function Components</h2>
-          <p>If you wish to hydrate server-rendered content with functional components, you will need to use the <code>render</code> function and pass it a reference to the server-rendered element to update. Please read the docs for <a href="./render.html">Mount/Render</a> for more details.</p>
+          <p>If you wish to hydrate server-rendered content with functional components, you will need to use the <code>mount</code> function and pass it a third argument with a reference to the DOM tree to hydrate, or a valid CSS selector to that node in the DOM. Please read the docs for the <a href="./api.html#mount-hydration">mount function</a> for more details.</p>
+
+
           
       </div>
 

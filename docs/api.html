@@ -159,9 +159,9 @@ const list = h(
 
             <br><br>
             <h2>mount</h2>
-            <p>When using functional components you use the <code>mount</code> function to inject the component into the DOM for the first time. After that, if you need to update it, you would use the <code>render</code> function described next.</p>
+            <p>When making functional components you use the <code>mount</code> function to inject the component into the DOM for the first time. After that, if you need to update it, you would use the <code>render</code> function described next.</p>
             <p>The <code>mount</code> function always returns the base element of the mounted component. If you intend to update the component with the render function, you need to capture that reference in a variable so you can pass it to the <code>render</code> function.</p>
-            <p>The <code>render</code> function takes two arguments: the tag to create and the container in which to insert the component. Notice how we do this:</p>
+            <p>The <code>mount</code> function takes two arguments: the tag to create and the container in which to insert the component. Notice how we do this:</p>
             <pre>
 <code class="language-javascript">
     import {h, mount} from 'composi'
@@ -176,8 +176,28 @@ const list = h(
     
     // Mount the component in the header tag:
     mount(&lt;Title message='Hello World!'/>, 'header')
-</code><a name='render'></a>
+</code><a name='mount-hydration'></a>
 <br></pre>
+          <p> </p>
+          <h2>Hydration with mount</h2>
+          <p>You can use the mount function to hydrate server-rendered markup with a functional component. To do so, just provide a third argument for the mount function, which should reference the DOM tree to hydrate. This can be a DOM reference of a valid CSS selector for the node.</p>
+          <pre>
+<code class="language-javascript">// Markup in html from server:
+&lt;h1 id='special-title'>The Old Title&lt;/h1>
+
+// Functional component for new title:
+function Title({content}) {
+  return (
+    &lt;h1 id='special-title'>{content}&lt;/h1>
+  )
+}
+
+// Hydrate server makup with new component:
+mount(&lt;Title content='The New Title' />, 'header', '#special-title')
+</code></pre>
+
+          <p><a name='render'></a>In the above markup, the second argument is the container in which to render the functional component. The third argument refers to a node in the container's DOM that the functional component should update. In the example above the DOM node target and the functional component are the same node type and have the same ID. This is not required. The functional component can replace the server-rendered DOM tree with a completely different tree.</p>
+
 <p> </p>
 <p> </p>
             

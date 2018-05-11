@@ -166,8 +166,10 @@ const header = document.querySelector('.header')
 // Pass in `header` from above as second argument:
 setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, header), 5000)</code>
           </pre>
-            
-          <p>When you use the Component class, you can also hydrate content rendered on the server. Read the documentation for <a href="./hydration.html">Hydration</a> to learn how to do it.</p>
+          
+          <p> </p>
+          <h2>Hydration</h2>
+          <p>You can use functional components to hydrate markup that was rendered on the server. Of course this needs to happen at load time. You can do this using the <code>mount</code> function. Please read the <a href='./api.html#mount-hydration'>API documentation for mount</a> for more details about how to use it to hydrate server-rendered markup with functional components.</p>
 
           <p>If you want to be able to create multiple instances of the same component, you can use <code>mount</code> to inject the functional component into different containers while providing different data for each component, and then use the mount reference to update the functional components later with <code>render</code>.</p>
 
