@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual dom to make efficient updates to the DOM based on a component's data or state.">
+  <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual DOM to make efficient updates to the DOM based on a component's data or state.">
   <meta name="keywords" content="javascript, framework, performance, small, fast, UI, programming, code, component, composi, chocolatechipui, chocolatechip-ui, reactive, virtual dom">
   <title>Composi - Docs</title>
   <link rel="stylesheet" href="../css/styles.css">
@@ -62,7 +62,7 @@
           <h1>State</h1>
           <p class="docs__intro">Components can be stateless or stateful. There are advantages to both. Chose the right one depending on use case. For example, if a component will only display the result of some other action, make it stateless and pass it the data it needs. If the data of a component can change at unpredictable times, make it stateful. That way, when its data changes, it will update automatically. If you have a fixed dataset and the component will never need to be rendered again during the session, make it stateless and pass it the data.</p>
 
-          <p>When you give a component state, Composi assigns the state getters and setters. Setting state causes the component to render a new virtual dom, diff it with the old virtual dom, and if there are differences, update the actual DOM. As such, the assignment of data to a component's state will trigger an update. Setting state directly is ideal for primitive data types, such as string, numbers:</p>
+          <p>When you give a component state, Composi assigns the state getters and setters. Setting state causes the component to render a new virtual DOM, diff it with the old virtual DOM, and if there are differences, update the actual DOM. As such, the assignment of data to a component's state will trigger an update. Setting state directly is ideal for primitive data types, such as string, numbers:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="VrYLLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi state-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/VrYLLv/">Composi state-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -127,7 +127,7 @@ helloWorld.setState('everybody')</code>
 // This assignment will not work:
 personComponent.state.job = 'Web Developer'</code>
               </pre>
-              <p>Instead of trying to assign a property of the state object, we need to use the <code>setState</code> method. To update a state object property, we pass in an object with that property and the new value. Behind the scenes, <code>setState</code> will mixin the new object with the state object. Then it will create a new virtual dom and patch the actual DOM to reflect those changes:</p>
+              <p>Instead of trying to assign a property of the state object, we need to use the <code>setState</code> method. To update a state object property, we pass in an object with that property and the new value. Behind the scenes, <code>setState</code> will mixin the new object with the state object. Then it will create a new virtual DOM and patch the actual DOM to reflect those changes:</p>
               <pre>
                 <code class="language-javascript">
 // Update the job property of the component's state:
