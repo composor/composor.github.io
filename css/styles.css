@@ -876,3 +876,9 @@ footer a:hover {
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
+
+.resize-image {
+  width: 75%;
+  height: auto;
+  min-width: 280px !important;
+}

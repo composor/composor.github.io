@@ -59,60 +59,83 @@
   <article class='docs__article'>
     <section>
       <div class='docs'>
-          <h1>Lifecycle Methods</h1>
-          <p class="docs__intro">Class-based components have the following five lifecycle methods:</p>
+        <h1>Handling Element Attributes</h1>
+        <p class="docs__intro">Often you need to dynamically add attributes to elements. Here we explain how Composi lets you do this. Follow these directions exactly to avoid unexpected results.</p>
+        <p>According to the documentation for <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute">Element.setAttribute</a>, it expects a string. Often when we are managing attributes and properties in code, we use values that are booleans or numbers. When you pass these to <code>Element.setAttribute</code>, it automatically coerces them to strings.</p>
+        <p>To make it easier for you to control whether an attribute or property is set by a boolean value or removed, Composi handles these values in a particualr way. These are listed below:</p>
 
-          <ol>
-            <li>componentWillMount</li>
-            <li>componentDidMount</li>
-            <li>componentWillUpdate</li>
-            <li>componentDidUpdate</li>
-            <li>componentWillUnmount</li>
-          </ol>
-        
+        <ul>
+          <li>disabled={false} - attribute is removed</li>
+          <li>disabled='false' - attribute is removed</li>
+          <li>disabled={true} - element is disabled</li>
+          <li>disabled={0} - attribute is removed because 0 is falsy</li>
+          <li>disabled={null} - attribute is removed</li>
+          <li>disabled={undefined} - attribute is removed</li>
+        </ul>
+        <p>Any other values applied to the attribute disabled will result in it being attached to the element.</p>
 
-          <p>As of version 2.1.0, you can also use lifecycle hooks with functional components. Check <a target='_blank' href='./functional-components.html#lifecyle'>the documentation</a> to learn more.</p>
+        <p>The <code>translate</code> attribute is not yet well supported in browsers, and therefore setting it has some quirks. By default, all elements are translatable. To make an element untranslatable, set its value to no. Using any other value, including  false, null, undefined, etc. will result in the attribute being supported.</p>
+        <ul>
+          <li>translate={true} - attribute is added</li>
+          <li>translate={false} - attribute is added</li>
+          <li>translate='false' - attribute is added</li>
+          <li>translate='no' - attribute is removed</li>
+        </ul>
 
-          <p>Lifecycle methods are hooks that let you implement maintenance, register or remove events, and clean up code based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
+        <p>Seeting an input to autocomplete:</p>
+        <ul>
+          <li>autocomplete='on' - autocomplete will be enabled</li>
+          <li>autocomplete='off' - autocomplete will be disabled</li>
+        </ul>
 
-          <p><code>componentWillMount</code> is executed before the component is created and inserted into the DOM. If you need to access the DOM, set up an event, or make a network request for remote resources, use the <code>componentDidMount</code> hook.</p>
-          <p><code>componentDidMount</code> is executed after the component is inserted into the DOM. This is the place to set up events, access the child nodes of the component, or make a request for remote resources over the network.</p>
-          <p><code>componentWillUpdate</code> is executed right before the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
-          <p><code>componentDidUpdate</code> is executed immediately after the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.</p>
-          <p><code>componentWillUnmount</code> is executed before a component is unmounted with its <a href='file:///Users/rbiggs/Git/composor.github.io/docs/api.html#unmount' target='__blank'>unmounted</a> method. Remember that this is asynchronous. If you have a number of things to do before unmounting a component, it is best to do those first in a separate routine and then unmount the component. If you need to do some clean up that does not directly involve the component itself, then you can use this lifecycle hook.</p>
+        <p>For other types of attributes, values work as follows:</p>
+        <ul>
+          <li>attribute={false} - attribute is removed</li>
+          <li>attribute='false' - attribute is removed</li>
+          <li>attribute={undefined} - attribute is removed</li>
+          <li>attribute='undefined' - attribue is removed</li>
+          <li>attribute={null} - attribute is removed</li>
+          <li>attribute='null' - attribute is removed</li>
+        </ul>
+        <p>Any other values will result in the attribute being set.</p>
 
-          <h2>Lifecycle Methods are Asynchronous</h2>
-          <p>When using lifecycle methods, be aware that they are asynchronous. For example, with `componentWillMount` your component will probably be created and inserted into the DOM before your method can finish. Similarly, when using `componentWillUnmount`, the component will probably be unmounted and destroyed before your code in this method completes. If you want to handle these two in a synchronous manner for tighter control, you have two choices. Use a method that returns a promise, or use the <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/async_function' target='__blank'>ES7 async functions</a>. If your browser target includes IE9, you will need to polyfill promises for either of these to work.</p>
+        <p></p>
+        <h1>Types and Type Safety</h1>
+        <p class="docs__intro">TypeScript and Flow allow developers to code with type checking during build time. Although Composi is written in ES6, it also provides builtin support for type checking when using <a target="_blank" href='https://code.visualstudio.com/docs/languages/javascript'>Visual Studio Code</a>. Using Webstorm you get a very minimalistic version of code completion. The Atom editor has the most rudimentary of the three. If type checking is something you're interested in, then you should consider using Composi with Visual Studio Code. It's free and runs on Mac, Linux and Windows.</p>
+        <h3>Enabling Type Checking</h3>
+        <p>Open Visual Studio Code and navigate to Preferences> Settings. Add the followin line to your settings configuration: <code>
+          "javascript.implicitProjectConfig.checkJs": true</code>. Below is a sample configuration file for JavaScript intellisense in Visual Studio Code. The last line enables type checking.</p>
+        <pre>
+<code class="language-javascript">{
+  "editor.fontSize": 12,
+  "editor.tabSize": 2,
+  "editor.fontLigatures": true,
+  "editor.wordWrap": "on",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": false,
+    "editor.wordBasedSuggestions": false
+  },
+  "editor.wordBasedSuggestions": true,
+  "editor.parameterHints": true,
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.includeLanguages": {
+    "javascript":"javascriptreact"
+  },
+  "npm.enableScriptExplorer": true
+  "javascript.implicitProjectConfig.checkJs": true,
+}
+</code></pre>
 
-          <h2>Order of Execution</h2>
-          <p>The first time a component is rendered, <code>componentWillMount</code> and <code>componentDidMount</code> will be executed. <code>componentWillUpdate</code> and <code>componentWillUpdate</code> will not be executed at this time. After the component is created, each render will fire <code>componentWillUpdate</code> and <code>componentWillUpdate</code>. So, if you want to do something when the component is initially created and after it updates, you would need to do this:</p>
-
-          <pre>
-            <code class="language-javascript">
-class List extends Component {
-  //... setup here.
-  componentDidMount() {
-    // Do stuff after component was created.
-  }
-  componentDidUpdate() {
-    // Do stuff every time component is updated.
-  }
-}</code>
-          </pre>
-          <p> </p>
-          <h2>Lifecycle Methods with Component Instance</h2>
-          <p>In the following example we use <code>componentDidMount</code> to start a timer and <code>componentWillUnmount</code> to terminate the timer.</p>
-          <p>In our first example of lifecycle methods, we'll use a Component instance. This poses several problems for the lifecycle methods. They do not have access to the component itself. This forces us to use global variables to pass things around.</p>
-
-          <p data-height="450" data-theme-id="6688" data-slug-hash="MOYKxG" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi lifecycle-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYKxG/">Composi lifecycle-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p> </p>
-          <h2>Lifecycle Methods with Extended Component</h2>
-          <p>When we create a new component by extending the Component class, we can access component properties directly through the `this` keyword. This is so because we define the lifecycle methods as class methods. Notice how we do this in the example below.</p>
-
-          <p data-height="450" data-theme-id="6688" data-slug-hash="OOPMGW" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi lifecycle-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/OOPMGW/">Composi lifecycle-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p>&nbsp;</p>
+  <p>Below is an example of a hint that appears as you enter code, enabling arrows keys for navigation and tab key for selecting a hint for code completion.</p>
+  <p><img class='resize-image' src="../images/hints.png" alt='function hint'></p>
+  <p>Below is an example of a definition that appears when you hover over code symbols in your project.</p>
+  <p><img class='resize-image' src="../images/definition.png" alt='function hint'></p>
+  <p>Below is an example of Visual Studio Code showing what the call signature is for a method.</p>
+  <p><img class='resize-image' src="../images/call-signature.png" alt='function hint'></p>
+        <p>Many other features are provided as well, such as definition peak, go to definition, renaming symbols across files for enhanced refactoring, etc. Visit the site and check the documention for its <a target='_blank' href="https://code.visualstudio.com/docs/languages/javascript">JavaScript editing environment</a> and its <a target='_blank' href="https://github.com/Microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio">JavaScript language service</a>.</p>
+        <p></p>
           
       </div>
 
@@ -149,7 +172,7 @@ class List extends Component {
             <li class="docs__menu__item">
               <a href='./styles.html'>Styles</a>
             </li>
-            <li class="docs__menu__item selected">
+            <li class="docs__menu__item">
               <a href='./lifecycle-methods.html'>Lifecycle Methods</a>
             </li>
             <li class="docs__menu__item">
@@ -167,7 +190,7 @@ class List extends Component {
             <li class="docs__menu__item">
               <a href='./about.html'>About</a>
             </li>
-            <li class="docs__menu__item">
+            <li class="docs__menu__item selected">
               <a href='./misc.html'>Attributes &amp; Types</a>
             </li>
           </ul>
