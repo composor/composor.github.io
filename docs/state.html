@@ -136,13 +136,18 @@ personComponent.setState({job: 'Web Developer'})</code>
 
               <p> </p>
               <h2>Updating Array State</h2>
-              <p>When a component has an array as state, you need to provide a second argument for <code>setState</code>: the index of the array where you want to make the index. For instance, suppose we have a component <code>fruitList</code> that prints out a list of fruits. We notice that the third item in the list is mispelled and want to update it. We can do that as follows:</p>
+              <p>When a component has an array as state, you need to use a callback with <code>setState</code>. For instance, suppose we have a component <code>fruitList</code> that prints out a list of fruits. We notice that the third item in the list is mispelled and want to update it. We can do that as follows:</p>
               <pre>
                 <code class="language-javascript">
 fruitList.state = ['Apples', 'Oranges', 'Pinpalpes', 'Bananas']
 
 // Use second argument for index in the array you want to update:
-fruitList.setState('Pinapples', 2)</code>
+fruitList.setState(prevState => {
+  // Use array splice to replace mispelling:
+  prevState.splice(2, 1, 'Pineapples')
+  // Don't forget to return the new state:
+  return prevState
+}</code>
 </pre>
                 <p> </p>
                 <h2>Updating state for Array of Objects</h2>
@@ -167,25 +172,17 @@ const people = [
   }
 ]</code>
 </pre>
-            <p>This array is used as the state for a component of users. We want to update Joe's job to Rock Star. You might try to do this:</p>
+            <p>This array is used as the state for a component of users. We want to update Joe's job to Rock Star. To update the job, use a callback, make the transform on the state and return it:</p>
             <pre>
               <code class="language-javascript">
-// Update job for Joe Bodoni:
-userList.setState({job: 'Rock Star'}, 0)</code>
-            </pre>
-            <p>Doing the above will actually replace whatever is currently at index 0 with the new object with just the job property. That's because when you use <code>setState</code> on an array with an index value, Composi uses that information to splice the array. As such it is not possible to update an array of objects with <code>setState</code>. To do so you will need to get the state, perform whatever transform you need and then re-assign the state with the new array:</p>
-            <pre>
-              <code class="language-javascript">
-// Proper way to update an object in an array.
-// Get the Joe Bodoni user from state:
-const newState = userList.state[0]
-
-// Set job to new value:
-newState.job = 'Rock Star'
-
-// Update component's state:
-userList.setState(newState)</code>
+// Update the fist user's job to 'Rock Start':
+userList.setState(prevState => {
+  prevState[0].job = 'Rock Star'
+  // Return prevState to udpate component:
+  return prevState
+})</code>
 </pre>
+              <p>Before version 2.4.0 you could update arrays by passing a second argument for the position in the array. That has since been removed in favor of <code>setState</code> with a callback to be inline with how React, Preact and Inferno work.</p>
               <p> </p>
               <h2>Complex State Operations</h2>
               <p>As we saw in our last example of arrays, sometimes you will need to get the state, operate on it separately and then set the component's state to that. For example, if you need to use map, filter, sort or reverse on an array, you'll want to get the complete state and perform these operations. Aftwards you can just set the state:</p>
