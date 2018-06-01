@@ -300,15 +300,14 @@ class List extends Component {
       return (
         &lt;Fragment>
           {
-            items.map(item => &lt;li>{item}&lt;/li>)
+            items.map(item => &lt;li key={item.key}>{item.value}&lt;/li>)
           }
         &lt;/Fragment>
       )
     }
     return (
       &lt;ul>
-        &lt;ListItems items={this.state}>
-        &lt;ListItems>
+        &lt;ListItems items={this.state} />
       &lt;/ul>
     )
   }
@@ -317,7 +316,9 @@ class List extends Component {
 new List()</code>
         </pre>
 
-        <p>Because Fragment just returns their children, if you nest them, when you return them their children will be flattens. Notice what the following exaple returns:/p>
+        <p>The Fragment tag does not accept props, since it does not get rendered. However, you can define a custom tag, as we did in the above example, that accepts props and passes them to the Fragment tag's children.</p>
+
+        <p>Because Fragment just returns their children, if you nest them, when you return the main Fragment, its children will be flattened. Notice what the following example returns:</p>
 
 
         <pre>
@@ -355,7 +356,9 @@ render(&lt;Items letters={letters}/>, document.body)
 &lt;/main>
 </code></pre>
 
-        <p>Fragment tags cannot be inserted directly into the DOM. They do need to be enclosed in an HTML tag.</p>
+        <p>Fragment tags cannot be inserted directly into the DOM. They do need to be enclosed in an HTML tag. Trying to inject a Fragment tag directly into the DOM with log the following error message:</p>
+
+        <p class='error-message'>Cannot insert Fragment tag directly into DOM.</p>
 
         <p> </p>
         <h2>Components with Same Container</h2>

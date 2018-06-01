@@ -882,3 +882,9 @@ footer a:hover {
   height: auto;
   min-width: 280px !important;
 }
+
+.error-message {
+  color: red;
+  background-color: #2d2d2d;
+  padding: 1em;
+}
