@@ -888,3 +888,17 @@ footer a:hover {
   background-color: #2d2d2d;
   padding: 1em;
 }
+
+
+.table-header {
+  background-color: #eee;
+}
+th, td {
+  padding: 5px;
+}
+table {
+  border: solid 1px #ccc;
+}
+th + th, td + td {
+  border-left: solid 1px #ccc;
+}

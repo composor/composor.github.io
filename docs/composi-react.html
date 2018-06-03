@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual DOM to make efficient updates to the DOM based on a component's data or state.">
+  <meta name="keywords" content="javascript, framework, performance, small, fast, UI, programming, code, component, composi, chocolatechipui, chocolatechip-ui, reactive, virtual dom">
+  <title>Composi - Docs</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/prism-tomorrow.css">
+</head>
+<body class='documentation-page'>
+  <nav>
+    <ul class='nav--menu'>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../index.html">
+          <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Composi Logo</title>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Composi-Logo-Solid" fill="#fff">
+                <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></patr>
+              </g>
+            </g>
+          </svg>
+        <span class='logo__link--text'>Composi</span></a>
+      </li>
+      <li class='nav--menu__item selected'>
+        <a class='nav--menu__item__link' href="./installation.html">Docs</a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../tuts/index.html">Tutorials</a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link external' target='__blank' href="https://github.com/composor/awesome-composi">Resources
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="14px" height="14px" viewBox="0 0 511.626 511.627" style="enable-background:new 0 0 511.626 511.627;"
+	 xml:space="preserve">
+  <path fill='#fff' d="M392.857,292.354h-18.274c-2.669,0-4.859,0.855-6.563,2.573c-1.718,1.708-2.573,3.897-2.573,6.563v91.361
+    c0,12.563-4.47,23.315-13.415,32.262c-8.945,8.945-19.701,13.414-32.264,13.414H82.224c-12.562,0-23.317-4.469-32.264-13.414
+    c-8.945-8.946-13.417-19.698-13.417-32.262V155.31c0-12.562,4.471-23.313,13.417-32.259c8.947-8.947,19.702-13.418,32.264-13.418
+    h200.994c2.669,0,4.859-0.859,6.57-2.57c1.711-1.713,2.566-3.9,2.566-6.567V82.221c0-2.662-0.855-4.853-2.566-6.563
+    c-1.711-1.713-3.901-2.568-6.57-2.568H82.224c-22.648,0-42.016,8.042-58.102,24.125C8.042,113.297,0,132.665,0,155.313v237.542
+    c0,22.647,8.042,42.018,24.123,58.095c16.086,16.084,35.454,24.13,58.102,24.13h237.543c22.647,0,42.017-8.046,58.101-24.13
+    c16.085-16.077,24.127-35.447,24.127-58.095v-91.358c0-2.669-0.856-4.859-2.574-6.57
+    C397.709,293.209,395.519,292.354,392.857,292.354z"/>
+  <path fill='#fff' d="M506.199,41.971c-3.617-3.617-7.905-5.424-12.85-5.424H347.171c-4.948,0-9.233,1.807-12.847,5.424
+    c-3.617,3.615-5.428,7.898-5.428,12.847s1.811,9.233,5.428,12.85l50.247,50.248L198.424,304.067
+    c-1.906,1.903-2.856,4.093-2.856,6.563c0,2.479,0.953,4.668,2.856,6.571l32.548,32.544c1.903,1.903,4.093,2.852,6.567,2.852
+    s4.665-0.948,6.567-2.852l186.148-186.148l50.251,50.248c3.614,3.617,7.898,5.426,12.847,5.426s9.233-1.809,12.851-5.426
+    c3.617-3.616,5.424-7.898,5.424-12.847V54.818C511.626,49.866,509.813,45.586,506.199,41.971z"/>
+</svg></a>
+      </li>
+    </ul>
+  </nav>
+
+  <article class='docs__article'>
+    <section>
+      <div class='docs'>
+  
+  <h1>Differences Between Composi and React</h1>
+  <p>Although Composi and React share many API features, there are substantial differences. The following tables show what they share and how they differ.</p>
+
+  <h2>API</h2>
+  <table>
+    <tr class='table-header'>
+      <th>Composi</th>
+      <th>React</th>
+    </tr>
+    <tr>
+      <td>h</td>
+      <td>React.createElement</td>
+    </tr>
+    <tr>
+      <td>mount</td>
+      <td>ReactDOM.hydrate</td>
+    </tr>
+    <tr>
+      <td>render</td>
+      <td>ReactDOM.render</td>
+    </tr>
+    <tr>
+      <td>Component</td>
+      <td>React.Component</td>
+    </tr>
+    <tr>
+      <td>Component.render</td>
+      <td>React.Component.render</td>
+    </tr>
+    <tr>
+      <td>Component.state</td>
+      <td>React.Component.state</td>
+    </tr>
+    <tr>
+      <td>Component.setState</td>
+      <td>React.Component.setState</td>
+    </tr>
+    <tr>
+      <td>Component.update</td>
+      <td>React.Component.forceUpdate</td>
+    </tr>
+    <tr>
+      <td>Component.unmount</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>Fragment</td>
+      <td>React.Fragment</td>
+    </tr>
+  </table>
+  <p>Composi uses <code>mount</code> to render a functional component the first time. This returns a reference to the component tree. You can pass that reference to the <code>render</code> function in order to update that functional component efficiently.</p>
+
+  <p><code>mount</code> is also used to hydrate server-side rendered DOM with functional components, similar to <code>ReactDOM.hydrate</code>. Just pass a DOM reference for the structure to hydrate as the third argument to <code>mount</code>:</p>
+
+  <pre>
+<code class="language-javascript">// Hydrate H1 inside header tag:
+  mount(&lt;Title message='Amazing Title'/> 'header', 'h1')</code></pre>
+
+    <p>Use <code>render</code> to update an already mounted functional component:</p>
+
+    <pre>
+<code class="language-javascript">const title = mount(&lt;Title message='Boring!'/>, 'header')
+// Sometime later update the title.
+// Pass in the 'title' variable from above:
+render(&lt;Title message='An Amazing Title!!!'/>, title)</code></pre>
+
+  <p> </p>
+  <h2>Properties</h2>
+
+  <table>
+    <tr class='table-header'>
+      <th>Composi</th>
+      <th>React</th>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>className</td>
+    </tr>
+    <tr>
+      <td>inline events</td>
+      <td>inline events (synthesized)</td>
+    </tr>
+    <tr>
+      <td>onclick</td>
+      <td>onClick</td>
+    </tr>
+    <tr>
+      <td>oninput</td>
+      <td>onUpdate</td>
+    </tr>
+    <tr>
+      <td>for</td>
+      <td>htmlFor</td>
+    </tr>
+    <tr>
+      <td>xlink-href</td>
+      <td>xlinkHref</td>
+    </tr>
+    <tr>
+      <td>dangerouslySetInnerHTML (string)</td>
+      <td>dangerouslySetInnerHTML (callback)</td>
+    </tr>
+    <tr>
+      <td>style (accepts object or standard inline string value)</td>
+      <td>style (accepts object)</td>
+    </tr>
+  </table>
+
+  <p>Inline events are just inline events, same as they've always been since DOM Level 0. Composi uses standard HTML attributes. No need for camel case or non-standard terms. For SVG icons you can use <code>xlink-href</code>. <code>dangerouslySetInnerHTML</code> accepts a string as its value. No need for a complicated function like with React.  <code>style</code> can take a JavaScript object literal of key value pairs, or you can use a string as you normally would with HTML. React and friends only accept an object.</p>
+  <p>For handling <code>innerHTML</code>, Composi uses <code>dangerouslySetInnerHTML</code>. Unlike React, which requires a callback, you just pass a string for the content to insert:</p>
+
+
+  <pre>
+<code class="language-javascript">function Title() {
+  return (
+    &lt;h1>Original Content&lt;/h1>
+  )
+}
+const title = mount(&lt;Title/>, 'header')
+// Later update the title:
+render(&lt;Title dangerouslySetInnerHTML='The New Title!'/>, title)</code></pre>
+
+    <p> </p>
+
+    <h2>Lifecycle Hooks for Class Components</h2>
+    <table>
+      <tr class='table-header'>
+        <th>Composi</th>
+        <th>React</th>
+      </tr>
+      <tr>
+        <td>componentWillMount</td>
+        <td>componentWillMount/UNSAFE_componentWillMount</td>
+      </tr>
+      <tr>
+        <td>componentDidMount</td>
+        <td>componentDidMount</td>
+      </tr>
+      <tr>
+        <td>componentWillUpdate</td>
+        <td>componentWillUpdate/UNSAFE_componentWillUpdate</td>
+      </tr>
+      <tr>
+        <td>componentDidUpdate</td>
+        <td>componentDidUpdate</td>
+      </tr>
+      <tr>
+        <td>componentWillUnmount</td>
+        <td>componentWillUnmount/UNSAFE_componentWillUnmount</td>
+      </tr>
+      <tr>
+        <td>N/A</td>
+        <td>componentWillReceiveProps/UNSAFE_componentWillReceiveProps</td>
+      </tr>
+      <tr>
+        <td>N/A</td>
+        <td>getDerivedStateFromProps</td>
+      </tr>
+      <tr>
+        <td>componentShouldUpdate (attribute)</td>
+        <td>componentShouldUpdate (callback)</td>
+      </tr>
+    </table>
+
+    <p><code>componentShouldUpdate</code> is an attribute that accepts a boolean value. By default it is true. Setting this property to false will prevent it from updating, event when its state changes. After making state changes, you can flag the component to update again by setting this property to true. The next update will show the changes. In contrast, this is a function that meeds to return a boolean.</p>
+
+  <pre>
+<code class="language-javascript">class Title extends Component {
+  render(data) {
+    return (
+      &lt;h1>{data}&lt;/h1>
+    )
+  }
+}
+// Create instance.
+// Because it has no state, it does not yet render.
+const title = new Title({
+  state: 'A Great Title',
+  container: 'header'
+})
+title.componentShouldUpdate = false
+
+// Sometime later you want to change the title.
+// Because 'componentShouldUpdate' was set to false, nothing will happen.
+title.setState('A Brand New Title!')
+
+// To update the component, set 'componentShouldUpdate' to true, 
+// then run 'update' on the component instance:
+title.componentShouldUpdate = true
+title.update()</code></pre>
+
+    <p> </p>
+
+    <h2>Lifecycle Events for Functional Components</h2>
+
+    <p>Composi provides lifecycle hooks for functional components. These are used like inline events. React has n equivalent.</p>
+
+    <table>
+      <tr class='table-header'>
+        <th>Composi</th>
+        <th>React</th>
+      </tr>
+      <tr>
+        <td>onComponentDidMount</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td>componentDidUpdate</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td>onComponentWillUnmount</td>
+        <td>N/A</td>
+      </tr>
+    </table>
+
+    <p><code>onComponentDidMount</code> gets passed the root element of the functional component. <code>componentDidUpdate</code> gets passed the old props, the new props and the root element of the component. <code>onComponentWillUnmount</code> gets passed the parent element of the component.</p>
+
+    <pre>
+<code class="language-javascript">// Use 'onComponentDidMount' to register event on component:
+function List(props) {
+  return (
+    &lt;div class='container-list' onComponentDidMount={(element)=> initEvent(element)}>
+      &lt;ListForm />
+      &lt;ul class='list-fruit'>
+        {props.items.map(item => &lt;ListItem {...{item}}/>)}
+      &lt;/ul> 
+    &lt;/div>
+  )
+}
+// Access the component element to register event:
+function initEvent(element) {
+  element.addEventListener('click', callBack)
+}</code></pre>
+
+<p>Codepen Example:</p>
+<p data-height="300" data-theme-id="6688" data-slug-hash="YEPPJz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEPPJz/">Composi functional-components-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+    <p> </p>
+
+    <h2>createRef/Ref</h2>
+    <table>
+      <tr class='table-header'>
+        <th>Composi</th>
+        <th>React</th>
+      </tr>
+      <tr>
+        <td>N/A (use this.element with  componentDidMount to access DOM)</td>
+        <td>React.createRef</td>
+      </tr>
+      <tr>
+        <td>N/A (same as above)</td>
+        <td>ref</td>
+      </tr>
+    </table>
+
+    <p>Composi does not have <code>createRef</code> like React, and so it does not support the <code>ref</code> property on elements. But you don't need it. Instead you can take advantage of a component's <code>element</code> property in the <code>componentDidUpdate</code> lifecycle hook to access elements in the DOM:</p>
+
+    <p data-height="300" data-theme-id="6688" data-slug-hash="MXKegr" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi No Ref" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MXKegr/">Composi No Ref</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+    <p> </p>
+
+    <h2>Instantiation</h2>
+
+    <table>
+      <tr class='table-header'>
+        <th>Composi</th>
+        <th>React</th>
+      </tr>
+      <tr>
+        <td>mount (for functional components)</td>
+        <td>ReactDOM.hydrate/ReactDOM.render</td>
+      </tr>
+      <tr>
+        <td>new - use to instatiate class component</td>
+        <td>React.DOM.render</td>
+      </tr>
+    </table>
+
+    <p>To render a functional component the first time, use <code>mount</code>:</p>
+
+
+  <pre>
+<code class="language-javascript">function Title({message}) {
+  return (
+    &lt;nav>
+      &lt;h1>{message}&lt;/h1>
+    &lt;/nav>
+  )
+}
+// Mount the custom tag in the header:
+const title = mount(&lt;Title message='A Great Title'/>, 'header')</code></pre>
+
+    <p>To mount a class component, instantiate it with the <code>new</code> keyword. If the class component has state, it will render to the DOM automatically when you instantiate it. If it is stateless, you'll need to run <code>update</code> on the instance to render it.</p>
+
+    <p>Here we create a stateful component. By instantiating it witht he <code>new</code> keyword, the component renders immediately:</p>
+
+    <p data-height="300" data-theme-id="6688" data-slug-hash="BVjzoL" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Instantiation - 1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/BVjzoL/">Composi Instantiation - 1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>Here we create a stateless component. When we instantiate it, we provide state. This causes the component to render immediately:</p>
+
+<p data-height="300" data-theme-id="6688" data-slug-hash="jKWrWG" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Instantiation - 2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/jKWrWG/">Composi Instantiation - 2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>Here we create a stateless component. When we instantiate it, nothing happens. However, when we set state on the component instance with the <code>setState</code> method, the component renders immediately:</p>
+
+<p data-height="300" data-theme-id="6688" data-slug-hash="JZGKGz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Instantiation - 3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/JZGKGz/">Composi Instantiation - 3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+<p>Here we create a stateless component. It will never have state. When we instantiate it, nothing happens. We provide it data to render by passing the data to the <code>update</code> method. This is therefore a "pure" component.</p>
+
+<p data-height="300" data-theme-id="6688" data-slug-hash="xzZOVM" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Instantiation - 4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xzZOVM/">Composi Instantiation - 4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+    <p> </p>
+
+
+</div>
+
+<aside>
+  <menu>
+    <ul class="docs__menu">
+      <li class="docs__menu__item">
+        <a href='./installation.html'>Installation</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./render.html'>Mount/Render</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./functional-components.html'>Functional Components</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./component-instance.html'>Component Instance</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./extending-component.html'>Extending Component</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./state.html'>State</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./jsx.html'>JSX</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./h.html'>H for Hyperscript</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./template-literals.html'>Template Literals</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./styles.html'>Styles</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./lifecycle-methods.html'>Lifecycle Methods</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./events.html'>Events</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./hydration.html'>Hydration</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./deployment.html'>Deployment</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./api.html'>API</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./about.html'>About</a>
+      </li>
+      <li class="docs__menu__item">
+        <a href='./misc.html'>Attributes &amp; Types</a>
+      </li>
+      <li class="docs__menu__item selected">
+        <a href="./composi-react.html">Composi-React</a>
+      </li>
+    </ul>
+  </menu>
+</aside>
+</section> 
+</article>
+<footer>
+<section>
+  <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Composi Logo</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="Composi-Logo-Solid" fill="rgba(255,255,255,0.5)">
+        <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z" id="Combined-Shape"></patr>
+      </g>
+    </g>
+  </svg>
+  <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a> and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
+</section>
+</footer>
+<script src="../js/prism.min.js"></script>
+<script src="../js/prism-jsx.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115293685-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-115293685-1');
+</script>
+</body>
+</html>
