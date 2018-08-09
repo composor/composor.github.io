@@ -109,7 +109,7 @@
     </section>
     <section>
       <div class="main__example--column">
-        <h3>A Todo List</h2>
+        <h3>A Todo List</h3>
         <p>Here we put together a todo list. We give the component state and pass down that state to child components as props in curly braces.</p>
         <p>Inline events handle user interactions. All todos are saved to localStorage. On reloads, the saved items are used.</p> 
         <p>This is available on Github for <a href='https://github.com/composor/todo-list' target='__blank'>download</a>.</p>
@@ -137,7 +137,7 @@
     </section>
     <section>
       <div class="main__example--column">
-        <h3>SVG Animation</h2>
+        <h3>SVG Animation</h3>
         <p>Here we're using <a target="__blank" href="https://d3js.org">D3</a> to animate a Pythagoras tree using Composi's virtual DOM to update the SVG in real time. Move the cursor over the panel, or move your finger on mobile devices. As you do so, upto 2,000 rectanges will be created and destroyed based on the cursor position. This shows how efficient Composi's virtual DOM is.</p> 
         <p>You can use many third-party libraries and frameworks with Composi, such a Redux, Mobx, RxJS, Lodash, Bootstrap, Material Design Lite, etc.</p>
         <p>This is available on Github for <a href='https://github.com/composor/pythagoras-dancing-tree' target='__blank'>download</a>.</p>
@@ -145,6 +145,24 @@
 <p data-height="500" data-theme-id="6688" data-slug-hash="EbovjJ" data-default-tab="result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi with D3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/EbovjJ/">Composi with D3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
     </section>
+
+
+    <section>
+      <div class="main__example--column">
+        <h3>Dynamic Counters</h3>
+        <p>This is a single stateful component that generates keyed couters. This is similar to how the todo app is implemented above. Each counter occupies a keyed list item. This makes it more efficient for deleting random counters from the list.</p>
+        <p>Each counter has the events and functionality it needs to act like an independent component. In reality they are just part of a larger, all-encomposing component.</p>
+        <p>We're also using the <code>Fragment</code> tag to generate a group of sibling elements--the buttons that constitute the counter.</p>
+      </div>
+      <p data-height="600" data-theme-id="6688" data-slug-hash="vJMMZL" data-default-tab="result" data-user="rbiggs" data-pen-title="Dynamic Counters"
+        class="codepen">
+        See the Pen
+        <a href="https://codepen.io/rbiggs/pen/vJMMZL/">Dynamic Counters</a> by Robert Biggs (
+        <a href="https://codepen.io/rbiggs">@rbiggs</a>) on
+        <a href="https://codepen.io">CodePen</a>.</p>
+      <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    </section>
+
   </article>
   <footer>
     <section>
