@@ -60,18 +60,14 @@
     <section>
       <div class='docs'>
           <h1>Mount</h1>
-          <p class="docs__intro">Class-based components provide a powerful and convenient way for you to create modular chunks of UI. However, sometimes they are overkill. If you just need to output some static markup, a component is not necessary. Instead you can define a function that returns the markup. This is sometimes called a <code>functional component</code>. You can read the <a href="./functional-components.html">docs</a> for functional components to learn more about how to create and use them. Once you've created a function component, you can inject it into the document with this <code>mount</code> function. To use it, you will need to import it into your code:</p>
-          <pre>
-            <code class='language-javascript'>
-import {h, mount} from 'composi'</code>
-          </pre>
+          <p class="docs__intro">Class-based components provide a powerful and convenient way for you to create modular chunks of UI. However, sometimes they are overkill. If you just need to output some static markup, a component is not necessary. Instead you can define a function that returns the markup. This is sometimes called a <code>functional component</code>. You can read the <a href="./functional-component.html">docs</a> for functional components to learn more about how to create and use them. Once you've created a function component, you can inject it into the document with this <code>mount</code> function. To use it, you will need to import it into your code:</p>
+          <pre><code class='language-javascript'>import { h, mount } from 'composi'</code></pre>
 
           <p><code>mount</code> takes two parameters: tag and container. Tag is either a JSX tag or an <code>h</code> function. container is the DOM node or a valid CSS selector to query that node. If no container is provided or the DOM query finds no match, it will append the tag to the document body.</p>
           <p>The <code>mount</code> function always returns an element which you can use as a reference to the DOM tree that needs to be updated by the <code>render</code> function. We show how to do this below when we go into details about the <code>render</code> function.</p>
           <p>Here is an example of how to mount a functional component:</p>
-          <pre>
-            <code class='language-javascript'>
-import {h, mount} from 'composi'
+          
+          <pre><code class='language-javascript'>import { h, mount } from 'composi'
 
 // Define functional component:
 function Title({message}) {
@@ -83,27 +79,45 @@ function Title({message}) {
 }
 
 // Mount the functional component:
-mount(&lt;Title message='This is the Title!'/>, 'header')</code>
-          </pre>
+mount(&lt;Title message='This is the Title!'/>, 'header')</code></pre>
+
+          <h1>Hydration with Mount</h1>
+          <p>You use the <code>mount</code> function to hydrate content rendered on the server. This means users will see content load faster. Hydration is performed by passing a third argument to <code>mount</code> for the element you want to hydrate. Composi takes that element, creates a virtual node from it and uses that virtual node to patch the DOM.</p>
+
+          <pre><code class="language-javascript">import { h, mount } from 'composi'
+// Hydrate a server-renered list:
+function List(props) {
+  return (
+    <ul>
+      {
+        props.data.map(item => <li key={item.key}>{item.value}</li>)
+      }
+    </ul>
+  )
+}
+const items = ['One', 'Two', 'Three']
+// There's a list rendered by the server with an id of #hydratable-list: 
+let list = mount(<List data={items}/>, 'section', '#hydratable-list')</code></pre>
+
+          <p>Using hydration on server-rendered content allows you to embue it with events and dynamic behaviors with Composi. This means you page loads faster and it reaches interactivity faster.</p>
 
 
           <h1>Render</h1>
-          <p class="docs__intro">The <code>render</code> function is used to update a mounted functional component. This is done with a reference to the mounted component that you saved, as illustrated in the first <code>mount</code> example above. To use it, you will need to import it into your code:</p>
-          <pre>
-            <code class='language-javascript'>
-import {h, mount, render} from 'composi'</code>
-          </pre>
-          <p><code>render</code> takes two parameters:</p>
+          <p>The <code>render</code> function is used to update a mounted functional component. This is done with a reference to the mounted component that you saved, as illustrated in the first <code>mount</code> example above. To use it, you will need to import it into your code:</p>
+
+          <pre><code class='language-javascript'>import { h, mount, render } from 'composi'</code></pre>
+
+          <p><code>render</code> takes three parameters:</p>
 
           <ol>
-            <li>tag - a virtual node that you want to use to update a mounted component</li>
-            <li>element - the element in the DOM of a mounted functional component that you want to update</li>
+            <li><code>vnode</code>: The virtual node returned when a component was mounted.</li>
+            <li><code>tag</code>: the function or JSX tag used to mount the component.</li>
+            <li><code>container</code>: the element in the DOM of a mounted functional component that you want to update</li>
           </ol>
 
           <p>In the example below we are going to mount a component and then update it with the <code>render</code> function using <code>setTimeout</code>. Notice how we assign the mounted functional component to the <code>title</code> variable:</p>
-          <pre>
-            <code class='language-javascript'>
-import {h, mount} from 'composi'
+          
+          <pre><code class='language-javascript'>import { h, mount } from 'composi'
 
 // Define functional component:
 function Title({message}) {
@@ -118,9 +132,13 @@ function Title({message}) {
 const title = mount(&lt;Title message='This is the Title!'/>, 'header')
 
 // Update mounted component.
-// Pass in `title` from above as second argument:
-setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, title), 5000)</code>
-          </pre>
+// Pass in `title` from above as second argument.
+// Don't forget to reassign the result to `render` 
+// back to the component variable "title".
+setTimeout(() => {
+  title = render(title, &lt;Title message='A New Message Was Used.'/>, 'header')
+}, 5000)</code></pre>
+
           <p>Using <code>render</code> and passing a reference to the DOM tree lets us update the DOM tree in place.</p>
           <p></p>
 
@@ -140,15 +158,13 @@ setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, title), 5
           <h2>Gotchas</h2>
           <p><code>mount</code> always appends to the provided container. If you want to have server-side rendered content and replace it with new content, you'll need to use <code>render</code> and pass it a reference to the server-rendered element. Notice in the following example how we query the DOM for the element and then pass it as the second argument of <code>render</code>:</p>
 
-          <pre>
-            <code class='language-javascript'>
-// In the index.html:
+          <pre><code class='language-javascript'>// In the index.html:
 &lt;nav class='header'>
   &lt;h1>Server-Rendered Content&lt;/h1>
 &lt;/nav>
 
 // JavaScript:
-import {h, mount} from 'composi'
+import { h, mount } from 'composi'
 
 // Define functional component:
 function Title({message}) {
@@ -164,8 +180,7 @@ const header = document.querySelector('.header')
 
 // Update server-rendered component.
 // Pass in `header` from above as second argument:
-setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, header), 5000)</code>
-          </pre>
+setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, header), 5000)</code></pre>
           
           <p> </p>
           <h2>Hydration</h2>
@@ -173,9 +188,45 @@ setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, header), 
 
           <p>If you want to be able to create multiple instances of the same component, you can use <code>mount</code> to inject the functional component into different containers while providing different data for each component, and then use the mount reference to update the functional components later with <code>render</code>.</p>
 
+          <h1>Unmount</h1>
+          <p>The <code>unmount</code> function allows you to remove the rendered component from the DOM. This does not effect the value of the reference returned by <code>mount</code> and <code>render</code> for that component.</p>
+          <p>To unmount a component, you pass <code>unmount</code> the value returned by the <code>mount</code> function.</p>
+          <p>After unmounting a component, you can use <code>mount</code> to mount the component again. If the component has an <code>onmount</code> lifecycle hook, this will also run again.</p>
+          <p>If your component has events attached with <code>addEventListener</code>, you need to remove those with <code>removeEventListener</code> before unmounting. Otherwise unmounting will create memory leaks that could eventually crash the browser. If you are using inline events, this is not a problem.</p>
+
+          <p>Here is a simplified example of mounting and unmounting and remounting to show how to do it:</p>
+
+          <pre><code class='language-javascript'>import { h, mount, unmount } from 'composi'
+
+function Title(props) { 
+  return (
+    &lt;nav>
+      &lt;h1>Hello, {props.greet}!&lt;/h1>
+    &lt;/nav>
+  ) 
+}
+// We will use `title` to unmount later:
+let title = mount(&lt;Title greet='Joe' />, 'header') 
+
+// Unmount the component in two seconds:
+setTimeout(() => { 
+  unmount(title) 
+}, 2000) 
+
+// Remount the component in four seconds:
+setTimeout(() => { 
+  title = mount(&lt;Title greet='Jill'/>, 'header') 
+}, 4000)</code></pre>
+
+          <p> </p>
+          <h2>When to Use Unmount</h2>
+          <p>In most cases you can handle whether a component renders or not using conditional logic. <code>unmount</code> is for those rare cases where that is not an option. For more information about conditional rendering, <a target='_blank' href='../tuts/conditional-rendering.html'>visit this link</a>.</p>
+
+          <p> </p>
           <h2>Summary</h2>
           <p>Use <code>mount</code> to inject a functional component into the DOM.</p>
-          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>. <code>mount</code> and <code>render</code> make it easy to use functional components. However, class-based components offer more functionality and versitility. If you find you are having a hard time making a functional component do what you want, you should look at using a class component instead. You can learn more about them by reading the docs about <a href='./extending-component.html'>how to extend</a> the Component class</a>.</p>
+          <p><code>render</code> is similar to <a target='__blank' href='https://facebook.github.io/react/docs/react-dom.html#render'>ReactDOM.render</a>, allowing you to update a mounted component. <p><code>unmount</code> lets you remove a mounted component from the DOM, but conditional logic with <code>mount</code> and <code>render</code> is often a better choice.</p> 
+          <p></p><code>mount</code> and <code>render</code> make it easy to use functional components. However, class-based components offer more functionality and versitility. If you find you are having a hard time making a functional component do what you want, you should look at using a class component instead. You can learn more about them by reading the docs about <a href='./class-component.html'>how to extend</a> the Component class</a>.</p>
           <p>&nbsp;</p>
           
       </div>
@@ -187,16 +238,13 @@ setTimeout(() => render(&lt;Title message='A New Message Was Used.'/>, header), 
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item selected">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

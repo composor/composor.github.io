@@ -86,18 +86,21 @@
           <h2>Booleans</h2>
           <p>By default boolean values are not output. This is so they can be used for conditional checks. However, if you want to output a boolean value, just convert it to a string. There are two ways to do this. For <code>true</code> or <code>false</code> you can add <code>toString()</code> to convert them to strings. The values <code>null</code> and <code>undefined</code> do not have a <code>toString()</code> function, but you can use string concatenation to convert them, or use <code>String(value)</code>. Below are examples of these approaches. Note, we are just showing the render function, not the complete component code:</p>
 
-          <pre>
-            <code class="language-javascript">
-// For true or false:
-render: (value) => &lt;p>The boolean value is: {value.toString()}&lt;/p>
+          <pre><code class="language-javascript">// For true or false:
+render(value) {
+  return &lt;p>The boolean value is: {value.toString()}&lt;/p>
+}
 
 // The above approach would throw an error if the boolean was undefined or null.
 // For them, do the following:
-render: (value) => &lt;p>The boolean value is: {value + ''}&lt;/p>
+render(value) {
+  return &lt;p>The boolean value is: {value + ''}&lt;/p>
+}
 
 // Make boolean uppercase:
-render: (value) => &lt;p>The boolean value is: {(String(value).toUpperCase()}&lt;/p></code>
-          </pre>
+render(value) {
+  return &lt;p>The boolean value is: {(String(value).toUpperCase()}&lt;/p>
+}</code></pre>
 
               <p> </p>
               <h2>setState</h2>
@@ -105,13 +108,12 @@ render: (value) => &lt;p>The boolean value is: {(String(value).toUpperCase()}&lt
 
               <h2>Setting State for Primitive Types</h2>
               <p>When the type is primitive, a string, number or boolean, you can set the state directly, or use the <code>setState</code> method:</p>
-              <pre>
-                <code class="language-javascript">
-helloWorld.state = 'everybody'
+              
+              <pre><code class="language-javascript">helloWorld.state = 'everybody'
 
 // or:
-helloWorld.setState('everybody')</code>
-              </pre>
+helloWorld.setState('everybody')</code></pre>
+
               <p>Please note that although you can set state by assigning the data to the component's <code>state</code> property, it's always preferable and safer to use <code>setState</code> to do so.</p>
 
               <p> </p>
@@ -122,24 +124,20 @@ helloWorld.setState('everybody')</code>
               <p data-height="400" data-theme-id="6688" data-slug-hash="qVEdNE" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi state-4" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/qVEdNE/">Composi state-4</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
               <p>Now imagine you want to update the the person's job. You might think you could access the job directingly on the state object, but you can't. That would be an assignment, and because state has a setter, you can only assign to the state itself:</p>
-              <pre>
-                <code class="language-javascript">
-// This assignment will not work:
-personComponent.state.job = 'Web Developer'</code>
-              </pre>
+
+              <pre><code class="language-javascript">// This assignment will not work:
+personComponent.state.job = 'Web Developer'</code></pre>
+
               <p>Instead of trying to assign a property of the state object, we need to use the <code>setState</code> method. To update a state object property, we pass in an object with that property and the new value. Behind the scenes, <code>setState</code> will mixin the new object with the state object. Then it will create a new virtual DOM and patch the actual DOM to reflect those changes:</p>
-              <pre>
-                <code class="language-javascript">
-// Update the job property of the component's state:
-personComponent.setState({job: 'Web Developer'})</code>
-              </pre>
+
+              <pre><code class="language-javascript">// Update the job property of the component's state:
+personComponent.setState({job: 'Web Developer'})</code></pre>
 
               <p> </p>
               <h2>Updating Array State</h2>
               <p>When a component has an array as state, you need to use a callback with <code>setState</code>. For instance, suppose we have a component <code>fruitList</code> that prints out a list of fruits. We notice that the third item in the list is mispelled and want to update it. We can do that as follows:</p>
-              <pre>
-                <code class="language-javascript">
-fruitList.state = ['Apples', 'Oranges', 'Pinpalpes', 'Bananas']
+
+              <pre><code class="language-javascript">fruitList.state = ['Apples', 'Oranges', 'Pinpalpes', 'Bananas']
 
 // Use second argument for index in the array you want to update:
 fruitList.setState(prevState => {
@@ -147,14 +145,12 @@ fruitList.setState(prevState => {
   prevState.splice(2, 1, 'Pineapples')
   // Don't forget to return the new state:
   return prevState
-}</code>
-</pre>
+}</code></pre>
                 <p> </p>
                 <h2>Updating state for Array of Objects</h2>
                 <p>Suppose a component's state is an array of objects:</p>
-                <pre>
-                  <code class="language-javascript">
-const people = [
+
+                <pre><code class="language-javascript">const people = [
   {
     firstName: 'Joe',
     lastName: 'Bodoni',
@@ -170,33 +166,31 @@ const people = [
     lastName: 'Anderson',
     job: 'Web Developer'
   }
-]</code>
-</pre>
+]</code></pre>
+
             <p>This array is used as the state for a component of users. We want to update Joe's job to Rock Star. To update the job, use a callback, make the transform on the state and return it:</p>
-            <pre>
-              <code class="language-javascript">
-// Update the fist user's job to 'Rock Start':
+
+            <pre><code class="language-javascript">// Update the fist user's job to 'Rock Start':
 userList.setState(prevState => {
   prevState[0].job = 'Rock Star'
   // Return prevState to udpate component:
   return prevState
-})</code>
-</pre>
+})</code></pre>
+
               <p>Before version 2.4.0 you could update arrays by passing a second argument for the position in the array. That has since been removed in favor of <code>setState</code> with a callback to be inline with how React, Preact and Inferno work.</p>
               <p> </p>
               <h2>Complex State Operations</h2>
               <p>As we saw in our last example of arrays, sometimes you will need to get the state, operate on it separately and then set the component's state to that. For example, if you need to use map, filter, sort or reverse on an array, you'll want to get the complete state and perform these operations. Aftwards you can just set the state:</p>
-              <pre>
-                <code class="language-javascript">
-// Get the component's state:
+             
+              <pre><code class="language-javascript">// Get the component's state:
 const newState = fruitsList.state
 
 // Reverse the array:
 newState.reverse()
 
 // Set the component's state with the new state:
-fruitsList.setState(newState)</code>
-              </pre>
+fruitsList.setState(newState)</code></pre>
+
               <p> </p>
               <h2>setState with a Callback</h2>
               <p>One option for handling the need for complex operations when setting state is to pass a callback to the <code>setState</code> method. When you do so, the first argument of the callback will be the component's state. In the example below, we get the state and manipulate it in the <code>handleClick</code> method. After doing what you need to with state, remember to return it. Otherwise the component's state will not get updated.</p>
@@ -211,16 +205,14 @@ fruitsList.setState(newState)</code>
           <p>Sometimes you need to do some complex operations on data and you don't want the component to update constantly due to changes. Or you want to render a component with some external DOM plugin, possibly jQuery. For these situations you can use the <code>comonentShouldUpdate</code> property inside the class constructor. By default it is set to true. Setting it to false causes a component to render only once. Even though the <code>update</code> function is invoked on it, or its state changes, it will not update.</p>
           <p>You can make the component react to updates again by setting this property back to true on the component instance. However, if you changed state before setting <code>comonentShouldUpdate</code> back to <code>true</code> and want the component to then update, you will need to do so by invoking the <code>update()</code> function on the component instance. This will use the current state.</p>
 
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
+          <pre><code class="language-javascript">class Hello extends Component {
   constructor(props) {
     super(props)
     this.container = 'header',
     this.state = 'World'
     this.componentShouldUpdate = false
   }
-  render: (data) => {
+  render(data) {
     return (
       &lt;h1>Hello, {data ? `: ${data}`: ''}!&lt;/h1>
     )
@@ -237,8 +229,8 @@ hello.setState('Joe')
 hello.componentShouldUpdate = true
 hello.setState('Joe')
 // Now the component updates.
-</code>
-          </pre>
+</code></pre>
+
           <p>&nbsp;</p>
       </div>
 
@@ -249,16 +241,13 @@ hello.setState('Joe')
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item selected">
               <a href='./state.html'>State</a>

@@ -95,9 +95,7 @@
           <h2>Arrow Functions for Inline Events</h2>
           <p>Another way to get around having to use <code>bind(this)</code> on your inline events by using arrows functions. To do this, the value of the inline event needs to be an arrow function that returns the component method. Refactoring the <code>render</code> method from above, we get this:</p>
 
-          <pre>
-            <code class="language-javascript">
-render(data) {
+          <pre><code class="language-javascript">render(data) {
   const {disabled, number} = data
   // Use bind on the inline events:
   return (
@@ -107,8 +105,8 @@ render(data) {
       &lt;button onclick={() => this.increase()} id="increase">+&lt;/button>
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p> </p>
           <h2>Using handleEvent</h2>
           <p>Perhaps the least used and understood method of handling events has been around since 2000. We're talking about <code>handldeEvent</code>. It's supported in browsers all the way back to IE6. There are two ways you can use the <code>handleEvent</code> interface: as an object or as a class method. The interface might appear a little peculiar at first. This is offset by the benefits it provides over other types of event registration. The biggest benefit of <code>handleEvent</code> is that it reduces memory usage and helps avoid memory leaks.</p>
@@ -119,14 +117,12 @@ render(data) {
           <h2>handleEvent Object</h2>
           <p>To use the <code>handleEvent</code> interface as an object, you just create an object literal that at minumum has <code>handleEvent</code> as a function:</p>
 
-          <pre>
-            <code class="language-javascript">
-const handler = {
+          <pre><code class="language-javascript">const handler = {
   handleEvent: (e) => {
     // Do stuff here
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Let's take a look at how to use a <code>handleEvent</code> object with a Component instance.</p>
           <h2>Component Instance</h2>
           <p>interface. In this case we define a separate object with properties, including the <code>handleEvent</code> method. Notice that the handler object has its own private state that we can access easily from the <code>handleEvent</code> method. To set up the event listener for <code>handleEvent</code> we use the <code>componentWasCreated</code> lifecycle method:</p>
@@ -157,9 +153,7 @@ const handler = {
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>We could refactor the  <code>handleEvent</code> method to make it a bit cleaner. We'll check the <code>e.target</code> value and use the <code>&&</code> operator to execute a function:</p>
 
-          <pre>
-            <code class="language-javascript">
-handleEvent(e) {
+          <pre><code class="language-javascript">handleEvent(e) {
   // Define function for addItem:
   function addItem(e) {
     const nameInput = this.element.querySelector('#nameInput')
@@ -177,8 +171,7 @@ handleEvent(e) {
 
   // Handle list item click:
   e.target.nodeName === 'LI' && alert(e.target.textContent.trim())
-}</code>
-          </pre>
+}</code></pre>
           
           <p>As you can see in the above example, <code>handleEvent</code> allows us to implement events in a very efficient manner without any drawbacks. No callback hell with scope issues. If you have a lot of events of the same type on different elements, you can use a switch statement to simplify things. To make your guards simpler, you might resort to using classes on all interactive elements. We've redone the above example to show this approach:</p>
 
@@ -188,9 +181,7 @@ handleEvent(e) {
           <h2>Removing Event with handleEvent</h2>
           <p>Event removal with <code>handleEvent</code> interface couldn't be simpler. Just use the event and <code>this</code>:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Example of simple event target:
+          <pre><code class="language-javascript">// Example of simple event target:
 class List extends Component {
   render(data) {
     return (
@@ -221,8 +212,8 @@ class List extends Component {
     // Add event listener to component base (div):
     this.element.addEventListener('click', this)
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p> </p>
           <h2>Dynamically Changing handleEvent</h2>
           <p>One thing you can easily do with <code>handleEvents</code> that you cnnot do with inline events or ordinary events listeners is change the code for events on the fly. If you've ever tried to do something like this in the past, you probably wound up with callbacks litered with conditional guards. When you use <code>handleEvent</code> to control how an event listener works, this becomes quite simple. It's just a matter of assigning a new value.</p>
@@ -237,26 +228,19 @@ class List extends Component {
           <h2>Event Target Gotchas</h2>
           <p>Regardless whether you are using inline events or the <code>handleEvent</code> interface, you need to be aware about what the event target could be. In the case of simple markup, there is little to worry about. Suppose you have a simple list of items:</p>
 
-          <pre>
-            <code class="language-html">
-&lt;ul>
+          <pre><code class="language-html">&lt;ul>
    &lt;li>Apples&lt;/li>
    &lt;li>Oranges&lt;/li>
    &lt;li>Events&lt;/li>
-&lt;/ul></code>
-          </pre>
+&lt;/ul></code></pre>
+
           <p>Assuming that an event listener is registered on the list, when the user clicks on a list item, the event target will be the list item. Clicking on the first item:</p>
 
-          <pre>
-            <code class="language-javacript">
-event.target // &lt;li>Apples&lt;/li>
-            </code>
-          </pre>
+          <pre><code class="language-javacript">event.target // &lt;li>Apples&lt;/li></code></pre>
+
           <p>However, if the item being interacted with has child elements, then the target may not be what you are expecting. Let's look at a more complex list:</p>
 
-          <pre>
-            <code class="language-html">
-&lt;ul>
+          <pre><code class="language-html">&lt;ul>
    &lt;li>
     &lt;h3>Name: Apples&lt;/h3>
     &lt;h4>Quantity: 4&lt;/h4>
@@ -269,15 +253,13 @@ event.target // &lt;li>Apples&lt;/li>
     &lt;h3>Bananas&lt;/h3>
     &lt;h4>Quantity: 2&lt;/h4>
    &lt;/li>
-&lt;/ul></code>
-          </pre>
+&lt;/ul></code></pre>
+
           <p>With an event listener registered on the list, when the user clicks, the event target might be the list item, or the <code>H3</code> or the <code>H4</code>. In cases like this, you'll need to check what the event target is before using it.</p>
 
           <p>Here is an example of an event target that will always be predictable, in this case, the list item itself:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Example of simple event target:
+          <pre><code class="language-javascript">// Example of simple event target:
 class List extends Component {
   // Use arrow function in inline event:
   render(data) {
@@ -293,13 +275,11 @@ class List extends Component {
     // If user clicked directly on list item:
     e.target.nodeName === 'LI' && alert(e.target.textContent)
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Here is a list target that will not be predictable:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Example of simple event target:
+          <pre><code class="language-javascript">// Example of simple event target:
 class List extends Component {
   render(data) {
     // Use arrow function in inline event:
@@ -320,13 +300,11 @@ class List extends Component {
     // or the h3, or the h4:
     alert(e.target.textContent)
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>To get around the uncertainty of what the event target might be, you'll need to use guards in the callback. In the example below we're using a ternary operator(condition ? result : alternativeResult) to do so:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Example of simple event target:
+          <pre><code class="language-javascript">// Example of simple event target:
 class List extends Component {
   render(data) => {
     return (
@@ -350,16 +328,13 @@ class List extends Component {
     // Alert the complete list item content:
     alert(target.textContent)
   }
-}
-            </code>
-          </pre>
+}</code></pre>
+
           <p> </p>
           <h2>Element.closest</h2>
           <p>In the above example the solution works and it's not hard to implement. However, you may have an interactive element with even more deeply nested children that could be event targets. In such a case, adding more parentNode tree climbing becomes unmanagable. To solve this you can use the <code>Element.closest</code> method. This is available in modern browsers. If you wish to use <code>Element.closest</code> and need to support IE 9, 10 or 11, you can <a target="_blank" href="https://www.npmjs.com/package/element-closest">use the polyfill</a>. Here's the previous example redone with <code>Element.closest</code>. No matter how complex the list item's children become, we'll always be able to capture the event on the list item itself:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Example of simple event target:
+          <pre><code class="language-javascript">// Example of simple event target:
 class List extends Component {
   render(data) {
     return (
@@ -385,8 +360,8 @@ class List extends Component {
     // Alert the complete list item content:
     alert(target.textContent)
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p> </p>
           <h2>Do Not Mix!</h2>
           <p>It's not a good idea to mix inline events and <code>handleEvent</code> in the same component. If the inline event has the same target as the target used by <code>handleEvent</code> this can lead to weird situations where neither or both may execute. This can lead to situations that are very hard to troubleshoot. So, in a component choose the way you want to handle events and stick to it.</p>
@@ -403,16 +378,13 @@ class List extends Component {
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

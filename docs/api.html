@@ -79,13 +79,13 @@
                 <li>Component - (<code>property</code>) <a href="#componentShouldUpdate">componentShouldUpdate</a></li>
                 <a name='h'></a>
                 <h4><code>Life Cycle Hooks:</code></h4>
-                <li>Component - (<code>method</code>) <a href="#componentWillMount">componentWillMount</a> (Before version 1.2.0: <code>beforeCreateComponent</code></li>
-                <li>Component - (<code>method</code>) <a href="#componentDidMount">componentDidMount</a> (Before version 1.2.0: <code>componentWasCreated</code></li>
+                <li>Component - (<code>method</code>) <a href="#componentWillMount">componentWillMount</a></li>
+                <li>Component - (<code>method</code>) <a href="#componentDidMount">componentDidMount</a></li>
                 <li>Component - (<code>method</code>) <a href="#componentWillUpdate">componentWillUpdate</a></li>
                 <li>Component - (<code>method</code>) <a href="#componentDidUpdate">componentDidUpdate</a></li>
                 <li>Component - (<code>method</code>) <a href="#componentWillUnmount">componentWillUnmount</a></li>
               </ul>
-              <li> <a href="#dangerouslySetInnerHTML">dangerouslySetInnerHTML</a> - (<code>A property</code>)</li>
+              <li> <a href="#innerHTML">innerHTML</a> - (<code>A property</code>)</li>
             </li>
           </ul>
 
@@ -100,9 +100,7 @@
 
             <p>To create a node you only really have to provide a type. If an element has no properties you can use and empty object: <code>{}</code> or <code>null</code>. Same for children:</p>
 
-            <pre>
-              <code class="language-javascript">
-const list = h(
+            <pre><code class="language-javascript">const list = h(
   // type:
   'ul',
   // props:
@@ -123,14 +121,12 @@ const list = h(
 const list = h(
   // type:
   'ul'
-)</code>
-            </pre>
+)</code></pre>
+
             <p>If you are creating a node that doesn't have properties but does have children, you will need to provide either <code>{}</code> or <code>null</code> or props:</p>
 
 
-            <pre>
-              <code class="language-javascript">
-const list = h(
+            <pre><code class="language-javascript">const list = h(
   // type:
   'ul',
   // props:
@@ -155,35 +151,33 @@ const list = h(
     )
   ]
 )</code><a name='mount'></a></pre>
+
             <p>Of course, you would not be putting those comments in your code. That was just to make it clear how the <code>h</code> call signature works.</p>
 
-            <br><br>
             <h2>mount</h2>
             <p>When making functional components you use the <code>mount</code> function to inject the component into the DOM for the first time. After that, if you need to update it, you would use the <code>render</code> function described next.</p>
-            <p>The <code>mount</code> function always returns the base element of the mounted component. If you intend to update the component with the render function, you need to capture that reference in a variable so you can pass it to the <code>render</code> function.</p>
+            <p>The <code>mount</code> function returns a virtual node representing the mounted component. If you intend to update the component with the render function, you need to capture that reference in a variable so you can pass it to the <code>render</code> function.</p>
             <p>The <code>mount</code> function takes two arguments: the tag to create and the container in which to insert the component. Notice how we do this:</p>
-            <pre>
-<code class="language-javascript">
-    import {h, mount} from 'composi'
 
-    function Title({message}) {
-      return (
-        &lt;nav>
-          &lt;h1>{message}&lt;/h1>
-        &lt;/nav>
-      )
-    }
-    
-    // Mount the component in the header tag:
-    mount(&lt;Title message='Hello World!'/>, 'header')
-</code><a name='mount-hydration'></a>
-<br></pre>
+            <pre><code class="language-javascript">import { h, mount } from 'composi'
+
+function Title({message}) {
+  return (
+    &lt;nav>
+      &lt;h1>{message}&lt;/h1>
+    &lt;/nav>
+  )
+}
+
+// Mount the component in the header tag:
+mount(&lt;Title message='Hello World!'/>, 'header')
+</code><a name='mount-hydration'></a></pre>
+          <br>
           <p> </p>
           <h2>Hydration with mount</h2>
-          <p>You can use the mount function to hydrate server-rendered markup with a functional component. To do so, just provide a third argument for the mount function, which should reference the DOM tree to hydrate. This can be a DOM reference of a valid CSS selector for the node.</p>
-          <pre>
-<code class="language-javascript">// Markup in html from server:
-&lt;h1 id='special-title'>The Old Title&lt;/h1>
+          <p>You can use the mount function to hydrate server-rendered markup with a functional component. To do so, just provide a third argument to the mount function, which should reference the element in the DOM tree to hydrate. This can be a DOM node or of a valid CSS selector for the node.</p>
+
+          <pre><code class="language-javascript">// Markup in html from server:&lt;h1 id='special-title'>The Old Title&lt;/h1>
 
 // Functional component for new title:
 function Title({content}) {
@@ -196,24 +190,21 @@ function Title({content}) {
 mount(&lt;Title content='The New Title' />, 'header', '#special-title')
 </code></pre>
 
-          <p><a name='render'></a>In the above markup, the second argument is the container in which to render the functional component. The third argument refers to a node in the container's DOM that the functional component should update. In the example above the DOM node target and the functional component are the same node type and have the same ID. This is not required. The functional component can replace the server-rendered DOM tree with a completely different tree.</p>
+          <p><a name='render'></a>In the above markup, the second argument is the container in which to render the functional component. The third argument refers to a node in the container's DOM that the functional component should update. In the example above the DOM node target and the functional component are the same node type and have the same ID. This is not required. Composi takes the third argument, accesses the element in the DOM, creates a virtual node from that and uses it to patch the DOM. This allows the functional component to add events and dynamic behavior to server-rendered markup with minimal DOM manipulation, improving initial load time and time to interactivity.</p>
 
-<p> </p>
-<p> </p>
             
             <h2>render</h2>
             <p>The <code>render</code> function allows you to update functional components already mounte in the DOM. It takes two arguments:</p>
 
             <ul>
-              <li>tag - Either a JSX tag, and h function or a virtual node.</li>
-              <li>element - The element returned by the initial <code>mount</code> function.</li>
+              <li><code>tag</code>: Either a JSX tag, and h function or a virtual node.</li>
+              <li><code>vnode</code>: The virtual node returned by the mount function.</li>
+              <li><code>container</code>: The element in which the component was mounted.</li>
             </ul>
 
             <p> </p>
 
-            <pre>
-              <code class="language-javascript">
-import {h, mount, render} from 'composi'
+            <pre><code class="language-javascript">import { h, mount, render } from 'composi'
 
 function ListForm() {
   return (
@@ -230,8 +221,11 @@ function ListItem(props) {
 }
 
 function List(props) {
+  function init(el) {
+    el.addEventListener('click', events)
+  }
   return (
-    &lt;div class='container-list'>
+    &lt;div class='container-list' onmount={el => init(el)}>
       &lt;ListForm />
       &lt;ul class='list-fruit'>
         {props.items.map(item => &lt;ListItem {...{item}}/>)}
@@ -248,8 +242,9 @@ const events = {
     const value = input.value
     if (value) {
       items.push(value)
-      // Pass in "list" variable from mounting:
-      render(&lt;List {...{items}}/>, list)
+      // Pass in "list" variable from mounting.
+      // Capture back into that variable for rendering later.
+      list = render(&lt;List {...{items}}/>, list, 'section')
       input.value = ''
     } else {
       alert('Please provide an item before submitting!')
@@ -261,9 +256,8 @@ const events = {
 }
 
 const list = mount(&lt;List {...{items}}/>, 'section')
+</code><a name="fragment"></a></pre>
 
-document.querySelector('.container-list').addEventListener('click', events)</code><a name="fragment"></a>
-</pre>
 <br><br>
 
 
@@ -271,8 +265,7 @@ document.querySelector('.container-list').addEventListener('click', events)</cod
             <h2>Fragment</h2>
             <p>Composi provides a <code>Fragment</code> tag to let you return multiple siblings without a wrapper tag. When <code>Fragement</code> is parsed by Composi, only the children are returned. This is useful for creating lists and tables.</p>
             
-          <pre>
-<code class="language-javascript">import {h, Component, Fragment} from 'composi'
+          <pre><code class="language-javascript">import { h, Component, Fragment } from 'composi'
 
 function ListItems({data}) {
   return (
@@ -299,42 +292,19 @@ new List({
   state: todos
 })
 </code><a name='Component'></a></pre>
-            <p>Please note that <code>Fragment</code> tags cannot be inserted directly into the DOM. The <code>Fragment</code> tag does not create a document fragment. It is simply a function component that returns its children for inclusion in another virtual node.</p>
+
+            <p>Please note that <code>Fragment</code> tags cannot be inserted directly into the DOM. The <code>Fragment</code> tag does not create a document fragment. It is a functional component that returns its children for inclusion in another virtual node.</p>
             <p> </p>
+
             <h2>Component</h2>
-            <p>The component class is the main part of Composi that you will be using. This class provides a number of properties and methods for you to use. There are two ways to use this class:</p>
+            <p>The component class is the main part of Composi that you will be using. This class provides a number of properties and methods for you to use.</p>
 
-            <ul>
-              <li>Create a new instance.</li>
-              <li>Extend it to create a new class.</li>
-            </ul>
+            <h2>Extending Component</h2>
+            <p>You create a new component definition by extend the Component class. This lets you create custom properties and methods for your component based on what it needs to do. When you extend <code>Component</code>, every class method with have access to the class properties and methods through its <code>this</code> keyword</p>
 
-            <p>If your needs are simple, create a new instance of <code>Component</code> is a good choice. However, if you know that this component's needs may increase as you develop your app, it's better to go with exending <code>Component</code>. Extending it lets you add custom properties and methods to the class to make an event more powerful solution. If your component will involve use interactions or ocassional updates, you'll want to extend <code>Component</code>.</p>
-            
-            <h2>Component - new</h2>
-            <p>If you just need to put together a simple component, creating a new instance of the Component class is the way to go. The class takes an object literal of certain values: container, render, optional state and lifecycle hooks. At the minimal you'll have to provide a container and render function:</p>
+            <p>In the following example, notice how we added the properties <code>state</code> and <code>key</code> to the class constructor. Because we are adding properties to the contstructor, we all need to include <code>super</code> and pass it <code>props</code>. We also added a <code>render</code> function, inside of which we can easily access the component's <code>state</code> property. We also added a method called </code>handleEvent</code> to implement events. And finally a <code>componentDidMount</code> hook to set up the main event. And finally, we use are class by instantiating it and passing it a value for the container to render in.</p>
 
-            <pre>
-              <code class="language-javascript">
-const title = new Component({
-  container: 'header',
-  render: (message) => <h1>Hello, {message}!</h1>
-})
-// Pass some data to the component to render it:
-title.update('World')
-              </code>
-            </pre>
-            <p><strong>Note:</strong> because a new instance is initialized with an object literal, the methods defined in it do not have the scope of the component. Their scope is the scope of the object literal. This makes it tricky and cumbersome to access properties and methods on the component instance. If you wish to make a component with more complex needs, do extend the <code>Component</code> class</p>
-            <p>You can learn more about all container, render, state and lifecycle hooks down below.</p>
-
-            <h2>Component - extend</h2>
-            <p>You will get the most out of the Component class by extending it. This will let you create custom properties and methods for your component based on what it needs to do. When you extend <code>Component</code>, every class method with have access to the class properties and methods through its <code>this</code> keyword</p>
-
-            <p>In the following example, notice how we added the properties <code>state</code> and <code>key</code> to the class constructor. Because we are adding properties to the contstructor, we all need to include <code>super</code> and pass it <code>props</code>. We also added a <code>render</code> function, inside of which we can easily access the component's <code>state</code> property. We also added a method called </code>handleEvent</code> to implement events. And finally a <code>componentWasCreated</code> hook to set up the main event. And finally, we use are class by instantiating it and passing it a value for the container to render in.</p>
-
-            <pre>
-              <code class="language-javascript">
-class List extends Component {
+            <pre><code class="language-javascript">class List extends Component {
   constructor(props) {
     super(propss)
     this.state = fruits
@@ -374,26 +344,22 @@ class List extends Component {
       alert(e.target.textContent.trim())
     }
   }
-  componentWasCreated() {
+  componentDidMount() {
     this.element.addEventListener('click', this)
   }
 }
 const list = new List({
   container: 'section'
-})</code><a name='container'></a>
-            </pre>
+})</code><a name='container'></a></pre>
             
             <p>&nbsp;</p>
             
             <h2>Component - container</h2>
             <p>This is a property on the component that is the base element of the component. Many components can share the same container, for example, you might have them rendered directly in the body tag. This means that the contain is not the component. When you access the component from its <code>element</code> property, you are one level down from the container.</p>
 
-            <pre>
-              <code class="language-javascript">
-const list = new List({
+            <pre><code class="language-javascript">const list = new List({
   container: 'section'
-})</code><a name='render2'></a>
-            </pre>
+})</code><a name='render2'></a></pre>
             
             <p> </p>
             <h3>Notice:</h3> 
@@ -402,9 +368,8 @@ const list = new List({
 
             <h2>Component - render</h2>
             <p>This is a method defined on a component that defines the markup that the component will create. It returns a virtual node when it executes. By default when this is executed it checks for <code>state</code> to use. You can bypass this by passing data through the component's <code>update</code> method.</p>
-            <pre>
-              <code class="language-javascript">
-class List extends Component {
+           
+            <pre><code class="language-javascript">class List extends Component {
   render(data) {
     return (
       &lt;ul>
@@ -414,14 +379,13 @@ class List extends Component {
       &lt;/ul>
     )
   }
-}</code><a name='update'></a>
-            </pre>
+}</code><a name='update'></a></pre>
+
             <p> </p>
             <h2>Component - update</h2>
             <p>If you have a component that does not have <code>state</code>, after initializing it you'll ned to execute <code>udpate</code> on it. Doing so will cause it to be rendered in the DOM. You can also optionally pass data to the <code>update</code> method. Doing so allows you to bypass the current <code>state</code> of the component.</p>
-            <pre>
-              <code class="language-javascript">
-class Title extends Component {
+
+            <pre><code class="language-javascript">class Title extends Component {
   render(message) {
     return (
       <h1>Hello, {message}!</h1>
@@ -433,16 +397,13 @@ const title = new Title({
 })
 
 // Update the component:
-title.update('Harry Potter')</code><a name='state'></a>
-            </pre>
+title.update('Harry Potter')</code><a name='state'></a></pre>
             
             <p> </p>
             <h2>Component - state</h2>
             <p>Components can be stateless or statefull. You use the <code>state</code> property to set that up. Once you have given your component <code>state</code>, you should use the <code>setState</code> method to update it. When you assign a value to a component's <code>state</code> property, this causes the component to be rendered to the DOM automatically. This is because the Component class has getters and setters for <code>state</code>. Whenever the setter is invoked it also invokes the component's <code>update</code> method, resulting in a render or patching of the component in the DOM.</p>
 
-            <pre>
-              <code class="language-javascript">
-// Define container and state in constructor:
+            <pre><code class="language-javascript">// Define container and state in constructor:
 class Title extends Component {
   constructor(props) {
     super(props)
@@ -468,16 +429,13 @@ class Title extends Component {
 const title = new Title({
   container: 'header',
   state: 'Harry Potter'
-})</code><a name='setState'></a>
-            </pre>
+})</code><a name='setState'></a></pre>
             
             <p> </p>
             <h2>Component - setState</h2>
             <p>This method lets you update the <code>state</code> of a component. When the compoent's state is an object or array, this lets you perform partial updates on the <code>state</code>, changing a property value of array index value. Internally, <code>setState</code> invokes the <code>state</code> setter, which cause the component to be updated.</p>
 
-            <pre>
-              <code class="language-javascript">
-class Title extends Component {
+            <pre><code class="language-javascript">class Title extends Component {
   render(message) {
     return (
       <h1>Hello, {message}!</h1>
@@ -488,23 +446,19 @@ const title = new Title({
   container: 'header'
 })
 // Set the state with setState:
-title.setState('Harry Potter')</code><a name='unmount'></a>
-            </pre>
+title.setState('Harry Potter')</code><a name='unmount'></a></pre>
             
             <p> </p>
             <h2>Component - unmount</h2>
-            <p>If you want to destroy a comonent, removing it from the DOM, you will use this method. It gets executed on the component instance. <code>unmount</code> deletes the component base element from the DOM and nulls out all its properties on its instance for garbage collection. Before version 5.2.2, Composi would try to unbind a whitelist of events from the component base before unmounting. Now, before unmounting you need to remove any event listeners yourself. </p>
+            <p>If you want to destroy a component, removing it from the DOM, you will use this method. It gets executed on the component instance. <code>unmount</code> deletes the component base element from the DOM and nulls out all its properties on its instance for garbage collection. Before version 5.2.2, Composi would try to unbind a whitelist of events from the component base before unmounting. Now, before unmounting you need to remove any event listeners yourself. </p>
 
-            <pre>
-              <code class="language-javascript">
-// Create component instance:
+            <pre><code class="language-javascript">// Create component instance:
 const title = new Title({
   container: 'header',
   state: 'Harry Potter'
 })
 // Sometime later destory the component:
-title.unmount()</code><a name='element'></a>
-            </pre>
+title.unmount()</code><a name='element'></a></pre>
             
             <p> </p>
             <h2>Component - element</h2>
@@ -514,16 +468,14 @@ title.unmount()</code><a name='element'></a>
             <p>This property determines whether Composi should re-render a component when its state changes or its <code>update</code> method is invoked. By default it is set to true. Setting it to false will allow the component to render initially but ignore any other updates. As soon as the property is set back to true, the component will begin updating again.</p>
             <p>This is useful for situations where you need to pause the update of a component while you perform some complex operations.</p>
             
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
+          <pre><code class="language-javascript">class Hello extends Component {
   constructor(props) {
     super(props)
     this.container = 'header',
     this.state = 'World'
     this.componentShouldUpdate = false
   }
-  render: (data) => {
+  render(data) => {
     return (
       &lt;h1>Hello, {data ? `: ${data}`: ''}!&lt;/h1>
     )
@@ -540,35 +492,70 @@ hello.setState('Joe')
 hello.componentShouldUpdate = true
 hello.setState('Joe')
 // Now the component updates.
-</code>
-          </pre>
+</code></pre>
             
             <p> </p>
             <h2>Lifecycle Hooks</h2>
-            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The two most useful hooks are <code>componentDidMount</code> and <code>componentDidUpdate</code>.<a name='componentWillMount'></a> Before version 1.2.0, we used: <code>beforeCreateComponent</code>. This is now deprecated, so use <code>componentWillMount</code></p>
-            
-            <a name='componentDidMount'></a>
+            <p>Lifecycle hooks allow you to do things at different times during the existence of a component. Composi has five. These are asynchronous. That means that the event may finish before the hook can. This is probably most important when deal with unmounting. If you have a lot of cleanup to do, do it before unmounting. The most useful hook is <code>componentDidMount</code>.</p>
+
+            <a name='componentWillMount'></a>
             <h2>Component - componentWillMount</h2>
-            <p>This fires right before the component is rendered and inserted into the DOM. Because of the asynchronous nature of lifecycle hooks, the rendering will probably componente before this method and finish executing. Before version 1.2.0, this was named: <code>componentWasCreated</code>. This is now deprecated, so use <code>componentDidMount</code>.</p>
+            <p>This fires right before the component is rendered and inserted into the DOM. This gets passed a <code>done</code> callback which you call when you finish whatever you were doing:</p>
+
+<pre><code class="language-javascript">componentWillMount(done) {
+  // Do whatever you need to do here...
+  // The let the mount happen:
+  done()
+}</code></pre>
+
+            <p>If you fail to call <code>done()</code> inside your <code>componentWillMount</code> funciton, the component will never mount!</p>
+
+            <a name='componentDidMount'></a>
+            <h2>Component - componentDidMount</h2>
+            <p>This fires right after the component has been injected into the DOM. You can use this to set up events for the component or start a interval loop for some purpose. You can access the base element of the component from within this lifecycle hook. You do this by using the component's <code>element</code> property. Notice how we do this to focus on an input:</p>
+
+            <pre><code class="language-javascript">// Set focus on an input:
+componentDidMount() {
+  // Use the component base to focus on the input:
+  this.element.querySelector('input').focus()
+}</code></pre>
+            <p> </p>
             
             <a name='componentWillUpdate'></a>
-            <h2>Component - componentDidMount</h2>
-            <p>This fires right after the component has been injected into the DOM. You can use this to set up events for the component or start a interval loop for some purpose.</p>
+            <h2>Component - componentWillUpdate</h2>
+            <p>This fires right before the component is updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified. This gets passed a <code>done</code> callback which you call when you finish whatever you were doing:</p>
+
+<pre><code class="language-javascript">componentWillUpdate(done) {
+  // Do whatever you need to do here...
+  // The let the update happen:
+  done()
+}</code></pre>
+
+            <p> </p>
             
             <a name='componentDidUpdate'></a>
-            <h2>Component - componentWillUpdate</h2>
-            <p>This fires right before the component is updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
-            
-            <a name='componentWillUnmount'></a>
             <h2>Component - componentDidUpdate</h2>
             <p>This fires right after the component was updated. Updates happen when the <code>update</code> method is invoked, or the <code>state</code> is modified.</p>
-            <h2>Component - componentWillUnmount</h2>
-            <p>This fires when the </code>unmount</code> method is invoked on the component instance. Because this is asynchronous, it is highly probable that the component will be full unmounted and destroyed before this hook finishes executing.</p>
 
-            <a name='dangerouslySetInnerHTML'></a>
+            <a name='componentWillUnmount'></a>
+            <h2>Component - componentWillUnmount</h2>
+            <p>This fires when the </code>unmount</code> method is invoked on the component instance. This gets passed a <code>done</code> callback which you call when you finish whatever you were doing:</p>
+
+
+<pre><code class="language-javascript">componentWillUnmount(done) {
+  // Do whatever you need to do here...
+  // The let the unmount happen:
+  done()
+}</code></pre>
+
+            <p> </p>
+            <a name='innerHTML'></a>
           
-            <h2>dangerouslySetInnerHTML</h2>
-            <p>This is a property which you can set on any JSX tag. Its purpose is to allow adding data with markup to be rendered unescaped using innerHTML. You put the property on the element into with you wish to insert the data. Then pass the data to the property inside curly braces like any other dynamic property. You can learn more about how to use it <a target='_blank' href='../tuts/introducing-jsx.html#dangerouslySetInnerHTML2'>here</a></p>
+            <h2>innerHTML</h2>
+            <p>This is a property which you can set on any JSX tag. Its purpose is to allow adding data with markup to be rendered unescaped using innerHTML. You put the property on the element into which you wish to insert the data. Then pass the data to the property inside curly braces like any other dynamic property. You can learn more about how to use it <a target='_blank' href='../tuts/introducing-jsx.html#innerHTML2'>here</a></p>
+
+            <h3>Security Warning</h3>
+            <p>Using <code>innerHTML</code> is very dangerous as it can lead to injection of malicious code in your site by hackers. Only use this if you are absolutely sure your data source is 100% secure. It is best to avoid using <code>innerHTML</code> and depend on the default rendering methods because these automatically encode the data, preventing script injection.</p>
 
           <p>&nbsp;</p>
 
@@ -582,16 +569,13 @@ hello.setState('Joe')
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

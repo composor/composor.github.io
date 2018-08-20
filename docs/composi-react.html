@@ -156,11 +156,11 @@ render(&lt;Title message='An Amazing Title!!!'/>, title)</code></pre>
       <td>htmlFor</td>
     </tr>
     <tr>
-      <td>xlink-href</td>
+      <td>xlink-href or xlinkHref</td>
       <td>xlinkHref</td>
     </tr>
     <tr>
-      <td>dangerouslySetInnerHTML (string)</td>
+      <td>innerHTML (string)</td>
       <td>dangerouslySetInnerHTML (callback)</td>
     </tr>
     <tr>
@@ -169,8 +169,8 @@ render(&lt;Title message='An Amazing Title!!!'/>, title)</code></pre>
     </tr>
   </table>
 
-  <p>Inline events are just inline events, same as they've always been since DOM Level 0. Composi uses standard HTML attributes. No need for camel case or non-standard terms. For SVG icons you can use <code>xlink-href</code>. <code>dangerouslySetInnerHTML</code> accepts a string as its value. No need for a complicated function like with React.  <code>style</code> can take a JavaScript object literal of key value pairs, or you can use a string as you normally would with HTML. React and friends only accept an object.</p>
-  <p>For handling <code>innerHTML</code>, Composi uses <code>dangerouslySetInnerHTML</code>. Unlike React, which requires a callback, you just pass a string for the content to insert:</p>
+  <p>Inline events are just inline events, same as they've always been since DOM Level 0. Composi uses standard HTML attributes. No need for camel case or non-standard terms. For SVG icons you can use <code>xlink-href</code>. <code>innerHTML</code> works as it normally does with DOM elements. It accepts a string as its value. No need for a complicated function like with React.  <code>style</code> can take a JavaScript object literal of key value pairs, or you can use a string as you normally would with HTML. React and friends only accept an object.</p>
+  <p>For inserting arbitrary markup into the DOM, Composi uses <code>innerHTML</code>. React uses <code>dangerouslySetInnerHTML</code>, which requires a callback.</p>
 
 
   <pre>
@@ -181,7 +181,7 @@ render(&lt;Title message='An Amazing Title!!!'/>, title)</code></pre>
 }
 const title = mount(&lt;Title/>, 'header')
 // Later update the title:
-render(&lt;Title dangerouslySetInnerHTML='The New Title!'/>, title)</code></pre>
+title = render(title, &lt;Title innerHTML='The New Title!'/>, 'header')</code></pre>
 
     <p> </p>
 
@@ -264,15 +264,15 @@ title.update()</code></pre>
         <th>React</th>
       </tr>
       <tr>
-        <td>onComponentDidMount</td>
+        <td>onmount</td>
         <td>N/A</td>
       </tr>
       <tr>
-        <td>componentDidUpdate</td>
+        <td>onupdate</td>
         <td>N/A</td>
       </tr>
       <tr>
-        <td>onComponentWillUnmount</td>
+        <td>onunmount</td>
         <td>N/A</td>
       </tr>
     </table>
@@ -392,16 +392,13 @@ const title = mount(&lt;Title message='A Great Title'/>, 'header')</code></pre>
         <a href='./installation.html'>Installation</a>
       </li>
       <li class="docs__menu__item">
-        <a href='./render.html'>Mount/Render</a>
+        <a href='./render.html'>Mount/Render/Unmount</a>
       </li>
       <li class="docs__menu__item">
-        <a href='./functional-components.html'>Functional Components</a>
+        <a href='./functional-component.html'>Functional Component</a>
       </li>
       <li class="docs__menu__item">
-        <a href='./component-instance.html'>Component Instance</a>
-      </li>
-      <li class="docs__menu__item">
-        <a href='./extending-component.html'>Extending Component</a>
+        <a href='./class-component.html'>Class Component</a>
       </li>
       <li class="docs__menu__item">
         <a href='./state.html'>State</a>

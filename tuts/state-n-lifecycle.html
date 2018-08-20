@@ -62,9 +62,7 @@
           <h1>State and Lifecycle</h1>
           <p class="tutorial__intro">Previously we made a clock that was re-render every second by a <code>setInterval</code> loop. Now we're going to see how to make a component that updates itself automatically using state.</p> 
 
-          <pre>
-            <code class="language-javascript">
-function tick() {
+          <pre><code class="language-javascript">function tick() {
   const clock = (
     &lt;div id='dingo'>
       &lt;h1>Hello, world!&lt;/h1>
@@ -77,8 +75,8 @@ function tick() {
   )
 }
 
-setInterval(tick, 1000)</code>
-          </pre>
+setInterval(tick, 1000)</code></pre>
+
           <p>In the above example, the <code>tick</code> function is passing the <code>clock</code> element to the <code>render</code> function inside a <code>setInterval</code>. This works, but we can do better by converting it into a case-based component.</p>
 
           <h2>Convert a Function Component into a Class-based One</h2>
@@ -94,9 +92,8 @@ setInterval(tick, 1000)</code>
           </ol>
 
           <p>Following these steps with our clock from above, we get this:</p>
-          <pre>
-            <code class="language-javascript">
-class Clock extends Component {
+          
+          <pre><code class="language-javascript">class Clock extends Component {
   render() {
     return (
       &lt;div>
@@ -105,16 +102,14 @@ class Clock extends Component {
       &lt;/div>
     )
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Now we have the basis for a Clock component, but we need to add local state and lifecycle hooks.</p>
           <h2>Adding Local State to a Class</h2>
           <p>In order to add local state to the class, we'll first need to give it a constructor. The constructor always needs to come first in a class. Because this is an extension of the Component class, we'll also need to invoke <code>super</code> in the constructor so we can pass the class's props to the Component class. Right after the <code>super</code> call we can add in state. Remember that state in the constructor needs to be attached to the <code>this</code> keyword. And finally, since the class now has state, we don't need to use <code>this.props.date</code> to access the date. Instead we switch that to use the class's state.</p>
           <p>One more thing about component classes. When we make a functional component and pass it to render, we also pass in a selector for where we want the component to be rendered. For component classes we indicate where we want it render by giving the class a <code>container</code> property. In this case we'll be adding that to the constructor, right after the state:</p>
 
-          <pre>
-            <code class="language-javascript">
-class Clock extends Component {
+          <pre><code class="language-javascript">class Clock extends Component {
   constructor(props) {
     super(props)
     this.state = {date: new Date()}
@@ -128,15 +123,12 @@ class Clock extends Component {
       &lt;/div>
     )
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Since we now have a class with state, we no longer need to pass it to the <code>render</code> function. Instead we simply create an instance with the <code>new</code> keyword:</p>
 
-          <pre>
-            <code class="language-javascript">
-const clock = new Clock()
-            </code>
-          </pre>
+          <pre><code class="language-javascript">const clock = new Clock()</code></pre>
+
           <p>Codepen Example:</p>
           <p data-height="300" data-theme-id="6688" data-slug-hash="yPyJVy" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts -State and Lifecycle-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/yPyJVy/">Composi Tuts -State and Lifecycle-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -169,9 +161,7 @@ const clock = new Clock()
           <h2>Updating Array of Objects</h2>
           <p>Updating component state when it is an array of objects, it is more not complicate either. Again just use a callback inside <code>setState</code> to update the array's the object values. Suppose we have an array of persons and we assign it to a component instance called <code>personsList</code>:</p>
 
-          <pre>
-            <code class="language-javascript">
-const people = [
+          <pre><code class="language-javascript">const people = [
   {
     name: 'Joe Bodoni',
     job: 'mechanic'
@@ -184,20 +174,18 @@ const people = [
     name: 'Sam Anderson',
     job: 'developer'
   }
-]</code>
-          </pre>
+]</code></pre>
+
           <p> </p>
           <h2>Passing a Callback to setState</h2>
           <p>The first approach is of course doable, whoever it can be a bit messy. Using the second approach results in more container result. When passing a callback to <code>setState</code>, the component's state gets passed as the argument of the callback. So, using this approach, let's solve the problem of updating Sam's job:</p>
 
-          <pre>
-            <code class="language-javascript">
-peopleList.setState(prevState => {
+          <pre><code class="language-javascript">peopleList.setState(prevState => {
   // Update Sam's job:
   prevState[2].job = 'cook'
   return prevState
-})</code>
-          </pre>
+})</code></pre>
+
           <p>When using a callback, you must take care to always return the modified state. Not doing so will result in the component state not being updated. Returning the modified state will cause the component state to be updated properly.</p>
 
           <h2>Updates Use requestAnimationFrame</h2>

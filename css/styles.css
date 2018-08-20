@@ -683,7 +683,7 @@ footer a:hover {
   font-size: 1.75rem;
   margin: 2rem 0;
 }
-.documentation-page .tutorial__intro,
+.documentation-page .docs__intro,
 .tutorial-page .tutorial__intro {
   font-size: 2.5rem;
   margin: 0 3em 1em 0;
@@ -753,7 +753,7 @@ footer a:hover {
   .tutorial__article aside {
     padding: 2rem 1rem;
   }
-  .documentation-page .tutorial__intro,
+  .documentation-page .docs__intro,
   .tutorial-page .tutorial__intro {
     font-size: 2rem;
     margin: 0 .5em 0;
@@ -780,7 +780,7 @@ footer a:hover {
   .tutorial > p > img {
     width: 90%;
   }
-  .documentation-page .tutorial__intro,
+  .documentation-page .docs__intro,
   .tutorial-page .tutorial__intro {
     font-size: 2rem;
     margin: 0 .5em 0;

@@ -73,9 +73,8 @@
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
           <p>Both of these produce the same virtual node. As you can see, the <code>h</code> code looks quite similar to the virtual node that it creates:</p>
-<pre>
-  <code class="language-javascript">
-// The virtual node created is:
+
+<pre><code class="language-javascript">// The virtual node created is:
 {
   type: "h2", 
   props: {
@@ -83,9 +82,7 @@
     title: "Hello, Ellen!"
   }, 
   children: ["Hello, ", "Ellen", "!"]
-}
-  </code>
-</pre>
+}</code></pre>
 
           <p> </p>
           <h2>Subcomponents With H</h2>
@@ -100,16 +97,12 @@
 
           <h3>Installing:</h3>
           <p> </p>
-          <pre>
-            <code class="language-bash">
-npm i -D taggers</code>
-          </pre>
+          <pre><code class="language-bash">npm i -D taggers</code></pre>
 
           <p> </p>
           <p>Example usage:</p>
-<pre>
-            <code class="language-javascript">
-import {h, render} from 'composi'
+
+<pre><code class="language-javascript">import {h, mount} from 'composi'
 import {taggers} from 'taggers'
 
 const {nav, h1} = taggers(h)
@@ -124,9 +117,8 @@ function title(message) {
     )
   )
 }
-// Render tags:
-render(title('World'), 'header')</code>
-          </pre>
+// Mount the component:
+mount(title('World'), 'header')</code></pre>
 
           <p>And here's a Codepen example:</p>
           <p data-height="300" data-theme-id="6688" data-slug-hash="opWjZQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi with taggers-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/opWjZQ/">Composi with taggers-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -138,16 +130,13 @@ render(title('World'), 'header')</code>
 
           <h3>Installing:</h3>
           <p> </p>
-          <pre>
-            <code class="language-bash">
-npm i -D h-html</code>
-          </pre>
+
+          <pre><code class="language-bash">npm i -D h-html</code></pre>
 
           <p>After installing, you can import it into your project. There are two ways you can do so, importing indidual tags, or importing them all on a alias.</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, render} from 'composi'
+          <pre><code class="language-javascript">
+import {h, mount} from 'composi'
 import {nav, h1} from 'h-html'
 
 // Define tags:
@@ -160,9 +149,8 @@ function title(message) {
     )
   )
 }
-// Render tags:
-render(title('World'), 'header')</code>
-          </pre>
+// Mount the tags:
+mount(title('World'), 'header')</code></pre>
 
           <p>And here's a Codepen example:</p>
           <p data-height="400" data-theme-id="6688" data-slug-hash="xPJmoz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi with h-html-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xPJmoz/">Composi with h-html-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -170,9 +158,7 @@ render(title('World'), 'header')</code>
 
           <p>Here's an example importing all tags as an alias:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {h, render} from 'composi'
+          <pre><code class="language-javascript">import {h, mount} from 'composi'
 import * as t from 'h-html'
 
 // Define tags:
@@ -185,8 +171,8 @@ function title(message) {
     )
   )
 }
-// Render tags:
-render(title('World'), 'header')
+// Mount the title:
+mount(title('World'), 'header')
 
 // Define list:
 function list(data) {
@@ -199,9 +185,9 @@ function list(data) {
     listItems(data)
   )
 }
-// Render list:
-render(list(['One', 'Two', 'Three']), 'section')</code>
-          </pre>
+// Mount the list:
+mount(list(['One', 'Two', 'Three']), 'section')</code></pre>
+
           <p>It's totally up to you which way you want to import <code>h-html</code>. However, if you know you are going to use a lot of tags, it makes sense to import them on an alias.</p>
 
           <p>And here's a Codepen example of tags being aliased:</p>
@@ -218,22 +204,18 @@ render(list(['One', 'Two', 'Three']), 'section')</code>
           <h2>Installation and Use</h2>
           <p>You'll need to install Hyperx-es6 in your project and import it into any file where you want to use it. You'll have to make an update to your project's <code>gulpfile.js</code> to know to include Hyperx-es6 when it bundles all the dependencies. And you'll also need to let Babel know to use Hyperx-es6 instead of Composi's <code>h</code> function for creating virtual nodes.</p>
 
-          <pre>
-            <code class="language-bash">
-# cd to your project and run:
-npm i -D hyperx-es6</code>
-          </pre>
+          <pre><code class="language-bash"># cd to your project and run:
+npm i -D hyperx-es6</code></pre>
+
           <p>In your project's <code>app.js</code> file add:</p>
           
-          <pre>
-            <code class="language-javascript">
-import {h, Component} from 'composi'
+          <pre><code class="language-javascript">import {h, Component} from 'composi'
 import {hyperx} from 'hyperx-es6'
 
 // Tell Hyperx-es6 to use the Composi h function,
 // by passing it to Hyperx-es6:
-const html = hyperx(h)</code>
-          </pre>
+const html = hyperx(h)</code>]</pre>
+
           <p>With this in your file, you can start using Hyperx-es6. You could make functional components like with JSX, or use it inside of a class component. Below are some functional components with composition. We need to use <code>${}</code> for interpolation. Note that when using Hyperx, you'll be using the tagged template literal <code>html</code> that you designated after importing Hyperx-es6. <strong>Note:</strong> in all the following Codepen examples, we're using the UMD version of Hyperx-es6 that we can load in the browser and access as a global variable.</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="ooXvLv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Hyperx-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ooXvLv/">Composi Tuts - Hyperx-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -249,17 +231,13 @@ const html = hyperx(h)</code>
 
           <h2>Load From a CDN</h2>
           <p>You can also load Hyperx-es6 from a CDN:</p>
-          <pre>
-            <code class="language-html">
-&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
-&lt;script src='https://unpkg.com/hyperx-es6@2.3.2/dist/hyperx-es6.js'>&lt;/script>
-            </code>
-          </pre>
+
+          <pre><code class="language-html">&lt;script src='https://unpkg.com/composi@0.9.1/dist/composi.js'>&lt;/script>
+&lt;script src='https://unpkg.com/hyperx-es6@2.3.2/dist/hyperx-es6.js'>&lt;/script></code></pre>
+
           <p>When you load Hyperx-es6 from a CDN, you can access it like this:</p>
 
-          <pre>
-            <code class="language-javascript">
-const { h, render, Component } = composi
+          <pre><code class="language-javascript">const { h, render, Component } = composi
 // When using CDN version, notice capitalized: Hyperx.
 // ES6 import is lowercase: import {hyper} from 'hyper-es6'
 const {hyperx} = Hyperx
@@ -267,9 +245,7 @@ const {hyperx} = Hyperx
 // Tell Hyperx-es6 to use the Composi h function,
 // by passing it to hyperx:
 const html = hyperx(h)
-// Start using html`` to define component markup.
-            </code>
-          </pre>
+// Start using html`` to define component markup.</code></pre>
 
 
           <p>&nbsp;</p>

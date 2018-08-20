@@ -71,61 +71,134 @@
           </ol>
         
 
-          <p>As of version 2.1.0, you can also use lifecycle hooks with functional components. Check <a target='_blank' href='./functional-components.html#lifecyle'>the documentation</a> to learn more.</p>
+          <p>As of version 2.1.0, you can also use lifecycle hooks with functional components. Check <a target='_blank' href='./functional-component.html#lifecyle'>the documentation</a> to learn more.</p>
 
-          <p>Lifecycle methods are hooks that let you implement maintenance, register or remove events, and clean up code based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
+          <p>Lifecycle methods are hooks that let you implement maintenance, register or remove events, and other clean based on the status of a component from when it is created and injected into the DOM, when it is updated and when it is removed from the DOM.</p>
 
-          <p><code>componentWillMount</code> is executed before the component is created and inserted into the DOM. If you need to access the DOM, set up an event, or make a network request for remote resources, use the <code>componentDidMount</code> hook. Be aware that this is async, so the component will probably mount before this finishes executing. It's best not to use this for side affects, like getting data. Instead, get the data and then set the state on the component.</p>
+          <p><code>componentWillMount</code> is executed before the component is created and inserted into the DOM. As such, it will always fire, whether the mount was successful or not. If you need to access the DOM, set up an event, or make a network request for remote resources, use the <code>componentDidMount</code> hook.</p>
+          
+          <p>This lifecycle hook receives a callback named <code>done</code>. You need to call this after doing whatever you need to do
+          before the component is updates. If you fail to call <code>done()</code>, the update will not complete. Mounting is triggered by a component's state, so this is not the place to get data to set on a component. Get the data first and then set the component's state.</p>
+
+<pre><code class="language-javascript">componentWillMount(done) {
+  // Do whatever you need to here...
+  // Delay mounting by 3 seconds
+  setTimeout(() => {
+    // Don't forget to call done:
+    done()
+  }, 3000)
+}</code></pre>
 
           <p><code>componentDidMount</code> is executed after the component is inserted into the DOM. This is the place to set up events, access the child nodes of the component, or make a request for remote resources over the network. The callback gets passed a reference to the component instance as its argument. Using this, you can use <code>this.element</code> to access the component instance DOM tree.</p>
-          <pre>
-<code class="language-javascript">componentDidMount() {
+
+          <pre><code class="language-javascript">componentDidMount() {
   // Access the component instance root element:
   this.element.addEventListener('click', this)
   this.input = this.element.querySelector('input')
 }</code></pre>
 
-          <p><code>componentWillUpdate</code> is executed right before the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute. The callback gets passed a reference to the component instance as its argument. Because this is async, the component will probably update before this finishes executing. It's best to instead use <code>componentDidUpdate</code> for reliability. Otherwise, do whatever you need to do before the update and use a promise to update it.</p>
+          <p><code>componentWillUpdate</code> is executed right before the component is updated. It will not execute if the component is not yet mounted. Because this is async, the component will probably update before this finishes executing. It's best to instead use <code>componentDidUpdate</code> for reliability. Otherwise, do whatever you need to do before the update and use a promise to update it.</p>
+          <p><code>componentWillUpdate</code> will execute when Composi tries to update a component. If a component is updated with the same data as previously, no update will occur and this will not execute. You can access <code>this.element</code>, <code>this.props</code> and <code>this.state</code> from within the <code>componentWillUpdate</code> callback. This lifecycle hook receives a callback named <code>done</code>. You need to call this after doing whatever you need to do before the component
+          is updates. If you fail to call <code>done()</code>, the update will not complete. Here is how to use it. Failing to call <code>done()</code> in <code>componentDidUpdate</code> means that the component will be out of sync with its state.</p>
+          <p>In the following example we delay the update of the component for 3 seconds:</p>
 
-          <p><code>componentDidUpdate</code> is executed immediately after the component is updated. If a component is updated with the same data, then no update will occur, meaning this will not execute.  You can use that to access the component instance old props and new props:</p>
 
-          <pre>
-<code class="language-javascript">componentWillUpdate() {
-  // Access the old props:
-  this.element.oldNode.props
-  // Access the new props:
-  this.element.node.props
+<pre><code class="language-javascript">import { h, Component } from 'composi'
+class Title extends Component {
+  render(data) {
+    return (
+      &lt;nav>
+          &lt;h1>
+          &lt;/h1>
+      &lt;/nav>
+    )
+  }
+  // Pass in the done callback to complete the update:
+  componentWillUpdate(done) {
+    console.log('Getting ready to update!')
+    // Do whatever you need to do before updating...
+
+    // Delay update for 3 seconds:
+    setTimeout(() => {
+      console.log('We are now updating!') 
+      // Don't forget to call done!
+      done()
+    }, 3000)
+  }
 }</code></pre>
 
-          <p><code>componentWillUnmount</code> is executed before a component is unmounted with its <a href='file:///Users/rbiggs/Git/composor.github.io/docs/api.html#unmount' target='__blank'>unmounted</a> method. Remember that this is async. If you have a number of things to do before unmounting a component, it is best to do those first in a separate routine and then unmount the component. If you need to do some clean up that does not directly involve the component itself, then you can use this lifecycle hook safely.</p>
+          <p><code>componentDidUpdate</code> is executed immediately after the component is updated. If a component is updated with the same data as previously, no update will occur and this will not execute.  You can use this lifecycle hook to examine the component instance element, props and state like with <code>componentWillUpdate</code>. Be aware that <code>this.props</code> never changes as it is the value assigned when the component was instantiated.</p>
 
-          <h2>Lifecycle Methods are Async</h2>
-          <p>When using lifecycle methods, be aware that they are async. For example, with `componentWillMount` your component will probably be created and inserted into the DOM before your method can finish. Similarly, when using `componentWillUnmount`, the component will probably be unmounted and destroyed before your code in this method completes. If you want to handle these two in a synchronous manner for tighter control, you have two choices. Use a method that returns a promise, or use the <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/async_function' target='__blank'>ES7 async functions</a>. If your browser target includes IE9, you will need to polyfill promises for either of these to work.</p>
+          <p><code>componentWillUnmount</code> is executed before a component is unmounted with its <a href='./api.html#unmount' target='__blank'>unmounted</a> method. This receives a callback named <code>done</code>. You need to call this after doing whatever you need to do before the component is unmounted. If you fail to call <code>done()</code>, unmounting will not complete. Here is how to use it. Notice how we delay the removal of the component for 5 seconds:</p>
+
+
+          <pre><code class="language-javascript">import { h, Component } from 'composi'
+class Title extends Component {
+  render(data) {
+    return (
+      &lt;nav>
+         &lt;h1>
+         &lt;/h1>
+      &lt;/nav>
+    )
+  } 
+  // Pass in the done callback to complete the unmounting:
+  componentWillUnmount(done) {
+    console.log('Getting ready to unmount!')
+    // Do whatever you need to do before unmounting...
+
+    // Delay unmount for 5 seconds:
+    setTimeout(() => {
+      console.log('We are now unmounting!')
+      // Don't forget to call done!
+      done()
+    }, 5000)
+  }
+}
+          </code></pre>
+
+          <p><strong>Notice:</strong> If you do not call the <code>done</code> callback as in the above example, the component will never unmount.</p>
+
+          <p> </p>
+          <h2>Difference between Will and Did</h2>
+          <p>The three lifecycle hooks with <code>Will</code> in their names allow you to delay they action until you are ready. This is done with the <code>done</code> callback. If you are using <code>componentWillMount</code>, <code>componentWillUpdate</code> or <code>componentWillUnmount</code> you have to pass them the done callback:</p>
+          
+          <pre><code class="language-javascript">componentWillMount(done) {
+  // Do whatever you need to here...
+  // Let the mount happen:
+  done()
+}
+componentWillUpdate(done) {
+  // Do whatever you need to here...
+  // Let the update happen:
+  done()
+}
+componentWillUnmount(done) {
+  // Do whatever you need to here...
+  // Let the unmount happen:
+  done()
+}
+</code></pre>
+
+          <p>In contrast, <code>componentDidMount</code> and <code>componentDidUpdate</code> execute immediately.</p>
 
           <h2>Order of Execution</h2>
-          <p>The first time a component is rendered, <code>componentWillMount</code> and <code>componentDidMount</code> will be executed. <code>componentWillUpdate</code> and <code>componentWillUpdate</code> will not be executed at this time. After the component is created, each render will fire <code>componentWillUpdate</code> and <code>componentWillUpdate</code>. So, if you want to do something when the component is initially created and after it updates, you would need to do this:</p>
+          <p>The first time a component is rendered, <code>componentWillMount</code> and <code>componentDidMount</code> will be executed. <code>componentWillUpdate</code> and <code>componentWillUpdate</code> will not be executed at this time. After the component is created, each render will fire <code>componentWillUpdate</code> and <code>componentDidUpdate</code>. So, if you want to do something when the component is initially created and after it updates, you would need to do this:</p>
 
-          <pre>
-            <code class="language-javascript">
-class List extends Component {
+          <pre><code class="language-javascript">class List extends Component {
   //... setup here.
   componentDidMount() {
-    // Do stuff after component was created.
+    // Do stuff right after the component mounts.
+    // This will run only once.
   }
   componentDidUpdate() {
     // Do stuff every time component is updated.
+    // This will start with the first update after mounting.
   }
-}</code>
-          </pre>
+}</code></pre>
+          
           <p> </p>
-          <h2>Lifecycle Methods with Component Instance</h2>
-          <p>In the following example we use <code>componentDidMount</code> to start a timer and <code>componentWillUnmount</code> to terminate the timer.</p>
-          <p>In our first example of lifecycle methods, we'll use a Component instance. This poses several problems for the lifecycle methods. They do not have access to the component itself. This forces us to use global variables to pass things around.</p>
-
-          <p data-height="450" data-theme-id="6688" data-slug-hash="MOYKxG" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi lifecycle-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOYKxG/">Composi lifecycle-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-          <p> </p>
-          <h2>Lifecycle Methods with Extended Component</h2>
+          <h2>Accessing the Component Instance in Lifecycle Methods</h2>
           <p>When we create a new component by extending the Component class, we can access component properties directly through the `this` keyword. This is so because we define the lifecycle methods as class methods. Notice how we do this in the example below.</p>
 
           <p data-height="450" data-theme-id="6688" data-slug-hash="OOPMGW" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi lifecycle-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/OOPMGW/">Composi lifecycle-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -141,16 +214,13 @@ class List extends Component {
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

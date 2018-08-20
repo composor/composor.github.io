@@ -59,7 +59,7 @@
   <article class='docs__article'>
     <section>
       <div class='docs'>
-          <h1>Functional Components</h1>
+          <h1>Functional Component</h1>
           <p class="docs__intro">The component architecture is based on classes. If you favor functional programing over OOP, you might prefer to use functional components. Functional Components are always stateless, so you will want to use them with some kind of state management, such as Redux, Mobx, etc.</p>
 
           <h2>Virtual Dom</h2>
@@ -71,10 +71,9 @@
 
           <p>To create a functional component, you start with a function, surprise! The function could accept some data, or not. It depends on what the function needs to return. If it is returning static content, no need for a parameter of data. If you want the function component to consume some data, then pass it in as a parameter. And of course you'll need to return some markup. In the example below we have a simple, function component that creates a header:</p>
 
-          <pre><code class="language-javascript">
-// title.js:
+          <pre><code class="language-javascript">// title.js:
 // We need to import the "h" function:
-import {h} from 'composi'
+import { h } from 'composi'
 
 // Define function that takes props for data:
 export function Title(props) {
@@ -84,14 +83,12 @@ export function Title(props) {
       &lt;h1>Hello, {props.name}!&lt;/h1>
     &lt;/nav>
   )
-}</code>
-      </pre>
+}</code></pre>
 
       <p>If we were to do this with the Composi <code>h</code> function, it would look like this:</p>
 
-      <pre><code class="language-javascript">
-import {h} from 'composi'
-import {html} from 'hyperscript'
+      <pre><code class="language-javascript">import { h } from 'composi'
+import { html } from 'hyperscript'
 
 // Define function that takes props for data:
 export function Title(name) {
@@ -100,26 +97,22 @@ export function Title(name) {
       'h1', {}, name
     )
   )
-}</code>
-        </pre>
+}</code></pre>
 
         <p>Both examples above create virtual nodes, so we will need a way to get them into the DOM. Composi provides the <code>mount</code> function for that purpose. It works similar to React's <code>ReactDOM.render</code> function. It takes two arguments: a tag/vnode and a selector/element in which to insert the markup.</p>
 
         <p>In our <code>app.js</code> file we import <code>h</code> and <code>mount</code> and then the <code>Title</code> functional component and insert it into the DOM:</p>
 
-        <pre>
-          <code class="language-javascript">
-// app.js:
-import {h, mount} from 'composi'
-import {Title} from './components/title'
+        <pre><code class="language-javascript">// app.js:
+import { h, mount } from 'composi'
+import { Title } from './components/title'
 
 // Define data for component:
 const name = 'World'
 
 // Inject the component into header tag.
 // We pass the name variable in as a property in curly braces:
-mount(&lt;Title {...{name}}/>, 'header')</code>
-</pre>
+mount(&lt;Title {...{name}}/>, 'header')</code></pre>
 
         <p>Codepen Example:</p>
         <p data-height="300" data-theme-id="6688" data-slug-hash="MOWNMB" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/MOWNMB/">Composi functional-components-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -130,9 +123,8 @@ mount(&lt;Title {...{name}}/>, 'header')</code>
         <h2>List with Map</h2>
         <p>Now lets create a functional component that takes an array and outputs a list of items. Notice that we are using <a href='https://css-tricks.com/bem-101/' target='__blank'>BEM</a> notation for class names to make styling easier.</p>
         
-        <pre><code class="language-javascript">
-// list.js:
-import {h} from 'composi'
+        <pre><code class="language-javascript">// list.js:
+import { h } from 'composi'
 
 export function List(props) {
   return (
@@ -146,20 +138,16 @@ export function List(props) {
 
         <p>This list is consuming an <code>items</code> array:</p>
 
-        <pre>
-          <code class="language-javascript">
-// items.js:
-export const items = ['Apples', 'Oranges', 'Bananas']</code>
-          </pre>
+        <pre><code class="language-javascript">// items.js:
+export const items = ['Apples', 'Oranges', 'Bananas']</code></pre>
+
           <p>In our `app.js` file we put this all together:</p>
 
-          <pre>
-            <code class="language-javascript">
-// app.js:
-import {h, mount} from 'composi'
-import {Title} from './components/title'
-import {List} from './components/list'
-import {items} from './items'
+          <pre><code class="language-javascript">// app.js:
+import { h, mount } from 'composi'
+import { Title } from './components/title'
+import { List } from './components/list'
+import { items } from './items'
 
 // Define data for Title component:
 const name = 'World'
@@ -168,8 +156,7 @@ const name = 'World'
 mount(&lt;Title {...{name}}/>, 'header')
 
 // Insert list component into section with items data:
-mount(&lt;List {...{items}}/>, 'section')</code>
-</pre>
+mount(&lt;List {...{items}}/>, 'section')</code></pre>
 
           <p>Codepen Example:</p>
           <p data-height="500" data-theme-id="6688" data-slug-hash="aVzzGQ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/aVzzGQ/">Composi functional-components-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -179,10 +166,8 @@ mount(&lt;List {...{items}}/>, 'section')</code>
           <h2>Custom Tags</h2>
           <p>We can break this list down a bit using a custom tag for the list item. We will need to pass the data down to the child component through its props:</p>
 
-          <pre>
-            <code class="language-javascript">
-// list.js:
-import {h} from 'composi'
+          <pre><code class="language-javascript">// list.js:
+import { h } from 'composi'
 
 function ListItem(props) {
   return (
@@ -198,8 +183,8 @@ export function List(props) {
       &lt;/ul> 
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Codepen Example:</p>
           <p data-height="450" data-theme-id="6688" data-slug-hash="RjNNYP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi functional-components-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/RjNNYP/">Composi functional-components-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -211,10 +196,8 @@ export function List(props) {
 
           <p>What if we wanted to make this list dynamic by allowing the user to add items? For that we need events. We'll add a text input and button so the user can enter an item. Since this doesn't involve any data consuming any data, their function just needs to return the markup for the nodes to be created. We'll call this function component <code>ListForm</code>:</p>
 
-          <pre>
-            <code class="language-javascript">
-// list.js:
-import {h} from 'composi'
+          <pre><code class="language-javascript">// list.js:
+import { h } from 'composi'
 
 function ListForm() {
   return (
@@ -239,8 +222,7 @@ export function List(props) {
       &lt;/ul> 
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
 
           <p> </p>
           <h2>handleEvent Interface</h2>
@@ -249,9 +231,8 @@ export function List(props) {
           <p>Since we want to be able to add a new fruit to the list, we need to have access to the data and also the function component that renders the list. Therefore we add <code>events</code> object to handle that.</p>
           <p>Notice how we assign the result of mounting the functional component to the variable <code>list</code> and use that as the secton argument of the <code>render</code> function to update the list in the <code>addItem</code> function in the <code>events</code> object:</p>
 
-          <pre>
-<code class="language-javascript">import {h, mount, render} from 'composi'
-function ListForm() {
+          <pre><code class="language-javascript">import { h, mount, render } from 'composi'
+  function ListForm() {
   return (
     &lt;p>
       &lt;input class='list-fruits__input-add' placeholder='Enter Item...' type="text"/>
@@ -285,7 +266,7 @@ const events = {
     if (value) {
       items.push(value)
       // Pass in "list" variable from mounting:
-      render(&lt;List {...{items}}/>, list)
+      list = render(list, &lt;List {...{items}}/>, 'section')
       input.value = ''
     } else {
       alert('Please provide an item before submitting!')
@@ -298,8 +279,7 @@ const events = {
 
 const list = mount(&lt;List {...{items}}/>, 'section')
 
-document.querySelector('.container-list').addEventListener('click', events)</code>
-          </pre>
+document.querySelector('.container-list').addEventListener('click', events)</code></pre>
 
           <p>As you can see above, we need to get the value of the input. If the value is truthy, we push it to the items array. Then we re-render the functional component list. Because this is a different scope than <code>app.js</code> where we initially rendered the list, the first time we add an item, the list will be created a new, replacing what was there. That's because this is a different scope than <code>app.js</code>. However, with every new addition, the render function will use the new virtual DOM in this scope to patch the DOM efficiently.</p>
 
@@ -325,22 +305,6 @@ document.querySelector('.container-list').addEventListener('click', events)</cod
               <li><code>onupdate</code></li>
               <li><code>onunmount</code></li>
             </ul>
-            
-          <p>For versions of Composi prior to version 2.6.0, these where:</p>
-          
-          <ul>
-            <li>
-              <code>onComponentDidMount</code>
-            </li>
-            <li>
-              <code>onComponentDidUpdate</code>
-            </li>
-            <li>
-              <code>onComponentWillUnmount</code>
-            </li>
-          </ul> 
-          
-          <p>These longer versions of lifecylce hooks still work, but they are deprecated. These are just like the lifecycle hooks of the same name available on class components. Lifecycle hooks are useful for setting up events when a component mounts, fetching data, or dealing with the environment after a component is updated or deleted. In class components these are methods, but on fuctional components these are <code>props</code> and follow the same pattern for setting up inline events.</p>
 
           <h3>Using Lifecycle Hooks</strong></h3>
           <p>To use lifecycle hooks on a functional component you need to set them up as a property on the component with a function for the action to be executed when the hook is called. Notice how we attach the  <code>onmount</code> lifecycle hook to the <code>UL</code> element in the <code>List</code> function:</p>
@@ -373,12 +337,14 @@ function List({items}) {
   )
 }
 </code></pre>
+
           <a name="lifecyle"></a>
           <p> </p>
           <h3>Lifecycle Hook Arguments</h3>
           <p>The <code>onmount</code> callback gets passed the base element of the container as its argument. This is the same as <code>Component.element</code> in a class-based component. You can use this to attach events, or query the component DOM tree.</p>
           <p>The <code>onupdate</code> callback gets passed the element,  the old props and the new props. You can compare the old and new props to find out what changed.</p>
-          <p><code>onunmount</code> fires before the component has been removed from the DOM. It's callback gets passed its parent as its argument and a <code>done</code> function. You can use this lifecycle hook to do some environmental cleanup before the component is deleted. You can use this lifecycle hook on a functional component's children, such a list items of a list. The component will not be removed from the DOM until your the callback calls the <code>done</code> function. In the code sample below, notice how in the <code>removeEl</code> function we initialize a CSS animation to last half a second. The we set up a timeout to last half a second, afterwhich we run the <code>done</code> function. This delays the removal of the list item until after the animation finishes.</p>
+
+          <p><code>onunmount</code> fires before the component has been removed from the DOM. It gets passed a reference to the element on which it is registered and a <code>done</code> function. You can use this lifecycle hook to do some environmental cleanup, or animate the element before the component is deleted. You can use this lifecycle hook on a functional component's children, such a list items of a list. The component will not be removed from the DOM until you call the <code>done</code> function. In the code sample below, notice how in the <code>removeEl</code> function we initialize a CSS animation to last half a second. The we set up a timeout to last half a second, afterwhich we run the <code>done</code> function. This delays the removal of the list item until after the animation finishes.</p>
 
 
 <pre><code class="language-javascript">function removeEl(el, done) { 
@@ -419,16 +385,13 @@ function List() {
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item selected">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

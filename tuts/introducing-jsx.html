@@ -62,12 +62,9 @@
           <h1>Introducing JSX</h1>
           <p class="tutorial__intro">The following code has a line of JSX:</p>
 
-          <pre>
-            <code class="language-javascript">
-function Title() {
+          <pre><code class="language-javascript">function Title() {
   return &lt;h1>This is a Title!&lt;/h1>
-}</code>
-          </pre>
+}</code></pre>
           
           <p>JSX is a special syntax for defining markup inside JavaScript. It resembles HTML, but it is not. It is in fact an XML dialect. When libraries that use compile, they pass JSX code to a function that converts it into virtual nodes. These are then used to compare with earlier renders to see if the DOM needs to be updated. Based on the differences, only the parts that changed will be updated. This results in very efficient code. Although their are various hyperscript functions that can be used to define markup in JavaScript, JSX is much more concise. As an advantage, JSX more closely resembles the markup that will be created.</p>
 
@@ -90,17 +87,13 @@ function Title() {
             <h2>Specifying Attributes with JSX</h2>
             <p>To specify string literals as attributes, use quotes:</p>
 
-            <pre>
-              <code class="language-javascript">
-const element = &lt;div title="This is a DIV!" tabIndex="0">&lt;/div></code>
-            </pre>
+            <pre><code class="language-javascript">const element = &lt;div title="This is a DIV!" tabIndex="0">&lt;/div></code></pre>
+
             <p>You can also embed a JavaScript expression between curly braces to create a value for an attribute. When you do so, remember not to use quotes around the JavaScript expression. Otherwise, the expression will get converted to a string and used as the attribute's value:</p>
 
-            <pre>
-              <code class="language-javascript">
-// Use a JavaScript expression for the image src value:
-const element = &lt;img src={user.avatarUrl} /></code>
-            </pre>
+            <pre><code class="language-javascript">// Use a JavaScript expression for the image src value:
+const element = &lt;img src={user.avatarUrl} /></code></pre>
+
             <p>Unlike React, Preact and Inferno, which require attribute names to use camel case, with Composi you can use their normal HTML versions. In the following example, notice that all the attributes in the JSX resemble normal HTML attributes:</p>
 
             <p data-height="300" data-theme-id="6688" data-slug-hash="QOwNzz" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - JSX-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/QOwNzz/">Composi Tuts - JSX-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -109,29 +102,24 @@ const element = &lt;img src={user.avatarUrl} /></code>
             <h2>JSX Tags Can Have Children</h2>
             <p>A JSX tag can be single. In such a case it needs to be close with a forward slash:</p>
 
-            <pre>
-              <code class="language-javascript">
-const element = (
+            <pre><code class="language-javascript">const element = (
   &lt;img title='My Avatar' src='avatar.png' />
-)</code>
-            </pre>
+)</code></pre>
+
             <p>You can also provide a JSX tag with children. When you do so, you insert the children between the parent tag's opening and closing, just like HTML:</p>
-            <pre>
-              <code class="language-javascript">
-const element = (
+          
+            <pre><code class="language-javascript">const element = (
   &lt;div>
     &lt;h1>Hello!&lt;/h1>
     &lt;h2>Good to see you here.&lt;/h2>
   &lt;/div>
-)</code>
-            </pre>
+)</code></pre>
+
             <p> </p>
             <h2>JSX Prevents Injection Attacks</h2>
             <p>JSX automatically encodes any potential script injection code. This helps prevent script injection attacks. It does this by converting all data to strings before rendering it to the DOM.</p>
 
-            <pre>
-              <code class="language-javascript">
-const title = function() {
+            <pre><code class="language-javascript">const title = function() {
   alert('This is a script!')
 }
 class Test extends Component {
@@ -155,9 +143,7 @@ test.update(title)</code>
         <h2>JSX Represents Objects</h2>
         <p>When the JSX gets compiled, it is converted into an object that represents the nodes to be created:</p>
 
-        <pre>
-          <code class="language-javascript">
-function header() {
+        <pre><code class="language-javascript">function header() {
   return (
     &lt;h1 class='heading' title='This is the header'>This is the Header!&lt;/h1>
   )
@@ -171,21 +157,18 @@ const result = header()
     class: "header"
   }, 
   children: ["This is the Header!"]
-}</code>
-<a name='dangerouslySetInnerHTML2'></a>
-</pre>
-        <p> </p>
-        <h2>dangerouslySetInnerHTML</h2>
-        <p>By default any markup in data is escaped as a security precaution to help prevent cross-site scripting attacks. As of version 1.4.0 you can use the property <code>dangerouslySetInnerHTML</code> to inject data with markup into the document. This is highly risky. Use it only if you are absolutely sure you can trust the source of the data.</p>
-        <p>To use <code>dangerouslySetInnerHTML</code> just provide the data with the markup as the value for it. You could also use a function that returns the markup you want. There is not need to use <code>__html</code> as a property on an object like React, Inferno and Preact do. Below is an example of how to use it:</p>
+}</code></pre><a name='innerHTML2'></a>
 
-        <pre>
-          <code class="language-javascript">
-function List({data}) {
+        <p> </p>
+        <h2>innerHTML</h2>
+        <p>By default any markup in data is escaped as a security precaution to help prevent cross-site scripting attacks. You can use the property <code>innerHTML</code> to inject data with markup into the document. <strong style='color: red;'>This is highly risky. Hackers can use this to inject malicious code into the docuemnt. Use it only if you are absolutely sure you can trust the source of the data.</strong></p>
+        <p>To use <code>innerHTML</code> just provide the data with the markup as the value for it. You could also use a function that returns the markup you want. Below is an example of how to use it:</p>
+
+        <pre><code class="language-javascript">function List({data}) {
   return (
     ul class="list">
       {
-        data.map(item => &lt;li dangerouslySetInnerHTML={item}>&lt;/li>)
+        data.map(item => &lt;li innerHTML={item}>&lt;/li>)
       }
     &lt;/ul>
   )
@@ -194,18 +177,17 @@ const items = [
 '&lt;div>&lt;strong>Whatever&lt;/strong>&lt;/div>'
 '&lt;div>&lt;em>Something else&lt;/em>&lt;/div>']
 
-render(&lt;List data={items} />, 'section')</code>
-        </pre>
-        <p>Because we are passing the data with markup directly to the list items through the property <code>dangerouslySetInnerHTML</code>, the markup will get converted into true DOM nodes. The result will look like this:</p>
+mount(&lt;List data={items} />, 'section')</code></pre>
+
+        <p>Because we are passing the data with markup directly to the list items through the property <code>innerHTML</code>, the markup will get converted into true DOM nodes. The result will look like this:</p>
 <ul>
     <li><div><strong>Whatever</strong></div></li>
     <li><div><em>Something else</em></div></li>
 </ul>
 
       <p>In contrast, if we had just passed the data as normal, the markup would have been escaped:</p>
-      <pre>
-          <code class="language-javascript">
-function List({data}) {
+      
+      <pre><code class="language-javascript">function List({data}) {
   return (
     ul class="list">
       {
@@ -218,14 +200,14 @@ const items = [
 '&lt;div>&lt;strong>Whatever&lt;/strong>&lt;/div>'
 '&lt;div>&lt;em>Something else&lt;/em>&lt;/div>']
 
-render(&lt;List data={items} />, 'section')</code>
-        </pre>
+mount(&lt;List data={items} />, 'section')</code></pre>
+
         <p>This would result in the following:</p>
 <ul>
   <li>&lt;div>&lt;strong>Whatever&lt;/strong>&lt;/div></li>
   <li>&lt;div>&lt;em>Something else&lt;/em>&lt;/div></li>
 </ul>
-        <p><strong>Note:</strong> When using <code>dangerouslySetInnerHTML</code> on an element, it's best to always have that element not contain any other content. Otherwise, the content will will replace any other content already in the element.</p>
+        <p><strong>Note:</strong> When using <code>innerHTML</code> on an element, it's best to always have that element not contain any other content. This will replace any other content already in the element.</p>
 
 
 

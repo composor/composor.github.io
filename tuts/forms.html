@@ -62,15 +62,13 @@
           <h1>Forms</h1>
           <p class="tutorial__intro">Forms are different from other HTML elements. They keep track of their state through properties such as <code>value</code>, <code>checked</code>, etc.</p>
           <p>As an example, let's use the following form. We're going to want to keep track of the value of the input when the user types:</p>
-          <pre>
-            <code class="language-html">
-&lt;form>
+          
+          <pre><code class="language-html">&lt;form>
   &lt;label>
     Name:&lt;input type="text">
   &lt;/label>
   &lt;input type="submit" value="Submit">
-&lt;/form></code>
-          </pre>
+&lt;/form></code></pre>
 
           <p>We will need to create the form with the <code>render</code> function of a class component. We'll track the input changes with an inline event for now. We'll give the <code>form</code> element a <code>onsubmit</code> event handler.</p>
 
@@ -92,15 +90,12 @@
           <h2>Call in the LifeCycle Hook!</h2>
           <p> If you want to show a selection other than the default first option, you will need to do so right after the component is create. For this you can take advantage of the component's lifecylcy hook: <code>componentWasCreate</code>. You can use that to set the value of the select:</p>
 
-          <pre>
-            <code class="language-javascript">
-componentDidMount() {
+          <pre><code class="language-javascript">componentDidMount() {
   // Set the value of the component's select tag, 
   // after the component was created:
   this.element.querySelector('select').value = this.state.value
-}
-            </code>
-          </pre>
+}</code></pre>
+
           <p>When we add the above method to the component, the select tag renders showing the default value of "Coconut". Setting the select tag's state in the <code>componentDidMount</code> hook causes the <code>selectedIndex</code> value to also be set. Problem solved:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="VrYMGP" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Forms-3" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/VrYMGP/">Composi Tuts - Forms-3</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>

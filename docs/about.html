@@ -93,14 +93,17 @@
           
           <p>React has <code>ReactDOM.render</code>. Preact has <code>render</code>. Inferno has <code>Inferno.render</code>. And Composi has <code>render</code>. Although all of these use the same name, Composi's implementation is different. All of them can take JSX tags, functional components, and use them to patch the DOM. However, the React family expects you to pass class components into this as well in order to render them. This is not necessary with Composi components since they encapsulate the container they should render in and state assign automatically triggers rending of a component in the DOM.</p>
 
-          <h2>Extending Component</h2>
+          <h2>Class Component</h2>
           <p>Here's an example of extending the React component class. To render the component we pass it as a tag to the <code>ReactDOM.render</code> function, along with a query for the selector <code>#root</code>:</p>
 
-<p data-height="400" data-theme-id="6688" data-slug-hash="7592b8776980c0c4175858a7811a1d46" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="About-React" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/7592b8776980c0c4175858a7811a1d46/">About-React</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+<p data-height="300" data-theme-id="6688" data-slug-hash="WgeZqz" data-default-tab="js,result" data-user="rbiggs" data-pen-title="React About"
+  class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/WgeZqz/">React About</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>)
+  on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
 <p>And here's the same example using a Composi class component. Notice that we provide the container selector <code>#root</code> in the call signature for the component instance. And no need to render. We just create a new instance. That will trigger the render.</p>
 
-          <p data-height="400" data-theme-id="6688" data-slug-hash="KypdPJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi-About" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/KypdPJ/">Composi-About</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <p data-height="300" data-theme-id="6688" data-slug-hash="KypdPJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi-About" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/KypdPJ/">Composi-About</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
           <p> </p>
@@ -129,16 +132,13 @@
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

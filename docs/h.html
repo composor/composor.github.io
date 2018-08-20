@@ -60,7 +60,7 @@
     <section>
       <div class='docs'>
           <h1>H for Hyperscript</h1>
-          <p>Although most people are fine using JSX, some people hate it and would rather use anything else. Hyperscript is an alternate way of defining markup. In fact, when you build your project, Babel converts all JSX into hyperscript. Composi provides the <code>h</code> function to enable hyperscript compatible usage.</p>
+          <p class="docs__intro">Although most people are fine using JSX, some people hate it and would rather use anything else. Hyperscript is an alternate way of defining markup. In fact, when you build your project, Babel converts all JSX into hyperscript. Composi provides the <code>h</code> function to enable hyperscript compatible usage.</p>
 
           <p><code>h</code> expects three arguments:</p>
           <ol>
@@ -71,42 +71,36 @@
 
           <h2>Tag Name</h2>
           <p>The first argument is a tag name. This is a lowercase HTML tag.</p>
-          <pre>
-            <code class="language-javascript">
-const h1 = h('h1')
+          
+          <pre><code class="language-javascript">const h1 = h('h1')
 const div = h('div')
 const p = h('p')
-const ul = h('ul')</code>
-          </pre>
+const ul = h('ul')</code></pre>
+
           <p> </p>
           <h2>Properties/Attribues</h2>
           <p>Often you want to be able to give an element a property or attribute. We're talking about <code>class</code>, <code>id</code>, <code>checked</code>, <code>disabled</code>, etc. You can add properties and attributes by providing a second argument. This will be a key/value pair wrapped in curly braces:</p>
-          <pre>
-            <code class="language-javascript">
-const h1 = h('h1', {class: 'title'})
+         
+          <pre><code class="language-javascript">const h1 = h('h1', {class: 'title'})
 const button = h('button', {disabled: true})
-const checkbox = h('input', {type: 'checkbox', checked: true, value: 'whatever'})</code>
-          </pre>
+const checkbox = h('input', {type: 'checkbox', checked: true, value: 'whatever'})</code></pre>
+
           <p>When an element has no properties, you can use empty curly braces or <code>null</code>:</p>
-          <pre>
-            <code class="language-javascript">
-const h1 = h('h1', {})
-const button = h('button', null)</code>
-          </pre>
+          
+          <pre><code class="language-javascript">const h1 = h('h1', {})
+const button = h('button', null)</code></pre>
+
           <p> </p>
           <h2>Children</h2>
           <p>The final argument allows you to define children for an element. There are two kinds of children: a text node, or other HTML elements. Providing text as an element's child is easy, just use a quoted string:</p>
-          <pre>
-            <code class="language-javascript">
-const h1 = h('h1', {class: 'title'}, 'This is the Title!')</code>
-          </pre>
+         
+          <pre><code class="language-javascript">const h1 = h('h1', {class: 'title'}, 'This is the Title!')</code></pre>
+
           <p>In the above example <code>'This is the Title!'</code> is a text node and therefore a child of the <code>h1</code> tag.</p>
           <h2>Disgnatin Multiple Children</h2>
           <p>Most of the time an element will have many child elements. To indicate that an element has multiple child elements, use brackets with hyperscript defining those elements. Examine these two examples carefully:</p>
 
-          <pre>
-            <code class="language-javascript">
-const header = h('header', {}, [
+          <pre><code class="language-javascript">const header = h('header', {}, [
   h('h1', {}, 'This is the Title!'),
   h('h2', {}, 'This is the Subtitle!')
 ])
@@ -115,14 +109,13 @@ const list = h('ul', {class: 'list'}, [
   h('li', {}, 'Apples'),
   h('li', {}, 'Oranges'),
   h('li', {}, 'Bananas')
-])</code>
-          </pre>
+])</code></pre>
+
           <p> </p>
           <h2>Consuming an Array</h2>
           <p>You can define a function that can handle using <code>h</code>.</p>
-          <pre>
-            <code class="language-javascript">
-const fruits = {
+          
+          <pre><code class="language-javascript">const fruits = {
   {
     name: 'Apple',
     price: '.50'
@@ -147,8 +140,8 @@ const list = h('ul', {class: 'list'}, [
 // ES6 version:
 const list = h('ul', {class: 'list'}, [
   fruits.map(fruit => h('li', {}, `${fruit.name}: $${fruit.price}`))
-])</code>
-          </pre>
+])</code></pre>
+
           <p> </p>
           <h2>Summary</h2>
           <p>The hyperscript function <code>h</code> lets you define markup with JavaScript functions. If you do not like the look and feel of JSX, this is a good alternative. This <code>h</code> function is similar to <a href="https://facebook.github.io/react/docs/react-api.html#createelement" target='__blank'>React.createElement</a></p>
@@ -163,16 +156,13 @@ const list = h('ul', {class: 'list'}, [
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

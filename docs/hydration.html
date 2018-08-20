@@ -60,13 +60,11 @@
     <section>
       <div class='docs'>
           <h1>Hydration</h1>
-          <p class="docs__intro">You can use whatever server-side solution to pre-render the html for your document. Then after page loads, you can let Composi take over parts of the document as components. To do this you need to follow a simple rule:</p>
-          <blockquote>Give your component's main element a unique id that matches the id of an element in the rendered document. This needs to be in the same element as the component's container.</blockquote>
-          <p>Let's take a look at how we might do this. Suppose on the server we output some markup as follows:</p>
+          <p class="docs__intro">You can use whatever server-side solution to pre-render the html for your document. Then after the page loads, you can let Composi take over parts of the document as components. To do this you need to follow a simple rule let your component know what element you want to hydrate. To do this, give your component a <code>hydrate</code> property and provide it with a reference to the element to hydrate.</p>
+        
+          <p>Suppose on the server we output some markup as follows:</p>
 
-          <pre>
-            <code class="language-html">
-&lt;body>
+          <pre><code class="language-html">&lt;body>
   &lt;article>
     &lt;ul id="specialList">
       &lt;li>Apples&lt;/li>
@@ -74,32 +72,34 @@
       &lt;li>Bananas&lt;/li>
     &lt;/ul>
   &lt;/article>
-&lt;/body></code>
-          </pre>
+&lt;/body></code></pre>
           <p>When the page first loads this will be the default content. In fact, if the JavaScript did not load or failed with an exception, the user would see this content. If we want to replace the static content with a dynamic list, we can define the list component like this:</p>
 
           <pre>
-            <code class="language-javascript">
-const list = new Component({
-  // Give the component the same container as the list "specialList" above:
+<code class="language-javascript">class List extends Component {
+  render(fruits) {
+    return (
+      &lt;ul id="specialList">
+        {
+          fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
+        }
+      &lt;/ul>
+    )
+  }
+}
+
+const list = new List({
   container: 'article',
-  // Define list with same id as list in server-side markup:
-  render: (fruits) => (
-    &lt;ul id="specialList">
-      {
-        fruits.map(fruit => &lt;li>{fruit}&lt;/li>)
-      }
-    &lt;/ul>
-  )
-})
-// Set state, render the component and replace state nodes:
-list.state = ['Stawberries', 'Peaches', 'Blueberries']</code>
+  state: ['Stawberries', 'Peaches', 'Blueberries']
+  // Tell the component to hydrate the following element:
+  hydrate: '#specialList'
+})</code>
           </pre>
-          <p>With the above code, even though the server sent a static list to the browser, at laod time Composi will replace it with the dynamic component of the same id in the same container element.</p>
+          <p>With the above code, even though the server sent a static list to the browser, at load time Composi will replace it with the dynamic component of the same id in the same container element.</p>
           <p><strong>Note:</strong> When implementing serve-side rendering and component hydration, it's best to use ids for the parts you want to hydrate. That way it's easier for Composi to identify unique parts of the static HTML to take over.</p>
 
-          <h2>Hydrating with Function Components</h2>
-          <p>If you wish to hydrate server-rendered content with functional components, you will need to use the <code>mount</code> function and pass it a third argument with a reference to the DOM tree to hydrate, or a valid CSS selector to that node in the DOM. Please read the docs for the <a href="./api.html#mount-hydration">mount function</a> for more details.</p>
+          <h2>Hydrating with Functional Components</h2>
+          <p>If you wish to hydrate server-rendered content with functional components, you will need to use the <code>mount</code> function and pass it a third argument with a reference to the DOM tree to hydrate, or a valid CSS selector for that node in the DOM. Please read the docs for the <a href="./api.html#mount-hydration">mount function</a> for more details.</p>
 
 
           
@@ -112,16 +112,13 @@ list.state = ['Stawberries', 'Peaches', 'Blueberries']</code>
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

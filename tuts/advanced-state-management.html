@@ -68,9 +68,7 @@
           <p>To use Redux with Composi, you'll need to import it into whatever file you want to use it. Just for the purpose of showing how to integrate these two, we are going to use a very simple counter component. For Redux we will need to create our reducers, action creator and a Redux store. Our component will have have two buttons, one on either side. Licking the minus will decrease the counter value, clicking the plus will increate the value. To integrate the Composi component with Redux, we'll need to assign the Redux store to the component's state.</p>
           <p>Notice that we're limiting <code>INCREMENT</code> so that you can't go over 20, and <code>DECREMENT</code> so that you can't go below 0:</p>
 
-          <pre>
-            <code class='language-javascript'>
-const { h, Component } from 'composi'
+          <pre><code class='language-javascript'>const { h, Component } from 'composi'
 const { createStore } from 'redux'
 
 // Reducer:
@@ -102,6 +100,7 @@ const decrement = () => {
 
 // Create Redux store:
 const store = createStore(count)</code></pre>
+
           <p>And here's the <code>Counter</code> component integrated with the above Redux reducers and actions:</p>
 
           <p data-height="450" data-theme-id="6688" data-slug-hash="oervxx" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi & Redux" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oervxx/">Composi & Redux</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -113,12 +112,12 @@ const store = createStore(count)</code></pre>
           <p>With Mobx, we create an observable that contains the state for the counter and we assign that to the component's state. After that, all manipulationg of component state is actually being done with the Mobx store. And we use Mobx <code>autorun</code> to tell Mobx to update the component when the Mobx store changes.</p>
           
           <p>Here's the intial Mobx setup for our counter:</p>
-          <pre>
-            <code class='language-javascript'>
-const {h, Component} from 'composi'
+
+          <pre><code class='language-javascript'>const {h, Component} from 'composi'
 const { observable, autorun } from 'mobx'
 
 const store = observable({ count: 0})</code></pre>
+
               <p>And here's our counter using Mobx for state management:</p>
 
           <p data-height="450" data-theme-id="6688" data-slug-hash="EbaKwY" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi 1.0.0 & Mobx" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/EbaKwY/">Composi 1.0.0 & Mobx</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>

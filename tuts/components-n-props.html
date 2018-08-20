@@ -92,22 +92,19 @@
           <p>This component is too complicated, so we are going to see how to break it down into smaller pieces. This is tricky because we need to pass data down to the child elements.</p>
 
           <p>The first thing we'll do is extract the avatar part:</p>
-          <pre>
-            <code class="language-javascript">
-function Avatar(props) {
+          
+          <pre><code class="language-javascript">function Avatar(props) {
   return (
     &lt;img class="Avatar"
       src={props.user.avatarUrl}
       alt={props.user.name}
     />
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>When breaking a component down, consider renaming the props to what makes sense at the component level. Since the above component knows nothing of the author, we changed its prop to user. With the above sub-component, we can simplify our main component a bit:</p>
 
-          <pre>
-            <code class="language-javascript">
-function Avatar(props) {
+          <pre><code class="language-javascript">function Avatar(props) {
   return (
     &lt;img class="Avatar"
       src={props.user.avatarUrl}
@@ -133,13 +130,11 @@ function Comment(props) {
       &lt;/div>
     &lt;/div>
   );
-}</code>
-</pre>
+}</code></pre>
+
           <p>Next we extract the user info, which includes the avatar component:</p>
 
-          <pre>
-            <code class="language-javascript">
-function UserInfo(props) {
+          <pre><code class="language-javascript">function UserInfo(props) {
   return (
     &lt;div class="UserInfo">
       &lt;Avatar user={props.user} />
@@ -148,13 +143,11 @@ function UserInfo(props) {
       &lt;/div>
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>With this change, we can simplify the component setup ever more:</p>
 
-          <pre>
-            <code class="language-javascript">
-function Avatar(props) {
+          <pre><code class="language-javascript">function Avatar(props) {
   return (
     &lt;img class="Avatar"
       src={props.user.avatarUrl}
@@ -186,8 +179,7 @@ function Comment(props) {
       &lt;/div>
     &lt;/div>
   )
-}</code>
-</pre>
+}</code></pre>
 
           <p>And here's the working example:</p>
           <p data-height="300" data-theme-id="6688" data-slug-hash="NwPrNJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Components and Props-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/NwPrNJ/">Composi Tuts - Components and Props-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -198,28 +190,22 @@ function Comment(props) {
           <h2>Props Should Be Read-Only</h2>
           <p>Whether you create a functional or class-based component, it should never modify its own props. When functions don't modify their props, they are called pure. Take the following function as an example:</p>
 
-          <pre>
-            <code class="language-javascript">
-function sum(a, b) {
+          <pre><code class="language-javascript">function sum(a, b) {
   return a + b
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Given the same data, this function will always return the same result. This is a pure function because it does not change what its inputs are. In contrast, the following function is impure because it changes its inputs:</p>
 
-          <pre>
-            <code class="language-javascript">
-function withdraw(account, amount) {
+          <pre><code class="language-javascript">function withdraw(account, amount) {
   account.total -= amount
-}</code>
-          </pre>
+}</code></pre>
+
           <p>You should strive to make components act like pure functions with respect to their props. Of course, UI applications are dynamic and have user interactions. To handle these you can create stateful components. State allows components to change their output over time or due to user interaction without violating the pinciple of purity.</p>
 
           <h2>The Component Class</h2>
           <p>The Component class provides a useful API for makig more complex components than is possible with functional components. There are two ways to use the Component class: by creating an instance of it, or by extending it.</p>
 
-          <pre>
-            <code class="language-javascript">
-// Creating a new instance:
+          <pre><code class="language-javascript">// Creating a new instance:
 const title = new Comonent({})
 
 // Extending the Component class:
@@ -227,8 +213,8 @@ class Title extends Component {
   constuctor(props) {
     super(props)
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Next we're going to look at extending Component. To learn about the component instance, refer to the <a href='../docs/component-instance.html' target="__blank">docs</a>.</p>
           <p>As you can see above, to extend the Component class we usually need to include a constructor. This needs to have props passed all the way down to the Class <code>super</code>.</p>
           <p>After that we need to tell the component where it should render. For that we use the <code>container</code> property. We also need to define a <code>render</code> funtion. Its purpose is to return the markup for the comonent.</p>
@@ -247,9 +233,8 @@ class Title extends Component {
 
           <h2>Querying the Component Tree</h2>
           <p>Often when you are implementing complex components with events, you need to reach down into the child components to get a value from some input. You can simply the query by using the component's <code>element</code> property. This is the base element at the top of the markup hierarchy being returned by the component's <code>render</code> function. So, if a component return markup as follows:</p>
-          <pre>
-            <code class="language-javascript">
-render(data) {
+
+          <pre><code class="language-javascript">render(data) {
   return (
     &lt;div class='list__container'>
       <p>
@@ -262,12 +247,11 @@ render(data) {
       &lt;/ul>
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>For the above component, <code>this.element</code> with be <code>&lt;div class='list__container'>&lt;/div></code>. Using <code>this.element</code> as the starting point, we can limit our DOM query to the component base:</p>
-          <pre>
-            <code class="language-javascript">
-componentWasCreated() {
+          
+          <pre><code class="language-javascript">componentWasCreated() {
   // Use "this.element" as base for event:
   this.element.addEventListener('click', this)
 }
@@ -276,20 +260,18 @@ handleEvent(e) {
 }
 sayHello() {
   alert('Hello!')
-}</code>
-          </pre>
+}</code></pre>
+
           <p>You could also do something like:</p>
-          <pre>
-            <code class="language-javascript">
-announce() {
+          
+          <pre><code class="language-javascript">announce() {
   // Use "this.element" as base for query:
   const input = this.element.querySelector('input')
   const value = input.value
   if (value) {
     this.setState(value)
   }
-}</code>
-          </pre>
+}</code></pre>
 
           <p>&nbsp;</p>
         </div>

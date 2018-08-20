@@ -121,9 +121,7 @@
 
           <p>As you can see, we now have basic structure, but no data. We'll need some mock data for the first render and were going with fruits:</p>
 
-          <pre>
-            <code class="language-javascript">
-const fruitData = [
+          <pre><code class="language-javascript">const fruitData = [
   {
     product: 'Apple',
     price: 1.50,
@@ -143,8 +141,8 @@ const fruitData = [
     price: 1.10,
     quantity: 0
   }
-]</code>
-          </pre>
+]</code></pre>
+
           <p> </p>
           <h2>Creating A Basic Component</h2>
           <p>Time to make the component. We're first going to implement the render function that creates the previous markup, then we'll add in variables to output our mock data. So, without further ado:</p>
@@ -156,9 +154,7 @@ const fruitData = [
 
           <p>Here's how we output a spreadsheet row for each data row:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Loop over array of fruits,
+<pre><code class="language-javascript">// Loop over array of fruits,
 // printing each row:
 {
   rows.map(row => (
@@ -180,9 +176,8 @@ const fruitData = [
       &lt;/td>
     &lt;/tr>
   ))
-}
-            </code>
-          </pre>
+}</code></pre>
+
           <p>With this change, our complete component should look like this:</p>
 <p data-height="600" data-theme-id="6688" data-slug-hash="0c2d34374c03a67f2e59301d38e3ad4b" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Thinking in Composi-5" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/0c2d34374c03a67f2e59301d38e3ad4b/">Composi Tuts - Thinking in Composi-5</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -200,9 +195,7 @@ const fruitData = [
           <p>Next let's make it so the user can add a new item. We need to be able to capture the item name, as well as its price and quantity. We'll need to provide a defalt value of 0 in case the user doesn't bother providing a price or quantity. When we add the new item, we want the spreadsheet to show it. We also want the sum to reflex the new row's values. That means we need to add the new item to the spreadsheet's state.</p>
           <p>Adding a new item will require a user interaction. For that we will need an event on the button to submit the new values. We'll use the <code>handleEvent</code> interface and the <code>componentDidMount</code> hook to set that up. We'll call the new method, <code>addNewRow</code>:</p>
 
-          <pre>
-            <code class="language-javascript">
-addNewRow(e) {
+          <pre><code class="language-javascript">addNewRow(e) {
   // Get the value of the inputs:
   const productInput = this.element.querySelector('#product')
   const priceInput = this.element.querySelector('#price')
@@ -227,8 +220,8 @@ addNewRow(e) {
 // And set up an event to capture button click:
 componentDidMount() {
   this.element.addEventListener('click', this)
-}</code>
-</pre>
+}</code></pre>
+
           <p>With this addition, we get:</p>
           <p data-height="600" data-theme-id="6688" data-slug-hash="OOPQLW" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Thinking in Composi-7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/OOPQLW/">Composi Tuts - Thinking in Composi-7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -238,9 +231,7 @@ componentDidMount() {
 
           <p>In order to make the rows editable, we need a way to associate each row with the corresponding index of the state array. We can do that by printing the array index on the interactive elements. We'll use the <code>data-index</code> attribute on those elements. Here's our updated code for the table cells. Notice the new attribute <code>data-index</code> on the price input, quantity input and button:</p>
 
-          <pre>
-            <code class="language-javascript">
-{
+          <pre><code class="language-javascript">{
   rows.map(row => (
     &lt;tr>
       &lt;td>{row.product}&lt;/td>
@@ -260,14 +251,11 @@ componentDidMount() {
       &lt;/td>
     &lt;/tr>
   ))
-}</code>
-          </pre>
+}</code></pre>
 
           <p>Now we can procede with adding the new methods to update price and quantity to our component:</p>
 
-          <pre>
-            <code class="language-javascript">
-updateQuantity(e) {
+          <pre><code class="language-javascript">updateQuantity(e) {
   // Get the array index stored on the input.
   // With that we can update the state.
   const index = e.target.dataset.index
@@ -281,12 +269,11 @@ updatePrice(e) {
   const index = e.target.dataset.index
   const value = Number(e.target.value)
   this.setState(prevState => prevState[index].price = value)
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Then we need to update the <code>componentDidMount</code> hook and the <code>handleUpdate</code> method:</p>
-          <pre>
-            <code class="language-javascript">
-handleEvent(e) {
+          
+          <pre><code class="language-javascript">handleEvent(e) {
   e.target.id === 'addRow' && this.addNewRow(e)
   e.target.class === 'list__item__button--delete' && this.deleteRow(e)
   e.target.class === 'quantity' && this.updateQuantity(e)
@@ -296,8 +283,8 @@ handleEvent(e) {
 componentDidMount() {
   this.element.addEventListener('click', this)
   this.element.addEventListener('input', this)
-}</code>
-          </pre>
+}</code></pre>
+
           <p>With these changes, we can now increase or decrease the price or quantity and see the row total and the spreadsheet sum update in real time. Here's what we have now:</p>
           <p data-height="600" data-theme-id="6688" data-slug-hash="rYaJKE" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Thinking in Composi-8" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/rYaJKE/">Composi Tuts - Thinking in Composi-8</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -306,25 +293,20 @@ componentDidMount() {
           <p>Each row has a delete button. This is so you can delete a row if you want. When this happens, the component state should update, showing the row is missing. Tapping the delete button should not delete the element from the DOM, like you would with jQuery. Instead it needs to remove the associated data from the component state. That in itself will cause the component to re-render without the deleted data.</p>
           <p>When the user clicks the delete button, we need to know what index in the state array should be deleted. Earlier we had the same problem with know what index to update when modifying price and quantity. We used the <code>data-index</code> property to store the array index. When we did that, we also put that property on the row's delete button. So, we can now use that to now which index to delete. We will therefore add a new method to our button to handle deletion:</p>
 
-          <pre>
-            <code class="language-javascript">
-deleteRow(e) {
+          <pre><code class="language-javascript">deleteRow(e) {
   const index = e.target.dataset.index
   this.setState(prevState => prevState.splice(index, 1))
-}
-            </code>
-          </pre>
+}</code></pre>
 
           <p>We also need to update the <code>handleEvent</code> method:</p>
-          <pre>
-            <code class="language-javascript">
-handleEvent(e) {
+         
+          <pre><code class="language-javascript">handleEvent(e) {
   e.target.id === 'addRow' && this.addNewRow(e)
   e.target.class === 'list__item__button--delete' && this.deleteRow(e)
   e.target.class === 'quantity' && this.updateQuantity(e)
   e.target.class === 'price' && this.updatePrice(e)
-}</code>
-          </pre>
+}</code></pre>
+
           <p>With this our spreadsheet is complete. The spreadsheet will render its default data, we can add new items to it, we can update an item's price or quantity and the total and sum will update as well. And we can delete a row from the spreadsheet, causing the total and sum to update:</p>
           <p data-height="600" data-theme-id="6688" data-slug-hash="aVzqXv" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Thinking in Composi-9" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/aVzqXv/">Composi Tuts - Thinking in Composi-9</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -332,9 +314,7 @@ handleEvent(e) {
           <h2>Breaking It Down</h2>
           <p>Now we can begin breaking the component down into smaller pieces. We'll start with the easy parts, the table header and the Add Row form. Since they are simple, we'll make them function components that we can use in our component as custom tags:</p>
 
-          <pre>
-            <code class="language-javascript">
-function TableHeader() {
+          <pre><code class="language-javascript">function TableHeader() {
   return (
     &lt;tr>
       &lt;th>Product&lt;/th>
@@ -368,9 +348,8 @@ function AddNewRow() {
       &lt;/div>
     &lt;/li>
   )
-}
-</code>
-</pre>
+}</code></pre>
+
           <p>We can now use these in our spreadsheet component:</p>
           <p data-height="600" data-theme-id="6688" data-slug-hash="GOgQay" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Thinking in Composi-10" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/GOgQay/">Composi Tuts - Thinking in Composi-10</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>

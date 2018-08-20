@@ -62,9 +62,8 @@
           <h1>JSX in Depth</h1>
           <p class="tutorial__intro">JSX is just JavaScript. It just happens to look like HTML. A JSX tag is a function that creates an HTML tag with attributes and children.</p> 
           <p>Let's take an example:</p>
-          <pre>
-            <code class="language-javascript">
-// functional component:
+
+          <pre><code class="language-javascript">// functional component:
 function Title(title) {
   return (
     <h1 title='The title'>{title}</h1>
@@ -85,8 +84,8 @@ h('h1', {title: 'The title'}, 'Hello, world!')
 }
 
 // The virtual node gets converted into a DOM node:
-&lt;h1>Hello, world!&lt;/h1></code>
-          </pre>
+&lt;h1>Hello, world!&lt;/h1></code></pre>
+
           <p>JSX is just a simplier way to represent the DOM nodes your component needs to create. Because it is JavaScript, you can use it with normal JavaScript expressions to evaluate and parse the data that you need to display.</p>
 
           <h2>Composition</h2>
@@ -94,59 +93,48 @@ h('h1', {title: 'The title'}, 'Hello, world!')
 
           <p>As an example of composition, let's create a dialog box. We are going to start with the dialog itself, which is just the border around the content:</p>
 
-          <pre>
-            <code class="language-javascript">
-function FancyBorder(props) {
+          <pre><code class="language-javascript">function FancyBorder(props) {
   console.log(props)
   return (
     &lt;div class='FancyBorder FancyBorder-maroon'>&lt;/div>
   )
 }
 // Inject the dialog in the document:
-render(&lt;FancyBorder />)</code>
-          </pre>
+mount(&lt;FancyBorder />), 'body'</code></pre>
+
           <p>We'll update this to allow the user to pass in the color as a prop:</p>
 
-          <pre>
-            <code class="language-javascript">
-function FancyBorder(props) {
+          <pre><code class="language-javascript">function FancyBorder(props) {
   console.log(props)
   return (
     &lt;div class={'FancyBorder FancyBorder-' + props.color}>&lt;/div>
   )
 }
 // Inject the dialog in the document:
-render(
-  &lt;FancyBorder color="maroon" />,
-  'body'
-)</code>
-          </pre>
+mount(&lt;FancyBorder color="maroon" />,'body')</code></pre>
+
           <p>So, now we have a very basic function component. But we want to be able to render it with a child component. Here is the child:</p>
 
-          <pre>
-            <code class="language-javascript">
-function DialogMessage() {
+          <pre><code class="language-javascript">function DialogMessage() {
   return (
     &lt;div>
       &lt;h1 class="Dialog-title">Welcome&lt;/h1>
       &lt;p class="Dialog-message">Thank you for visiting our time machine!&lt;/p>
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Now, the question is, how can we get the child component into the dialog box? As you saw above, we passed the color to the dialog box as a prop. We can do the same with our child component. We'll make a slight modification to FancyBorder so that it can received arbitrary child nodes. We'll do that by passing a second parameter to the function, which we'll call <code>children</code>:</p>
 
-          <pre>
-            <code class="language-javascript">
-function FancyBorder(props, children) {
+          <pre><code class="language-javascript">function FancyBorder(props, children) {
   console.log(props)
   return (
     &lt;div class={'FancyBorder FancyBorder-' + props.color}>
       {children}
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>With the <code>FancyBorder</code> component set to capture a <code>children</code> prop, we can pass in our <code>DialogMessage</code> component when we render <code>FancyBorder</code>:</p>
           <p data-height="300" data-theme-id="6688" data-slug-hash="oGpwVd" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composition" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/oGpwVd/">Composition</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -155,25 +143,23 @@ function FancyBorder(props, children) {
 
           <h2>Composition with Class Components</h2>
           <p>We can use this same technique with class components. We are going to show how to use composition of JSX functional components to create a class component. We are going to start with the same <code>FancyBorder</code> component we made earlier:</p>
-          <pre>
-            <code class="language-javascript">
-function FancyBorder(props, children) {
+
+          <pre><code class="language-javascript">function FancyBorder(props, children) {
   console.log(props)
   return (
     &lt;div class={'FancyBorder FancyBorder-' + props.color}>
       {children}
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>We'll use this as the base for our new component. We want to have a dialog where the user can enter a name, and after tapping a button, gets a greeting. By the way, this will be a signup for the Time Travel Program.</p>
 
           <h2>Issues to Deal With</h2>
           <p>Because we are going to be passing props down from a class component to child components that are function, there will be some wrapping of the props at each level. Kind of annoying, but its what JSX does in this situation. Therefore we will need to use <code>.props</code> to get at values in places where you would expect too.</p>
           <p>Here's the basic setup for our class component:</p>
-          <pre>
-            <code class="language-javascript">
-class SignUpDialog extends Component {
+
+          <pre><code class="language-javascript">class SignUpDialog extends Component {
   constructor(props) {
     super(props)
     this.container = 'section'
@@ -192,8 +178,8 @@ class SignUpDialog extends Component {
       &lt;/FancyBorder>
     )
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>So, we have a class component that returns our <code>FancyBorder</code> component, while passing it props for <code>color</code> and <code>children</code>. Notice how <code>dialogChildren</code> is get passed props and <code>this</code>. That will pass a reference of the class component down to the children so they have access to the parent's properties. In particular we want to expose the parent's state and event methods to the children.</p>
 
           <p>We'll need a component to create the default title and greetign for the dialog. We'll call that component <code>Dialog</code>. We'll also need a component to be the form where the user enters there name an taps a button to submit it. We'll call that <code>FormInputs</code>. Then we'll create a function called <code>dialogChildren</code> which will combine these to. We'll pass this function to the <code>FancyBorder</code> component as its <code>children</code> prop. And, we will add some methods and events to make name submission work. Here is the complete solution:</p>

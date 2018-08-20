@@ -66,32 +66,28 @@
           <h2>Accessing State</h2>
           <p>When you need to update the state of a component, you first need to get it. You do that with a simple assignment:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Method of a component:
+          <pre><code class="language-javascript">// Method of a component:
 updateName(newName) {
   const state = this.state
   state.name = newName
   this.setState(state)
-}</code>
-          </pre>
+}</code></pre>
+
           <p></p>
           <h2>Primitive Types vs Complex Types</h2>
           <p>JavaScript types are of two categories: primitive and complex. Primities are boolean, number and string. These are all immutable as well. This means that when you assign one of them to a variable and then assign that to another variable, a new copy is made:</p>
-          <pre>
-            <code class="language-javascript">
-const a1 = 1
+
+          <pre><code class="language-javascript">const a1 = 1
 const b1 = one
 a1 = 2
 console.log(a1) // returns 2
-console.log(b1) // returns 1</code>
-          </pre>
+console.log(b1) // returns 1</code></pre>
+
           <p>String, numbers and booleans are passed by value.</p>
           <h2>Complex Types</h2>
           <p>The other category of types are objects, arrays and function. These are reference types. That means that when you assign them to one variable, the variable does not hold the value. It holds only a reference to the data. This means when you assign that to another variable, both will point to the same data. Chaning one appears to change the value of the other. Actually, with reference types there is only one, the variables are all point to the same value. Modifying that value from any variable changes the value for all references.</p>
-          <pre>
-            <code class="language-javascript">
-const person1 = {
+
+          <pre><code class="language-javascript">const person1 = {
   name: 'Joe',
   age: 26
 }
@@ -109,28 +105,26 @@ console.log(person1)
 {
   name: 'Sam',
   age: 32
-}</code>
-          </pre>
+}</code></pre>
+
           <p>This is the behavior for objects, arrays and functions. Most of the time your component data will be either an object or an array of either primitie types or objects.</p>
           <h2>Immutable Objects</h2>
           <p>The easiest way to get a new copy of the state's data when it is an object is to use <code>Object.assign</code>:</p>
-          <pre>
-            <code class="language-javascript">
-// Component method:
+
+          <pre><code class="language-javascript">// Component method:
 updateName(name) {
   // Make a copy of the state data:
   const state = Object.assign({}, this.state)
   state.name = 'Hellen',
   state.job = 'Project Manager'
   this.setState(state)
-}</code>
-          </pre>
+}</code></pre>
+
           <p> </p>
           <h2>Immutable Arrays</h2>
           <p>We can easily clone an array using the native <code>slice</code> method. When no arguments are provided, it returns a copy of the array:</p>
-          <pre>
-            <code class="language-javascript">
-addItem(newItem) {
+
+          <pre><code class="language-javascript">addItem(newItem) {
   // Make a copy of the state array:
   const state = this.state.slice()
   state.push(newItem)
@@ -143,12 +137,11 @@ updateItem(data, position) {
   state.splice(position,0, data)
   this.setState(state)
 }
-</code>
-          </pre>
+</code></pre>
+
           <p>When an array holds objects, the above approach will not work. Even though we can clone the array, the objects themselves get copied by reference. To get arround this you can use a special array cloning function to copy their objects:</p>
-          <pre>
-            <code class="language-javascript">
-function immutableCollection(arr) {
+
+          <pre><code class="language-javascript">function immutableCollection(arr) {
   return arr.map(object => Object.assign({}, object))
 }
 
@@ -172,8 +165,8 @@ class Users extends Component {
     user[position].name = name
     this.setState(user)
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Creating a utility function to clone the array's objects lets us preserve the immutability the original state.</p>
 
           <h2>Why Immutability?</h2>
@@ -184,9 +177,8 @@ class Users extends Component {
          
           <h2>The Board</h2>
           <p>Tic-Tac-Toe starts with a board--nine squares. We could make a simple function component like this:</p>
-          <pre>
-            <code class="language-jsx">
-function Board() {
+
+          <pre><code class="language-jsx">function Board() {
   return (
     &lt;div>
       &lt;button>&lt;/button>
@@ -204,8 +196,8 @@ function Board() {
       &lt;button>&lt;/button>
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>That's the general idea, but we want to modularize thing, breaking out into three parts: Game class, board component and square component. Here's the start:</p>
           <p data-height="350" data-theme-id="6688" data-slug-hash="YEZaVe" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic Tac Toe - 1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEZaVe/">Composi Tic Tac Toe - 1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -237,9 +229,7 @@ function Board() {
           <p>Yeah, a small detail. As it is, the plays can play and even when, but you can still keep choosing squares. We need to be able to declare a winner when someone winners.</p>
           <p>To determine a winner, we need to know what are the moves that determine a winner. And then we need to compare our state of moves to see if there's a match. Here's the function to determine the winner:</p>
 
-          <pre>
-            <code class="language-javascript">
-// Calculate the winner:
+          <pre><code class="language-javascript">// Calculate the winner:
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -258,19 +248,18 @@ function calculateWinner(squares) {
     }
   }
   return null
-}</code>
-          </pre>
+}</code></pre>
+
           <p>This function needs the squares. We're going to put this calculation into <code>Board</code>. We'll also need to update the status to show a winner instead of whose next:</p>
-          <pre>
-            <code class="language-javascript">
-const winner = calculateWinner(props.state.squares)
+
+          <pre><code class="language-javascript">const winner = calculateWinner(props.state.squares)
 let status
 if (winner) {
   status = 'Winner: ' + winner
 } else {
   status = 'Next player: ' + (props.state.xIsNext ? 'X' : 'O')
-}</code>
-          </pre>
+}</code></pre>
+
           <p>And here it is working:</p>
           <p data-height="350" data-theme-id="6688" data-slug-hash="YEZbpw" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 6" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEZbpw/">Composi Tic-Tac-Toe 6</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -287,9 +276,8 @@ if (winner) {
           <p> </p>
           <h2>Storing History</h2>
           <p>So far we are just storing what moves the user made in the squares array. This works for determining a winner, but there is no way to tell who made what move. For that we'll need to take the immutability to the next level. We'll need to store an array of each move. This means we'll have to make some changes to our state structure. We want this:</p>
-<pre>
-  <code class="language-javascript">
-history: [
+
+<pre><code class="language-javascript">history: [
     {
       squares: [null,null,null,null,null,null,null,null,null]
     },
@@ -299,12 +287,11 @@ history: [
     {
       squares: [X,null,O,null,null,null,null,null,null]
     }
-]</code>
-</pre>
+]</code></pre>
+
           <p>This will enable us to examine all moves, and even time travel through the moves. For this we need to update the <code>Game</code> constructor. Notice how we simplified the creation of the initial array using <code>Array(9).fill(null)</code>:</p>
-          <pre>
-            <code class="language-javascript">
-constructor(props) {
+
+          <pre><code class="language-javascript">constructor(props) {
   super(props)
   this.state = {
     history: [{
@@ -313,12 +300,11 @@ constructor(props) {
     stepNumber: 0,
     xIsNext: true
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Because of this change, we'll need to update all references to square through our code. We'll especially have to refactor the <code>handleClick</code> method:</p>
-          <pre>
-            <code class="language-javascript">
-  handleClick(i) {
+
+          <pre><code class="language-javascript">handleClick(i) {
     const history = this.state.history
     const current = history[history.length - 1]
     const squares = current.squares.slice()
@@ -333,8 +319,8 @@ constructor(props) {
       xIsNext: !this.state.xIsNext,
     })
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>And here's the new version. The user interaction hasn't changed. But we now have a history of what the moves were. is you add <code>window.game = game</code>, you can enter <code>game.state.history</code> in the Codepen console to see the history of moves. Of course you'll have to make some moves first ;-)</p>
 
           <p data-height="350" data-theme-id="6688" data-slug-hash="ece7fe9f08486c2cfc165157c468734d" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 7" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ece7fe9f08486c2cfc165157c468734d/">Composi Tic-Tac-Toe 7</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -343,26 +329,23 @@ constructor(props) {
 
           <h2>Stepping into the Past</h2>
           <p>In order to enable time travel, we'll need a way for the play to set back to previous moves. We'll do that by create a list of buttons for each move. Currently we have a side panel that outputs the game status:</p>
-          <pre>
-            <code class="language-jsx">
-&lt;div class="game-info">
+
+          <pre><code class="language-jsx">&lt;div class="game-info">
   &lt;div>{status}&lt;/div>
   &lt;ol>{/* TODO */}&lt;/ol>
-&lt;/div></code>
-          </pre>
+&lt;/div></code></pre>
+
           <p>That ordered list is where we want to put our steps through history.</p>
 
           <p>The first thing we'll need is a function to step through the history. For now we just want a shell because we are first going to output the buttons:</p>
-          <pre>
-            <code class="language-javascript">
-jumpTo(step) {
+
+          <pre><code class="language-javascript">jumpTo(step) {
   return
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Now we can create those step buttons. We'll add a new function to the <code>Game</code> render function. It will create the buttons based on the current history. Each button will have a reference to the index of the history array it needs to access, and each button will fire the <code>jumpTo</code> method:</p>
-          <pre>
-            <code class="language-javascript">
-const moves = history.map((step, move) => {
+
+          <pre><code class="language-javascript">const moves = history.map((step, move) => {
   const desc = move ?
     'Go to move #' + move :
     'Go to game start'
@@ -371,16 +354,15 @@ const moves = history.map((step, move) => {
       &lt;button class='button-moves' onclick={() => this.jumpTo(move)}>{desc}&lt;/button>
     &lt;/li>
   )
-})</code>
-          </pre>
+})</code></pre>
+
           <p>To output these we just need to put the variable <code>moves</code> into the unordered list:</p>
-          <pre>
-            <code class="language-jsx">
-&lt;div class="game-info">
+
+          <pre><code class="language-jsx">&lt;div class="game-info">
   &lt;div>{status}&lt;/div>
   &lt;ol>{moves}&lt;/ol>
-&lt;/div></code>
-          </pre>
+&lt;/div></code></pre>
+
           <p>With these in places, as a user makes moves, buttons for those moves will appear in side list. Try it out:</p>
           <p data-height="400" data-theme-id="6688" data-slug-hash="a65c58b41e022f91ceacd0d5115f732f" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 9" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/a65c58b41e022f91ceacd0d5115f732f/">Composi Tic-Tac-Toe 9</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -388,19 +370,17 @@ const moves = history.map((step, move) => {
           <p> </p>
           <h2>Time Travel</h2>
           <p>Now that we have the buttons for moves, we can add the ability to travel through the game history by tapping those buttons. For that we need to update the <code>jumpTo</code> method:</p>
-          <pre>
-            <code class="language-javascript">
-jumpTo(step) {
+          
+          <pre><code class="language-javascript">jumpTo(step) {
   this.setState({
     stepNumber: step,
     xIsNext: (step % 2) === 0
   })
-}</code>
-          </pre>
+}</code></pre>
+
           <p>We also need to update the <code>handleClick</code> method to set state with a new property, <code>stepNumber</code> and refactor how we get history from state:</p>
-          <pre>
-            <code class="language-javascript">
-handleClick(i) {
+
+          <pre><code class="language-javascript">handleClick(i) {
   const history = this.state.history.slice(0, this.state.stepNumber + 1)
   const current = history[history.length - 1]
   const squares = current.squares.slice()
@@ -415,13 +395,12 @@ handleClick(i) {
     stepNumber: history.length,
     xIsNext: !this.state.xIsNext
   })
-}</code>
-          </pre>
+}</code></pre>
+
           <p>We'll also need to udpate the render function to use the <code>stepNumber</code> for the current slice of history:</p>
-          <pre>
-            <code class="language-javascript">
-const current = history[this.state.stepNumber]</code>
-          </pre>
+
+          <pre><code class="language-javascript">const current = history[this.state.stepNumber]</code></pre>
+
           <p>With this we now have time travel:</p>
           <p data-height="550" data-theme-id="6688" data-slug-hash="e8bfb2a6ca519898da5d6567f3b19bcd" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 10" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/e8bfb2a6ca519898da5d6567f3b19bcd/">Composi Tic-Tac-Toe 10</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -435,20 +414,16 @@ const current = history[this.state.stepNumber]</code>
 
           <h2>Show the Winning Moves</h2>
           <p>For a final treat, we've updated the game to show the winning moves on the board. For this we had to change what <code>calculateWinner</code> was returning. We want to return the winner and the lines. Then in the Board, we'll add a <code>won</code> class to the appropriate squares.</p>
-          <pre>
-            <code class="language-javascript">
-return {
+
+          <pre><code class="language-javascript">return {
   who: squares[a],
   line: lines[i]
-}
-            </code>
-          </pre>
+}</code></pre>
+
           <p>Since we're no longer returning the winner as a letter but as an object property <code>who</code>, we need to update how we render that in status:</p>
-          <pre>
-            <code class="language-javascript">
-status = "Winner: " + winner.who
-            </code>
-          </pre>
+
+          <pre><code class="language-javascript">status = "Winner: " + winner.who</code></pre>
+
           <p>And here it is complete:</p>
           <p data-height="550" data-theme-id="6688" data-slug-hash="ee0a8377722a8ae74b12e8c3bf17ae71" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tic-Tac-Toe 11" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/ee0a8377722a8ae74b12e8c3bf17ae71/">Composi Tic-Tac-Toe 11</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>

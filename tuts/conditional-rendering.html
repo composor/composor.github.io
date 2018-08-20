@@ -65,16 +65,14 @@
 
           <p>As an example of conditional rendering, lets use a situation where depending on whether the user is logged in or not, we render two different sub-components. Here's the two possible components:</p>
 
-          <pre>
-            <code class="language-javascript">
-function UserGreeting(props) {
+          <pre><code class="language-javascript">function UserGreeting(props) {
   return &lt;h1>Welcome back!&lt;/h1>
 }
 
 function GuestGreeting(props) {
   return &lt;h1>Please sign in.&lt;/h1>
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Now lets create a component that returns these two sub-components and based on the loggedon condition, returns one or the other. Try opening the Codepen and changing the value of <code>isLoggedIn</code> to false.</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="YEPWBJ" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - conditional-rendering-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/YEPWBJ/">Composi Tuts - conditional-rendering-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -91,23 +89,21 @@ function GuestGreeting(props) {
           <h2>Using the Logical &amp;&amp; Operator</h2>
           <p>You can also use the JavaScript logical && operator for conditional situations. In the above example we can simplify the <code>handleEvent</code> method by using the &amp;&amp; operator as a condition check:</p>
 
-          <pre>
-            <code class="language-javascript">
-  // Original with if statement:
-  handleEvent(e) {    
-    if (e.target.class === 'login') {
-      this.handleLoginClick(e)
-    } else if (e.target.class === 'logout') {
-      this.handleLogoutClick(e)
-    }
+          <pre><code class="language-javascript">// Original with if statement:
+handleEvent(e) {    
+  if (e.target.class === 'login') {
+    this.handleLoginClick(e)
+  } else if (e.target.class === 'logout') {
+    this.handleLogoutClick(e)
   }
-  
-  // New version using &amp;&amp;
-    handleEvent(e) {    
-    e.target.class === 'login' &amp;&amp; this.handleLoginClick(e)
-    e.target.class === 'logout'&amp;&amp; this.handleLogoutClick(e)
-  }</code>
-          </pre>
+}
+
+// New version using &amp;&amp;
+  handleEvent(e) {    
+  e.target.class === 'login' &amp;&amp; this.handleLoginClick(e)
+  e.target.class === 'logout'&amp;&amp; this.handleLogoutClick(e)
+}</code></pre>
+
           <p>When you see an expression like this, read it like this: When e.target.class equals "login", execute this.handleLoginClick(e)". Basically, the first part is a check, if it is true then the &amp;&amp; will execute whatever follows.</p>
 
           <p>We can also use the &amp;&amp; operator to conditionally render an element. If the first statement is true, then return the element to render. In the next example, the element will render only if the number of messages is greater than 0:</p>
@@ -120,23 +116,21 @@ function GuestGreeting(props) {
           <p>Another way to render things conditionally is to use the JavaScript ternary operator: <code>condition ? true : false</code>. The ternary operator is great for reducing conditional <code>if/else</code> statements to a single line. However, creating nested ternary statements results in difficult to read code, so avoid doing that.</p>
 
           <p>You can use the ternary operator for simple decisions about what to print out based on a condition:</p>
-          <pre>
-            <code class="language-javascript">
-render() {
+
+          <pre><code class="language-javascript">render() {
   const isLoggedIn = this.state.isLoggedIn
   return (
     &lt;div>
       The user is &lt;b>{isLoggedIn ? 'currently' : 'not'}&lt;/b> logged in.
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>As you can see, using the ternary operator makes the test clean and easy to reason about.</p>
 
           <p>In our previous example we had a <code>render</code> function like this:</p>
-          <pre>
-            <code class="language-javascript">
-render() {
+
+          <pre><code class="language-javascript">render() {
   const isLoggedIn = this.state.isLoggedIn
 
   if (isLoggedIn) {
@@ -151,13 +145,11 @@ render() {
       {button}
     &lt;/div>
   )
-}</code>
-          </pre>
+}</code></pre>
+
           <p>Using the ternary operator, we can simplify the logic to this:</p>
 
-          <pre>
-            <code class="language-javascript">
-render() {
+          <pre><code class="language-javascript">render() {
   const isLoggedIn = this.state.isLoggedIn;
 
   return (
@@ -165,8 +157,8 @@ render() {
       { isLoggedIn ? &lt;LogoutButton /> : &lt;LoginButton /> }
     &lt;/div>
   );
-}</code>
-          </pre>
+}</code></pre>
+
           <p> </p>
           <h2>Prevent an Component from Rendering</h2>
           <p>Sometimes you want to not render a component from rendering. The best way to do that is to test for a condition and have the <code>render</code> function return <code>null</code>. Notice how we do that with the <code>WarningBanner</code> component below:</p>

@@ -66,7 +66,7 @@
 
         <ul>
           <li>disabled={false} - attribute is removed</li>
-          <li>disabled='false' - attribute is removed</li>
+          <li>disabled='false' - attribute is added because string value is truthy</li>
           <li>disabled={true} - element is disabled</li>
           <li>disabled={0} - attribute is removed because 0 is falsy</li>
           <li>disabled={null} - attribute is removed</li>
@@ -91,17 +91,17 @@
         <p>For other types of attributes, values work as follows:</p>
         <ul>
           <li>attribute={false} - attribute is removed</li>
-          <li>attribute='false' - attribute is removed</li>
+          <li>attribute='false' - attribute is added</li>
           <li>attribute={undefined} - attribute is removed</li>
-          <li>attribute='undefined' - attribue is removed</li>
+          <li>attribute='undefined' - attribue is added</li>
           <li>attribute={null} - attribute is removed</li>
-          <li>attribute='null' - attribute is removed</li>
+          <li>attribute='null' - attribute is added</li>
         </ul>
         <p>Any other values will result in the attribute being set.</p>
 
         <p></p>
         <h1>Types and Type Safety</h1>
-        <p class="docs__intro">TypeScript and Flow allow developers to code with type checking during build time. Although Composi is written in ES6, it also provides builtin support for type checking when using <a target="_blank" href='https://code.visualstudio.com/docs/languages/javascript'>Visual Studio Code</a>. Using Webstorm you get a very minimalistic version of code completion. The Atom editor has the most rudimentary of the three. If type checking is something you're interested in, then you should consider using Composi with Visual Studio Code. It's free and runs on Mac, Linux and Windows.</p>
+        <p>TypeScript and Flow allow developers to code with type checking during build time. Although Composi is written in ES6, it also provides builtin support for type checking when using <a target="_blank" href='https://code.visualstudio.com/docs/languages/javascript'>Visual Studio Code</a>. Using Webstorm you get a very minimalistic version of code completion. The Atom editor has the most rudimentary of the three. If type checking is something you're interested in, then you should consider using Composi with Visual Studio Code. It's free and runs on Mac, Linux and Windows.</p>
         <h3>Enabling Type Checking</h3>
         <p>Open Visual Studio Code and navigate to Preferences> Settings. Add the followin line to your settings configuration: <code>
           "javascript.implicitProjectConfig.checkJs": true</code>. Below is a sample configuration file for JavaScript intellisense in Visual Studio Code. The last line enables type checking.</p>
@@ -146,16 +146,13 @@
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

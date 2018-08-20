@@ -62,15 +62,14 @@
           <h1>Lifting State Up</h1>
           <p class="tutorial__intro">A component can have child components that need to share the same state. In order to make that work, we recommend raising the state up to the parent component.</p>
           <p>To understand how to list state up, we are going to create a temperature calculator that determines whether water would boil or not. It will accept both Cesius and Fahrenheit, converting between them. So, here's are first function:</p>
-          <pre>
-            <code class="language-javascript">
-function BoilingVerdict(props) {
+
+          <pre><code class="language-javascript">function BoilingVerdict(props) {
   if (props.celsius >= 100) {
     return &lt;p>The water will boil.&lt;/p>
   }
   return &lt;p>The water will not boil.&lt;/p>
-}</code>
-          </pre>
+}</code></pre>
+
           <p>The functional component <code>BoilingVerdict</code> will print out whether the temperature would cause water to boil or not. Next we need to create the <code>Calculator</code> component. It will keep track of temperature through <code>this.state.temperature</code>. It will also render the <code>BoilingVerdict</code> component based on the current temperature:</p>
 
           <p data-height="300" data-theme-id="6688" data-slug-hash="58eddc47b5e67631d74815bdb82f6428" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Lifting State-1" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/58eddc47b5e67631d74815bdb82f6428/">Composi Tuts - Lifting State-1</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
@@ -81,15 +80,13 @@ function BoilingVerdict(props) {
           <p>Now we want to add a second input for Fahrenheit. And we want them both synched, so that a change in the value of one will update the value of the other. In our previous component we had it own state. Now that we are going to have two components this gets complicated. We would wind up with race conditions over whose state wins out when changes are made. To resolve this we make both of them stateless and move the state up to their parent component.</p>
           <p>In order for the two inputs to show the correct values, we'll use a funcional component to create them. This is very basic, both will receiver their data as props:</p>
 
-          <pre>
-            <code class="language-javascript">
-const TemperatureInput = (props) => (
+          <pre><code class="language-javascript">const TemperatureInput = (props) => (
   &lt;fieldset>
     &lt;legend>Enter temperature in {scaleNames[props.scale]}:&lt;/legend>
     &lt;input id={props.scale} value={props.temperature} />
   &lt;/fieldset>
-)</code>
-          </pre>
+)</code></pre>
+
           <p>We can use this functional input as a custom tag in our <code>Calculator</code> component. We will also need to give our parent component two methods to convert between Cesius and Fahrenheit: <code>toCelsius</code> and <code>toFahrenheit</code>. We'll also add a <code>handleEvent</code> method to manage the user input on the two form inputs. With all this in mind, here is our updated temperature calculator:</p>
 
           <p data-height="400" data-theme-id="6688" data-slug-hash="3f0198df7881049e286f6d8fff146ae9" data-default-tab="js,result" data-user="rbiggs" data-embed-version="2" data-pen-title="Composi Tuts - Lifting State-2" class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/3f0198df7881049e286f6d8fff146ae9/">Composi Tuts - Lifting State-2</a> by Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>

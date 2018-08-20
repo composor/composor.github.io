@@ -59,11 +59,11 @@
   <article class='docs__article'>
     <section>
       <div class='docs'>
-          <h1>Extending Component</h1>
+          <h1>Class Component</h1>
           <p class="docs__intro">Although creating a simple instance of the Component class is a quick and convenient way to get a component functioning, it does have its limitations. In most cases you will want to extend the Component class. In fact, it's best to always start by extending. That way, if you need to add more functionality as your project grows, it will be easy. A component instance is fast, but it will often happen that later you realize your component needs more features. Then you have to go through the hassle of converting an instance into an extension. </p>
 
-          <h2>Advantages of Extending</h2>
-          <p>For one, when you extend the Component class, your component has the proper access of all your components properties and methods through the <code>this</code> keyword. You can also add the methods for events directly to your component and access them everywhere through the <code>this</code> keyword. Extending Component gives you encapsulation of all the functionality your component might need.</p>
+          <h2>Advantages of Class Components</h2>
+          <p>When you create a component by extend the Component class, your component has proper access to all your components properties and methods through the <code>this</code> keyword. You can also add methods for events directly to your component and access them everywhere through the <code>this</code> keyword. Extending the Component class gives you encapsulation of all the functionality your component might need.</p>
 
           <p>If you want a custom component that you can reuse multiple times in the same app with different data, then you would need to extend. Below we are going to create a list component to create multiple lists with different datasets:</p>
 
@@ -76,19 +76,18 @@
 
           <p> </p>
           <h2>componentShouldUpdate</h2>
-          <p>Sometimes you need to do some complex operations on data and you don't want the component to update constantly due to changes. Or you want to render a component with some external DOM plugin, possibly jQuery. For these situations you can use the <code>comonentShouldUpdate</code> property inside the class constructor. By default it is set to true. Setting it to false causes a component to render only once. Even though the <code>update</code> function is invoked on it, or its state changes, it will not update.</p>
+          <p>Sometimes you need to do some complex operations on data and you don't want the component to update constantly due to changes. Or you want to render a component with some external DOM plugin, possibly jQuery. For these situations you can use the <code>comonentShouldUpdate</code> property inside the class constructor. By default it is set to true. Setting it to false causes a component to render only once, during the mount. Even though the <code>update</code> function is invoked on it, or its state changes, it will not update.</p>
           <p>You can make the component react to updates again by setting this property back to true on the component instance.</p>
+          <p>When you set <code>comonentShouldUpdate</code> back to true, nothing will happen until either the state changes or you invoke the component's <code>update()</code> method.</p>
 
-          <pre>
-            <code class="language-javascript">
-class Hello extends Component {
+          <pre><code class="language-javascript">class Hello extends Component {
   constructor(props) {
     super(props)
     this.container = 'header',
     this.state = 'World'
     this.componentShouldUpdate = false
   }
-  render: (data) => {
+  render(data) => {
     return (
       &lt;h1>Hello, {data ? `: ${data}`: ''}!&lt;/h1>
     )
@@ -102,11 +101,10 @@ hello.setState('Joe')
 // Because componentShouldUpdate is false, the component will not update.
 
 // Some time later set componentShouldUpdate to true:
-hello.componentShouldUpdate = true
+hello.componentShouldUpdate = true 
+// Now the component will update:
 hello.setState('Joe')
-// Now the component updates.
-</code>
-          </pre>
+</code></pre>
 
 
           <p>&nbsp;</p>
@@ -122,16 +120,13 @@ hello.setState('Joe')
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item selected">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

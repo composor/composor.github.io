@@ -63,9 +63,7 @@
           <p class="tutorial__intro">Composi lets you use normal JavaScript to convert an array of items into a list.</p>
           <p>The prefered way to create a list is to use <code>map</code> on the array:</p>
 
-          <pre>
-            <code class="language-javascript">
-const listItems = ['One','Two','Three', 'Four', 'Five']
+          <pre><code class="language-javascript">const listItems = ['One','Two','Three', 'Four', 'Five']
 class List extends Component {
   constructor(props) {
     super(props)
@@ -82,15 +80,13 @@ class List extends Component {
       &lt;/ul>
     )
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p> </p>
           <h2>Rendering List Items Separately</h2>
           <p>You can create use <code>map</code> on an array to create list items. This will make our code a bit cleaner. In that case it doesn't make sense for our component to have state:</p>
 
-          <pre>
-            <code class="language-javascript">
-const listItems = ['One','Two','Three', 'Four', 'Five']
+          <pre><code class="language-javascript">const listItems = ['One','Two','Three', 'Four', 'Five']
 
 // Create list items from listItems:
 const items = listItems.map(item => &lt;li>{item}&lt;/li>)
@@ -108,8 +104,8 @@ class List extends Component {
       &lt;/ul>
     )
   }
-}</code>
-          </pre>
+}</code></pre>
+
           <p>The above works. If you don't like create the list items outside the class, you could move it inside the <code>render</code> function but before the <code>return</code> statement.</p>
 
           <h2>Keys</h2>
@@ -123,9 +119,7 @@ class List extends Component {
           <h2>Bad Practices</h2>
           <p>As we already mentioned, it is a bad practice to use the array indeces as keys. These are useless when trying to determine a list whose item order has changed. Another bad practice is creating a key value directly on the list item. In our case, we could use our <code>uid</code> function on each list item:</p>
 
-          <pre>
-            <code class="language-javascript">
-import {uuid} from 'uuid'
+          <pre><code class="language-javascript">import {uuid} from 'uuid'
 
 // Bad practice - creating key on list item when it is created:
 return (
@@ -134,8 +128,8 @@ return (
       listItems.map(item => &lt;li key={uid()}>{item.value}&lt;/li>)
     }
   &lt;/ul>
-)</code>
-          </pre>
+)</code></pre>
+
           <p>The problem with the above approach is, each time the <code>render</code> function gets called, new key values get produced. This means the new virtual dom for the list will not match the previous version. This will cause the patch algorithm to completely re-render the list. Very wasteful. It is simply better to have the key values exist on the data.</p>
 
 

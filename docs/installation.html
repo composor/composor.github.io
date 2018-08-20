@@ -65,41 +65,34 @@
 
           <h2>Install from NPM</h2>
           <p class="docs__intro">To install Composi, you'll need to have <a href="https://nodejs.org/en/" target='__blank'>Node</a> installed first. If you do have Node, then open your terminal and run:</p>
-          <pre>
-            <code class='language-bash'>
-npm i -g composi</code>
-          </pre>
+
+          <pre><code class='language-bash'>npm i -g composi</code></pre>
+
           <p>If you are on a Mac or Linux, you may need to run the above command with <code>sudo</code>.</p>
           <p>Once the installation is complete, you are ready to create your first project.</p>
 
           <h2>Create a New Project</h2>
           <p>After installing Composi, you can use it to create a new project. The simplest way to do this is to provide a project name following the <code>-n</code> flag:</p>
-          <pre>
-            <code class="language-bash">
-composi -n myproject</code>
-          </pre>
+
+          <pre><code class="language-bash">composi -n myproject</code></pre>
+
           <p>If you want to create a project with a name with spaces, you will need to quote it. Similarly, you can use uppercase letters as well. For names with spaces, Composi with convert those to hyphens to comply with NPM naming conventions. In your project's html file the name will appear as you entered. Similarly, if you provide a name with uppercase letters, Composi will convert those to lowercase for NPM compatibility. But in your project's html file the name will appear as you entered it.</p>
-          <pre>
-            <code class="language-bash">
-composi -n "My Project"</code>
-          </pre>
+
+          <pre><code class="language-bash">composi -n "My Project"</code></pre>
+
           <p> </p>
           <h2>Provide a Path</h2>
           <p>When you create a new project providing a name with the <code>-n</code> flag, Composi creates this on your Desktop. If you would like the new project to be output somewhere else, you can provide the <code>-p</code> flag followed by a valid path to where you want your project. You will need to provide a path for the operating system on which you are working, whether Mac, Windows or Linux.</p>
 
-          <pre>
-              <code class="language-bash">
-  # Output new project to path:
-  composi -n myproject -p ~/projects
+          <pre> <code class="language-bash"># Output new project to path:
+composi -n myproject -p ~/projects
 
-  # or:
-  composi -n myproject -p ~/dev</code>
-            </pre>
+# or:
+composi -n myproject -p ~/dev</code></pre>
+
             <p>If a project of the same name already exists at the destination, it will be replaced with the new project version.</p>
             <p>After creating a project, open the folder and take a look inside. You should see a structure like this:</p>
-            <pre>
-              <code class="language-bash">
-+--myproject
+            <pre><code class="language-bash">+--myproject
 |  +--dev
 |     +--components
 |        |--title.js
@@ -112,16 +105,13 @@ composi -n "My Project"</code>
 |--gulpfile.js
 |--index.html
 |--package.json
-|--README.md</code>
-</pre>
+|--README.md</code></pre>
 
             <p> </p>
             <h2>Intall Project Dependencies</h2>
             <p>After creating a project, use your terminal to <code>cd</code> to your project and install its dependencies:</p>
-            <pre>
-              <code class="language-bash">
-npm i</code>
-            </pre>
+
+            <pre><code class="language-bash">npm i</code></pre>
 
             <p>You will spend most of your time working in your project's <code>dev</code> folder. When you build your project, Composi will take the files in the <code>dev</code> folder, bundle them, transpile the bundle and output it to your project's <code>js</code> folder as <code>app.js</code>. The <code>index.html</code> file is already set up to import that bundle.</p>
             <p>The core of your app is the <code>app.js</code> file in the <code>dev</code> folder. This is where you assemble all the pieces together.</p>
@@ -129,40 +119,36 @@ npm i</code>
             <h2>Building</h2>
             <p>After creating a project, you can build it. This will bundle all the dependencies, transpile them and put the resulting bundle in the project's <code>js</code> folder. To build, make sure you terminal is in your project using <code>cd</code>. Then run:</p>
 
-            <pre>
-              <code class="language-bash">
-// Build and run app in browsers:
-npm start</code>
-            </pre>
+            <pre><code class="language-bash">// Build and run app in browsers:
+npm start</code></pre>
 
             <p>This will also start a Node server instance and launch the project in your default browser. If you'd like to use a different browser, you can do so by opening your project's <code>gulpfile.js</code>. look for the <code>gulp</code> task called "serve". In the Browsersync configuration you can add a property for <code>browser</code> with the browser you want the project build to use. The naming convention for browsers in the configuration vary by operating system. To learn more about configuring Browsersync, read the <a target='__blank' href='https://www.browsersync.io/docs/options#option-browser'>docs</a>.</p>
             
             <h2>Load from CDN</h2>
             <p>If you want, you can skip the NPM install and load Composi directly from Github. Doing so means you will not be able to use ES6, JSX, etc. on older browsers. However, you can write components using the <code>h</code> function in hyperscript fashion.</p>
             <p>To use it from a CDN, just import Composi with a scritp tag:</p>
-            <pre>
-              <code class='language-html'>
-&lt;script src='https://unpkg.com/composi@latest/dist/composi.js'>&lt;/script></code>
-            </pre>
+
+            <pre><code class='language-html'>&lt;script src='https://unpkg.com/composi@latest/dist/composi.js'>&lt;/script></code></pre>
+
             <p>You can then use Composi using its <code>h</code> function to define markup. Here's a simple Hello World:</p>
-            <pre>
-                <code class='language-html'>
-&lt;script src='https://unpkg.com/composi@1.0.0/dist/composi.js'>&lt;/script>
+
+            <pre><code class='language-html'>&lt;script src='https://unpkg.com/composi@1.0.0/dist/composi.js'>&lt;/script>
 &lt;script>
   // get h and Component:
   var h = composi.h
   var Component = composi.Component
 
   // Create component:
-  hello = new Component({
-    container: 'body',
-    render: function(name) {
+  class Hello extends Component {
+    container = 'body'
+    render(name) {
       return h('h1', {}, `Hello, ${name}!`)
     }
-  })
-  hello.update('Joe')
-&lt;/script></code>
-              </pre>
+  }
+  const hello = new Hello()
+  hello.setState('Joe')
+&lt;/script></code></pre>
+
               <p>For more information about how to use <code>h</code>, read its <a href="./h.html" target='__blank'>documentation</a>, as well as the <a target='__blank' href='../tuts/composi-without-jsx.html'>tutorial</a> about using Composi without JSX.</p>
 
 
@@ -176,16 +162,13 @@ npm start</code>
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>

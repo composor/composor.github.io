@@ -72,30 +72,25 @@
 
           <p>When Composi deploys you project, it uses the same name you gave but appends '-production' to the folder name. Internally all names will stay the same.</p>
 
-          <pre>
-            <code class="language-bash">
-composi -d /Users/wobba/Desktop/test -p ~/dev</code>
-          </pre>
+          <pre><code class="language-bash">composi -d /Users/wobba/Desktop/test -p ~/dev</code></pre>
+
           <p>With the above command, you will find the deployed project at: <code>/Users/wobba/dev/test-production</code></p>
 
           <p>For Windows uses, this would be:</p>
-          <pre>
-            <code class="language-bash">
-composi -d C:\Users\wobba\Desktop\test -p ~\dev</code>
-          </pre>
+
+          <pre><code class="language-bash">composi -d C:\Users\wobba\Desktop\test -p ~\dev</code></pre>
+
           <p>This would be deployed project at: <code>C:\Users\wobba\dev\test-production</code></p>
 
           <h2>What Gets Deployed</h2>
           <p>When you deploy a project, Composi exports certain files and folders. They are all at the root level of the project:</p>
 
-          <pre>
-            <code class="language-bash">
-|--css
+          <pre><code class="language-bash">|--css
 |--icons
 |--images
 |--js
-|--index.html</code>
-          </pre>
+|--index.html</code></pre>
+
           <p>The default Composi project build does not contain a folder for icons and images. However, if you want to use icons and images with your project, you can create these folders at the root of your project. Then during deployment Composi will include them. Everything in the above folders will be transfered to the deployment destination.</p>
 
           <h2>Changing Paths for Files</h2>
@@ -116,16 +111,13 @@ composi -d C:\Users\wobba\Desktop\test -p ~\dev</code>
               <a href='./installation.html'>Installation</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./render.html'>Mount/Render</a>
+              <a href='./render.html'>Mount/Render/Unmount</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./functional-components.html'>Functional Components</a>
+              <a href='./functional-component.html'>Functional Component</a>
             </li>
             <li class="docs__menu__item">
-              <a href='./component-instance.html'>Component Instance</a>
-            </li>
-            <li class="docs__menu__item">
-              <a href='./extending-component.html'>Extending Component</a>
+              <a href='./class-component.html'>Class Component</a>
             </li>
             <li class="docs__menu__item">
               <a href='./state.html'>State</a>
