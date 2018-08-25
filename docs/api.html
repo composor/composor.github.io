@@ -88,6 +88,17 @@
               <li> <a href="#innerHTML">innerHTML</a> - (<code>A property</code>)</li>
             </li>
           </ul>
+          <h2>Optional Installs</h2>
+          <p>There are several optionals classes that you can import into your project. These are separate from the standard import of Composi. To import them you have to access a sub-folder of Composi: <code>data-store</code>. In the following example, notice how we use <code>/data-store</code> after <code>composi</code>. This is so we can reach the folder where these optional classes are stored.</p>
+          <pre><code class="language-javascript">import { DataStore, DataStoreComponent, Observer, uuid } from 'composi/data-store</code></pre>
+
+          <p>  </p>
+          <ul>
+            <li><a href='#DataStore'>DataStore</a> {class}</li>
+            <li><a href='#DataStoreComponent'>DataStoreComponent</a> {class}</li>
+            <li><a href='#Observer'>Observer</a> {class}</li>
+            <li><a href='#uuid'>uuid</a> {function}</li>
+          </ul>
 
             <h2>h</h2>
             <p>The <code>h</code> function serves two purposes. Firstly it gets used by Babel during build to convert JSX into a virtual node that Composi can use for diffing and patching the dom. Secondly it provides a way to define component markup without using JSX.</p>
@@ -556,6 +567,131 @@ componentDidMount() {
 
             <h3>Security Warning</h3>
             <p>Using <code>innerHTML</code> is very dangerous as it can lead to injection of malicious code in your site by hackers. Only use this if you are absolutely sure your data source is 100% secure. It is best to avoid using <code>innerHTML</code> and depend on the default rendering methods because these automatically encode the data, preventing script injection.</p>
+
+            <a name="DataStore"></a>
+            <h2>DataStore</h2>
+
+            <p>This lets you create a dataStore that you can use with components. DataStore has only one public method: <code>setState</code>. When you change a dataStore's state with <code>setState</code>, the dataStore dispatches an event <code>dataStoreStateChanged</code>. When this happens, it there is a component linked to that dataStore, it will react to it by re-render itself with the current state of the dataStore. This combination gives you state management for stateless components. The component is reactive in that whenever the state of the dataStore changes, the component updates.</p>
+
+            <h3>Creating a dataStore</h3>
+
+            <p>To create a dataStore, pass in the data you want to use for state when you instantiate a new instance of DataStore. When you pass the data in, you need to wrap it in an object literal with a property of <code>state</code>. Pay attention to how we do this below:</p>
+
+<pre><code class="language-javascript">import { h } from 'composi'
+import { DataStore, DataStoreComponent } from 'composi/data-store'
+
+// Create new dataStore:
+const dataStore = new DataStore({
+  state: {
+    fruits: ['apples', 'oranges', 'bananas'],
+    vegetables: ['potatoes', 'onions', 'carrots']
+  }
+})
+</code></pre>
+
+            <p>To access the data in the dataStore we need to do so like this:</p>
+<pre><code class="language-javascript">dataStore.state.fruits
+// or:
+dataStore.state.vegetables
+</code></pre>
+          <p> </p>
+          <h3>setState</h3>
+
+          <p>When you want to change the state of a dataStore, you use the <code>setState</code> method. This takes a callback which gets passed the previous state of the dataStore. This is usually refered to as <code>prevState</code>. This is the state property of the dataStore, so you can access the values of the state directly from it. No need to query from a state property. Notice how we add a new fruit and vegetable to our previous dataStore:</p>
+
+<pre><code class="language-javascript">dataStore.setState(prevState => {
+  prevState.fruits.push('strawberries')
+  prevState.vegetables.push('tomatoes')
+  // Don't forget to return prevState or state won't be updated:
+  return prevState
+})</code></pre>
+
+            <p>Using <code>setState</code> on a dataStore cause it to dispatch and event <code>dataStoreStateChanged</code> along with its updated state. If you have a dataStore component, it is listening for that event. When it sees the event has occurred, it re-renders itself with the data that dataStore passed. To see how this works, read the next section about DataStoreComponent:</p>
+
+            <p> </p>
+            
+            <a name="DataStoreComponent"></a>
+            <h2>DataStoreComponent</h2>
+
+            <p>DataStoreComponent is a custom version of Composi's Component class. The difference is that DataStoreComponent expects to receive a dataStore when it is initialized. During its initialization, it takes the provided dataStore and setting up a watcher that will re-render the component when the dataStore's state changes.</p>
+
+            <p>You create a new dataStore component by extending DataStoreComponent, just like you would with Component. But you will never give it state. Instead you will provide a dataStore as the value of the component's dataStore property during initialization. Otherwise, you will use the render function, lifecycle hooks and whatever methods you need, just like you would with the Component class.</p>
+
+            <p>Here is an example of a dataStore with a very simple dataStore component. When we update the dataStore, the component will also update.</p>
+
+<pre><code class="language-javascript">import { h } from 'composi'
+import { DataStore, DataStoreComponent } from 'composi/data-store'
+
+// Create a dataStore:
+const dataStoreTitle = new DataStore({
+  state: {
+    title: 'The Default Title'
+  }
+})
+
+// Create a dataStore component:
+class Title extends DatatStoreComponent {
+  render(data) {
+    return (
+      <h1>{data.title}</h1>
+    )
+  }
+}
+
+// Create an instance of Title:
+const new title({
+  container: 'header',
+  dataStore: dataStoreTitle
+})
+
+// Mount the component instance by passing in the dataStore state:
+title.update(dataStore.state)
+
+// Some time later, change the state of the dataStore:
+dataStore.setState(prevState => {
+  prevState.title = 'This is the new title'
+  // Don't forget to return prevState:
+  return prevState
+})
+// The above will cause the title component to update with 'This is the new title'.
+</code></pre>
+
+            <p>For more details on using DataStore and DataStoreComponent, <a target="_blank" href="../tuts/composi-datastore.html">check out the tutorial</a>.</p>
+
+            <p> </p>
+            <a name="Observer"></a>
+            <h2>Observer</h2>
+
+            <p>Composi has an Observer class, which it uses to enable communication between the dataStore and dataStore component. You can also use the Observer in your own code. You need to import it from Composi's <code>data-store</code> folder, just like you do for DataStore and DataStoreComponent.</p>
+
+            <p>Observer has only two methods: <code>watch</code> and <code>dispatch</code>. <code>watch</code> takes two arguments, an event and a callback. The callback receives as its argument any data passed with the event when it occurs. <code>dispatch</code> takes two arguments, an event and optionally any data you want to pass to the watcher. Data is optional in that you can create an observer that just responds to an event.</p>
+
+            <p>Here's an example of a simple observer:</p>
+<pre><code class="language-javascript">import { Observer } from 'composi/data-store'
+
+const observer = new Observer()
+// Set up a watcher on the observer:
+observer.watch('something-happened', data => {
+  console.log('The event "something-happened" just happened')
+  console.log(`The data is: ${data}`)
+})
+// Dispatch the event with some data:
+observer.dispatch('something-happened', 'This is the data.')
+</code></pre>
+
+            <p>The above is an overly simplist example. You could do much more complicated things with an observer. In fact, DataStore and DataStoreComponent are using it to link them together for reactive rendering.</p>
+
+            <p> </p>
+            <a name="uuid"></a>
+            <h2>uuid</h2>
+
+            <p>Composi uses the <code>uuid</code> function to create uuids for DataStore. You can also use <code>uuid</code> inside your code. To do so, just import it from the <code>data-store</code> folder like DataStore, etc. <code>uuid</code> creates an RFC4122 version 4 compliant uuid, or string of 36 characters.</p>
+
+<pre><code class="language-javascript">import { uuid } from 'composi/data-store'
+
+// Create a new uuid:
+const id = new uuid()
+</code></pre>
 
           <p>&nbsp;</p>
 

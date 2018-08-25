@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="Composi is a JavaScript library for creating component-based interfaces. It uses the virtual dom to make efficient updates to the DOM based on a component's data or state.">
+  <meta name="keywords" content="javascript, framework, performance, small, fast, UI, programming, code, component, composi, chocolatechipui, chocolatechip-ui, reactive, virtual dom">
+  <title>Composi - Tutorials</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/prism-tomorrow.css">
+</head>
+
+<body class='tutorial-page'>
+  <nav>
+    <ul class='nav--menu'>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../index.html">
+          <svg id='composi-logo' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Composi Logo</title>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Composi-Logo-Solid" fill="#fff">
+                <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z"
+                  id="Combined-Shape"></path>
+              </g>
+            </g>
+          </svg>
+          <span class='logo__link--text'>Composi</span></a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link' href="../docs/installation.html">Docs</a>
+      </li>
+      <li class='nav--menu__item selected'>
+        <a class='nav--menu__item__link' href="./index.html">Tutorials</a>
+      </li>
+      <li class='nav--menu__item'>
+        <a class='nav--menu__item__link external' target='__blank' href="https://github.com/composor/awesome-composi">Resources
+          <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="14px" height="14px" viewBox="0 0 511.626 511.627" style="enable-background:new 0 0 511.626 511.627;" xml:space="preserve">
+            <path fill='#fff' d="M392.857,292.354h-18.274c-2.669,0-4.859,0.855-6.563,2.573c-1.718,1.708-2.573,3.897-2.573,6.563v91.361
+    c0,12.563-4.47,23.315-13.415,32.262c-8.945,8.945-19.701,13.414-32.264,13.414H82.224c-12.562,0-23.317-4.469-32.264-13.414
+    c-8.945-8.946-13.417-19.698-13.417-32.262V155.31c0-12.562,4.471-23.313,13.417-32.259c8.947-8.947,19.702-13.418,32.264-13.418
+    h200.994c2.669,0,4.859-0.859,6.57-2.57c1.711-1.713,2.566-3.9,2.566-6.567V82.221c0-2.662-0.855-4.853-2.566-6.563
+    c-1.711-1.713-3.901-2.568-6.57-2.568H82.224c-22.648,0-42.016,8.042-58.102,24.125C8.042,113.297,0,132.665,0,155.313v237.542
+    c0,22.647,8.042,42.018,24.123,58.095c16.086,16.084,35.454,24.13,58.102,24.13h237.543c22.647,0,42.017-8.046,58.101-24.13
+    c16.085-16.077,24.127-35.447,24.127-58.095v-91.358c0-2.669-0.856-4.859-2.574-6.57
+    C397.709,293.209,395.519,292.354,392.857,292.354z" />
+            <path fill='#fff' d="M506.199,41.971c-3.617-3.617-7.905-5.424-12.85-5.424H347.171c-4.948,0-9.233,1.807-12.847,5.424
+    c-3.617,3.615-5.428,7.898-5.428,12.847s1.811,9.233,5.428,12.85l50.247,50.248L198.424,304.067
+    c-1.906,1.903-2.856,4.093-2.856,6.563c0,2.479,0.953,4.668,2.856,6.571l32.548,32.544c1.903,1.903,4.093,2.852,6.567,2.852
+    s4.665-0.948,6.567-2.852l186.148-186.148l50.251,50.248c3.614,3.617,7.898,5.426,12.847,5.426s9.233-1.809,12.851-5.426
+    c3.617-3.616,5.424-7.898,5.424-12.847V54.818C511.626,49.866,509.813,45.586,506.199,41.971z" />
+          </svg></a>
+      </li>
+    </ul>
+  </nav>
+  <article class='tutorial__article'>
+    <section>
+      <div class='tutorial'>
+        <h1>Composi DataStore</h1>
+        <p class="tutorial__intro">Composi has some extra classes that let you create stateless class component with a <code>dataStore</code> for state management. This results in something similar to how Mobx works with React components. When you update the <code>dataStore</code>, the component updates automatically. This is accomplished through observers used by both the <code>dataStore</code> and component.</p>
+        <p>Composi DataStore provides two classes: dataStore and dataStore component. To use these, you first need to import them into your project. They are located in a folder called <code>data-store</code>, so you import them like this:</p>
+
+
+<pre><code class="language-javascript">import { DataStore, DataStoreComponent } from 'composi/data-store'</code></pre>
+
+<p> </p>
+<h2>Creating a dataStore</h2>
+
+<p>After importing the `DataStore` class, you can create a new instance. On doing so you need to pass in the data you want it to use. The data needs to be an object literal with a state attribute. To that you assign your data, using an attribute that makes sense for your data. You'll use that attribute to access the data when using the dataStore.</p>
+
+<pre><code class="language-javascript">import { DataStore, DataStoreComponent } from 'composi/data-store'
+
+const dataStore = new DataStore({
+  state: {
+    employees: [
+      {
+        name: 'Joe Bodoni',
+        position: 'mechanic'
+      }, 
+      { 
+        name: 'Suzan Maxwell', 
+        position: 'accountant' 
+      },
+      { 
+        name: 'Stan Harding', 
+        position: 'manager' 
+      }
+    ]
+  }
+})</code></pre>
+<p> </p>
+
+<h3>Using setState on a dataStore</h3>
+
+<p>A dataStore exposes one method to update its data: <code>setState</code>. This takes a callback, which gets passed the dataStore's data as its argument. Usually this is expressed as <code>prevState</code>. After manipulating it, you need to return it. If you forget to return <code>prevState</code>, the dataStore's state will never be updated.</p>
+
+<p>Let's take the dataStore we created earlier and update it by adding a new employee:</p>
+
+<pre><code class="language-javascript">dataStore.setState(prevState => {
+  prevState.employees.push({
+    name: 'Rebecca Sawyers',
+    position: 'legal counsel'
+  })
+  // Don't forget to return prevState:
+  return prevState
+}
+</code></pre>
+
+<p>When you update a dataStore using <code>setState</code>, the dataStore fires an event called <code>dataStoreStateChanged</code> and it passes the updated state with that event. If you have a dataStore component linked to that dataStore, it would receive that event and data and re-render itself. Read the next part about create a dataStore component</p>
+
+
+<h2>Creating a DataStoreComponent</h2>
+
+<p>A dataStore by itself is not very useful for your app, but in combination with dataStore component it creates a reactive component.</p>
+
+<p>To create a dataStore component we first need to import it from the Composi <code>data-store</code> folder:</p>
+
+<pre><code class="language-javascript">import { h } from 'composi'
+import { DataStore, DataStoreComponent } from 'composi/data-store'
+</code></pre>
+
+<p>You create a dataStore component the same way you would create a Component class component: define a render function, maybe add some lifecycle hooks, etc. Whatever you can do with a class component you can do with a dataStore component.</p>
+
+<h3>DataStore with Component</h3>
+<p>Here's an example of a dataStore and a component using it. First we define a dataStore, then we define a component. And finally, when we instantiate the component with the <code>new</code> keyword, we pass in the dataStore as a property. During initialization the coponent uses that dataStore to setup a watcher for the <code>dataStoreStateChanged</code> event.</p>
+
+<pre><code class="language-javascript">import { h } from 'composi' 
+import { DataStore, DataStoreComponent } from 'composi/data-store' 
+  
+// Define the dataStore: const
+dataStore = new DataStore({ state: 
+  { 
+    items: [ 
+      { 
+        id: 101, 
+        value: 'Apples' 
+      }, 
+      { 
+        id: 102, 
+        value: 'Oranges' 
+      } 
+    ] 
+  }
+})
+
+// Define dataStore component:
+class List extends DataStoreComponent {
+  render(data) {
+    return (
+      &lt;ul>
+        {
+          data.items.map(item => &lt;li key={item.id}>{item.value}&lt;/li>)
+        }
+      &lt;/ul>
+    )
+  }
+}
+
+// Create instance of List.
+// Give it a container and pass in dataStore.
+const list = new List({
+  container: document.body,
+  dataStore
+})
+
+// Force first render by calling update on component.
+// Pass in dataStore.state as argument.
+list.update(dataStore.state)</code></pre>
+
+<p>With the above code, if we modify the dataStore using its <code>setState</code> method, the list will automatically update:</p>
+
+<pre><code class="language-javascript">dataStore.setState(prevState => {
+  prevState.items.push({
+    id: 103,
+    value: 'Bananas'
+  })
+  // Don't forget to retur prevState!
+  return prevState
+})</code></pre>
+
+<p>Doing the above transform on the dataStore would cause the list to re-render with the new data.</p>
+
+<p>This combination of dataStore with dataStore component enables reactive components with separate dataStore for state management.</p>
+
+<p> </p>
+
+<h2>Using the Observer Class</h2>
+
+<p>Both <code>DataStore</code> and <code>DataStoreComponent</code> use the <code>Observer</code> class. If you want, you can also use this to create event watchers and dispatch data. This enables setting up a simple event bus for decoupled reactivity in your code.</p>
+
+<p>Observer has two methods: <code>watch</code> and <code>dispatch</code>. <code>watch</code> takes two arguments: an event and a callback to execute whent he event occurs. The callback receives as its argument any data passed along with the event. <code>dispatch</code> takes two arguments: the event to dispatch and any data you want to pass along. Of course, in both cases, you do not have to have an event that uses data. You could create an observer that just reacts to an event being dispatched.</p>
+
+<p>To create an observer, you need to import it from the Composi <code>data-store</code> folder:</p>
+
+<pre><code class="language-javascript">import { Observer } from 'composi/data-store</code></pre>
+
+<p>With the Observer class imported, you can create a new instance:</p>
+
+<pre><code class="language-javascript">import { Observer } from 'composi/data-store
+
+const observer = new Observer()
+</code></pre>
+
+<p> </p>
+<h3>Setting Up a Watcher</h3>
+
+<p>After creating an instance of Observer, you can set up a watcher. You do this by providing an event to watch and a callback to execute when the event occurs. The callbacks argument will be any data that was dispatched with the event.</p>
+
+<pre><code class="language-javascript">import { Observer } from 'composi/data-store
+
+const observer = new Observer()
+observer.watch('something-happened', data => {
+  console.log('something-happened event occured.')
+  console.log(`Recevied the following data: ${data}`)
+})
+</code></pre>
+
+<p>With a watcher defined, we are ready to dispatch an event:</p>
+
+<h3>Dispatch an Event with Data</h3>
+
+<p>When you have an observer watcher setup, you can make it react by dispatching its event along with some data. You do that using the observer's <code>dispatch</code> method. That takes two arguments: the event you want to trigger and optionally some data to pass to the watcher's callback.</p>
+
+<pre><code class="language-javascript">import { Observer } from 'composi/data-store
+
+const observer = new Observer()
+observer.watch('something-happened', data => {
+  console.log('something-happened event occured.')
+  console.log(`Recevied the following data: ${data}`)
+})
+
+// Sometime later:
+observer.dispatch('something-happened', 'This is some data being passed along.')
+
+// result:
+// something-happened event occured.
+// Recevied the following data: This is some data being passed along.
+</code></pre>
+
+<p>The above observer was dealing with a simple string as data. You can use whatever kind of data you need to: boolean, string, number, array or object.</p>
+
+
+<p> </p>
+
+
+        <p>&nbsp;</p>
+      </div>
+      <aside>
+        <menu>
+          <ul class="tutorials__menu">
+            <li class="tutorials__menu__item">
+              <a href='./index.html'>Hello World</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./introducing-jsx.html'>Introducing JSX</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./rendering-elements.html'>Rendering Elements</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./components-n-props.html'>Components and Props</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./state-n-lifecycle.html'>State and Lifecycle</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./conditional-rendering.html'>Conditional Rendering</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./handling-events.html'>Handling Events</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./lists-n-keys.html'>Lists and Keys</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./forms.html'>Forms</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./lifting-state-up.html'>Lifting State Up</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./thinking-in-composi.html'>Thinking in Composi</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./jsx-in-depth.html'>JSX In Depth</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./advanced-state-management.html'>Advanced State Management</a>
+            </li>
+            <li class="tutorials__menu__item selected">
+              <a href='./composi-datastore.html'>Composi DataStore</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./integrating-other-libs.html'>Integrating with Other Libraries</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./composi-without-jsx.html'>Composi Without JSX</a>
+            </li>
+            <li class="tutorials__menu__item">
+              <a href='./immutable-data.html'>Immutable Data</a>
+            </li>
+          </ul>
+        </menu>
+      </aside>
+    </section>
+  </article>
+  <footer>
+    <section>
+      <svg id='composi-logo-footer' viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>Composi Logo</title>
+        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Composi-Logo-Solid" fill="rgba(255,255,255,0.5)">
+            <path d="M1.77635684e-15,0 L95,0 L95,38 L209,38 L209,0 L300,0 L300,94 L265,93.8571663 L265,209 L300,209 L300,300 L209,300 L209,265 L95,265 L95,300 L1.77635684e-15,300 L1.77635684e-15,209 L40,209 L40,94 L1.77635684e-15,93.8571663 L1.77635684e-15,0 Z M107,107 L107,192 L192,192 L192,107 L107,107 Z"
+              id="Combined-Shape"></path>
+          </g>
+        </g>
+      </svg>
+      <h3>Composi is open source (MIT) and available on <a href='https://github.com/composor/composi' target='__blank'>Github</a>
+        and <a href="https://www.npmjs.com/package/composi" target='__blank'>NPM</a>.</h3>
+    </section>
+  </footer>
+  <script src="../js/prism.min.js"></script>
+  <script src="../js/prism-jsx.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115293685-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-115293685-1');
+  </script>
+
+</body>
+
+</html>

@@ -29,7 +29,7 @@
         <span class='logo__link--text'>Composi</span></a>
       </li>
       <li class='nav--menu__item'>
-        <a class='nav--menu__item__link' href="../installation.html">Docs</a>
+        <a class='nav--menu__item__link' href="../docs/installation.html">Docs</a>
       </li>
       <li class='nav--menu__item selected'>
         <a class='nav--menu__item__link' href="./tuts/index.html">Tutorials</a>
@@ -124,6 +124,10 @@ const store = observable({ count: 0})</code></pre>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
           <p>Of course, Mobx has many more useful and powerful features. This was just a trivial example. Consult the <a href="https://mobx.js.org/refguide/api.html" target='__blank'>Mobx documentation</a> to learn more about how Mobx can solve your state management needs.</p>
 
+          <h2>Composi DataStore</h2>
+          <p>There is an NPM module called <code>composi-datastore</code> that provides an external <code>dataStore</code> and custom version of Composi <code>Component</code> class. This allows you to create stateless class Components whose state is handled by the <code>dataStore</code>. Visit its <a target='_blank' href='./composi-datastore.html'>dedicated tutorial</a> to learn more.</p>
+
+
           <p>&nbsp;</p>
           
       </div>
@@ -169,6 +173,9 @@ const store = observable({ count: 0})</code></pre>
               </li>
               <li class="tutorials__menu__item selected">
                 <a href='./advanced-state-management.html'>Advanced State Management</a>
+              </li>
+              <li class="tutorials__menu__item">
+                <a href='./composi-datastore.html'>Composi DataStore</a>
               </li>
               <li class="tutorials__menu__item">
                 <a href='./integrating-other-libs.html'>Integrating with Other Libraries</a>
