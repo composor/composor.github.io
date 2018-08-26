@@ -401,7 +401,7 @@ function List() {
           <p> </p>
           <h2>Component Class Advantages</h2>
 
-          <p>Although you can build a complex app using nothing but functional components, there are certain conveniences when using the Component class. First and foremost is the fact that classes allow you to encapsulate functionality using properties and methods defined directly on the component. The second is the component itself enables more efficient use of the virtual DOM because it keeps track of that internally. Because of this, you can have multiple class components in the same container. With functional components, because the virtual DOM is created and handle by the <code>render</code> function, there can only be one functional component in each container.</p>
+          <p>Although you can build a complex app using nothing but functional components, there are certain conveniences when using the Component class. First and foremost is the fact that classes allow you to encapsulate functionality using properties and methods defined directly on the component. The second is the component itself enables more efficient use of the virtual DOM because it keeps track of that internally. Because of this, you can have multiple class components in the same container. Class components don't have the problem with updates like we saw in functional components that needed memoization. This is because class components automatically memoize their previous state on the component instance. That way a component instance can accurately tell whether it should fire its <code>componentDidUpdate</code> lifecycle hook.</p>
           <p>&nbsp;</p>
           
       </div>
