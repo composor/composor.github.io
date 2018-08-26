@@ -368,6 +368,35 @@ function List() {
   )
 }</code></pre>
 
+          <p> </p>
+          <h2>Memoization Avoids Unncessary Updates</h2>
+          <p>When you use the <code>update</code> lifecycle hook, it will always fire, even if the data being use has not changed. This can be annoying. You may want <code>update</code> to run only when the component will actually change. Every time you render a functional component with <code>update</code> on it, <code>update</code> will execute. There is one way to get around this--memoization.</p>
+
+          <p>Bellow is a Codepen with a list created as a function component. The list items have an <code>onupdate</code> lifecycle hook. When you click on the button that says "Render List with Same Data", it re-renders the list. Notice how in the results you see and oupt for each list item. This is so event though there was no change to the data the list is using. This means there was no physical update of the list items. This is because of how the diffing algorithm works.</p>
+
+          <h3>Normal List without Memoization</h3>
+          <p>Here's an example of the problem. Notice that as you add items to the list, all the already existing items get output as updated. Also notice that every time you tap the "Render List with Same Data" button, all the items are output as updated, event those you rendered the list with the same data. Infact, because the data was the same, the actual DOM elements would not have been updated.</p>
+
+          <p data-height="700" data-theme-id="6688" data-slug-hash="RYryBo" data-default-tab="js,result" data-user="rbiggs" data-pen-title="Functional Component with Update"
+            class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/RYryBo/">Functional Component with Update</a> by Robert
+            Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+          <p> </p>
+          <h3>Memoization Solves Update Issues</h3>
+
+          <p>We can get around this problem by memoizing the list items. This is a little more work than simply outputting a list, but it gives us the desired result--list items will indeed fire the <code>update</code> lifecycle hook when their data changes. Otherwise you can render the list with the same data again and again and the <code>update</code> hook will not fire.</p>
+          <p>We use an array, <code>cachedLisItems</code> on the  <code>appVar</code> object to store the memoized list items. Notice how in the render function we store the list items in <code>cachedLisItems</code> and that we use those values to output the list items. This gives us a source for the list items outside of the function components diffing process.</p>
+
+
+          <p> </p>
+          <h3>Example of Memoized List</h3>
+          <p> </p>
+          <p data-height="800" data-theme-id="6688" data-slug-hash="xaZzjq" data-default-tab="js,result" data-user="rbiggs" data-pen-title="Functional Component with Memoization"
+            class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xaZzjq/">Functional Component with Memoization</a> by
+            Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
 
           <p> </p>
           <h2>Component Class Advantages</h2>
