@@ -370,9 +370,9 @@ function List() {
 
           <p> </p>
           <h2>Memoization Avoids Unncessary Updates</h2>
-          <p>When you use the <code>update</code> lifecycle hook, it will always fire, even if the data being use has not changed. This can be annoying. You may want <code>update</code> to run only when the component will actually change. Every time you render a functional component with <code>update</code> on it, <code>update</code> will execute. There is one way to get around this--memoization.</p>
+          <p>When you use the <code>update</code> lifecycle hook, it will always fire when you do a render, even if the data being use has not changed. This does not mean that the DOM was physically updated. That would only happen if the props changed. Every time you render a functional component with <code>update</code> on it, <code>update</code> will execute. There is only one way to get around this--memoization.</p>
 
-          <p>Bellow is a Codepen with a list created as a function component. The list items have an <code>onupdate</code> lifecycle hook. When you click on the button that says "Render List with Same Data", it re-renders the list. Notice how in the results you see and oupt for each list item. This is so event though there was no change to the data the list is using. This means there was no physical update of the list items. This is because of how the diffing algorithm works.</p>
+          <p>Below is a Codepen with a list created as a function component. The list items have an <code>onupdate</code> lifecycle hook. When you click on the button that says "Render List with Same Data", it re-renders the list. Notice how in the results you see and oupt for each list item. This is so event though there was no change to the data the list is using. This means there was no physical update of the list items. This is because of how the diffing algorithm works.</p>
 
           <h3>Normal List without Memoization</h3>
           <p>Here's an example of the problem. Notice that as you add items to the list, all the already existing items get output as updated. Also notice that every time you tap the "Render List with Same Data" button, all the items are output as updated, event those you rendered the list with the same data. Infact, because the data was the same, the actual DOM elements would not have been updated.</p>
@@ -396,6 +396,8 @@ function List() {
             class="codepen">See the Pen <a href="https://codepen.io/rbiggs/pen/xaZzjq/">Functional Component with Memoization</a> by
             Robert Biggs (<a href="https://codepen.io/rbiggs">@rbiggs</a>) on <a href="https://codepen.io">CodePen</a>.</p>
           <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+          <p>The above technique solves the problem of the  <code>update</code> lifecycle hook firing every time you render a function, even when the data is the same. However, be aware that this increases the memory that the list is using. If your list can be long, and you use this technique on other long list, you may find that your app is consuming a lot of memory, which can lead to other problems. If memoizing list items seems like too much trouble, consider making your list component using the <a target="_blank" href='./class-component.html'>Component class</a>. Class components memoize their previous state so that their update lifecycle hooks only fire when their data changes.</p>
 
 
           <p> </p>
