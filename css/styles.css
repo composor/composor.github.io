@@ -390,9 +390,19 @@ nav {
   top: 0;
   left: 0;
 }
-article {
+article, .move-announcement {
   padding: 2rem;
   background-color: #fff;
+}
+.move-announcement {
+  background-color: orange;
+}
+.move-announcement * {
+  color: #fff;
+}
+.move-announcement a {
+  color: #DF0000;
+  font-weight: 500;
 }
 article p {
   margin: 0 0 2rem;
